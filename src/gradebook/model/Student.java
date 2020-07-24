@@ -1,13 +1,11 @@
 package gradebook.model;
 
+import gradebook.enums.Gender;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
 
-import java.util.LinkedHashMap;
 import java.util.Objects;
 
 

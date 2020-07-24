@@ -1,5 +1,6 @@
 package gradebook.model;
 
+import gradebook.enums.AssessmentType;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

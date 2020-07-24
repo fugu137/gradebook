@@ -1,4 +1,4 @@
-package gradebook.model;
+package gradebook.enums;
 
 public enum Answer {
 

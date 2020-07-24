@@ -1,7 +1,7 @@
 package gradebook;
 
-import gradebook.model.Answer;
-import gradebook.model.AssessmentType;
+import gradebook.enums.Answer;
+import gradebook.enums.AssessmentType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

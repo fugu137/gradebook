@@ -1,5 +1,7 @@
 package gradebook;
 
+import gradebook.enums.AssessmentType;
+import gradebook.enums.Gender;
 import gradebook.model.Class;
 import gradebook.model.*;
 import javafx.collections.FXCollections;
