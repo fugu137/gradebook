@@ -62,9 +62,6 @@ public class AssessmentSetData implements AssessmentData {
         }
         gradeList.sort(Collections.reverseOrder());
 
-        System.out.println("Grade list: ");
-        System.out.println(gradeList);
-
         return gradeList;
     }
 
