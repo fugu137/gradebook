@@ -2,6 +2,7 @@ package gradebook;
 
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
+import gradebook.model.Assessment;
 import gradebook.model.AssessmentCreationBar;
 import gradebook.tools.Formatter;
 import javafx.beans.binding.Bindings;
@@ -268,5 +269,37 @@ public class AssessmentCreationController implements Initializable {
         weightField6.setText(null);
         weightField7.setText(null);
         weightField8.setText(null);
+    }
+
+    //Assessment Creation Window Methods//
+    @FXML
+    public void finaliseAssessments() {
+        boolean unableToFinalise = false;
+
+        for (AssessmentCreationBar bar: assessmentCreationBars) {
+            if (bar.hasInvalidEntries()) {
+                unableToFinalise = true;
+                break;
+            }
+        }
+
+        if (unableToFinalise) {
+            System.out.println("Some fields are invalid!"); //TODO: make error message with specific details
+        } else {
+            System.out.println("Finalising assessments...");
+            createAssessments();
+        }
+    }
+
+    private void createAssessments() {
+        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
+
+        for (AssessmentCreationBar bar: assessmentCreationBars) {
+            if (bar.isActive()) {
+                bar.createAssessment();
+                assessments.add(bar.getAssessment());
+            }
+        }
+        mainController.setupAssessments(assessments);
     }
 }

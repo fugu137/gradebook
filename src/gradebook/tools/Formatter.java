@@ -27,8 +27,6 @@ public abstract class Formatter {
                 }
             }
         };
-
         field.textProperty().addListener(formatter);
     }
-
 }

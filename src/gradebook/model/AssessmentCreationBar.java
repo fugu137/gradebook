@@ -32,7 +32,6 @@ public class AssessmentCreationBar {
         this.weightingField = weightingField;
 
         this.isActive = new SimpleBooleanProperty(false);
-        this.assessment = null;
 
         initialSettings();
     }
@@ -95,24 +94,29 @@ public class AssessmentCreationBar {
         }
     }
 
+    public Assessment getAssessment() {
+        return assessment;
+    }
+
     public boolean isActive() {
         return isActive.getValue();
     }
 
     public boolean hasInvalidEntries() {
 
-        if (!quantityField.getText().matches("\\d|\\d\\d") && !bestOfField.getText().matches("\\d|\\d\\d") && !weightingField.getText().matches("100|\\d\\d|\\d")) {
-            return true;
-
-        } else if (Integer.parseInt(bestOfField.getText()) > Integer.parseInt(quantityField.getText())) {
-            return true;
-
-        } else {
-            return false;
-        }
+        return false; //TODO: complete
+//        if (!quantityField.getText().matches("\\d|\\d\\d") && !bestOfField.getText().matches("\\d|\\d\\d") && !weightingField.getText().matches("100|\\d\\d|\\d")) {
+//            return true;
+//
+//        } else if (Integer.parseInt(bestOfField.getText()) > Integer.parseInt(quantityField.getText())) {
+//            return true;
+//
+//        } else {
+//            return false;
+//        }
     }
 
-    private void createAssessment() {
+    public void createAssessment() {
 
         if (isActive.getValue() && !this.hasInvalidEntries()) {
 

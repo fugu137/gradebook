@@ -23,7 +23,10 @@ import javafx.util.converter.IntegerStringConverter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
@@ -236,7 +239,7 @@ public class MainController implements Initializable {
     }
 
     //Toolbar Methods//
-
+    @FXML
     public void displayAssessmentCreationWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("assessment-creation-window.fxml"));
         Parent root = loader.load();
@@ -252,6 +255,44 @@ public class MainController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.resizableProperty().setValue(false);
         stage.showAndWait();
+    }
+
+    public void setupAssessments(ObservableList<Assessment> assessments) {
+        Map<Boolean, List<Assessment>> split = assessments.stream().collect(Collectors.partitioningBy(a -> a instanceof StdAssessment));
+        List<StdAssessment> stdAssessments = split.get(true).stream().map(a -> (StdAssessment) a).collect(Collectors.toList());
+        List<AssessmentSet> assessmentSets = split.get(false).stream().map(a -> (AssessmentSet) a).collect(Collectors.toList());
+        ;
+
+        for (StdAssessment std : stdAssessments) {
+            createStdAssessmentColumn(std);
+        }
+
+        for (AssessmentSet set : assessmentSets) {
+            createAssessmentSetColumns(set);
+        }
+
+        createTotalColumn();
+
+        //TODO: finish
+    }
+
+    private void createStdAssessmentColumn(StdAssessment std) {
+        AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
+        column.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(std));
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        table.getColumns().add(column);
+    }
+
+    private void createAssessmentSetColumns(AssessmentSet assessmentSet) {
+        for (StdAssessment std: assessmentSet.getStdAssessments()) {
+            createStdAssessmentColumn(std);
+        }
+    }
+
+    private void createTotalColumn() {
+        AssessmentColumn<Student, Double> totalColumn = new AssessmentColumn<Student, Double>("Total Mark");
+        totalColumn.setCellValueFactory(c -> c.getValue().totalGradeProperty());
+        table.getColumns().add(totalColumn);
     }
 
 
