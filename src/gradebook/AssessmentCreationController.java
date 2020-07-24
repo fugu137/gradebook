@@ -2,8 +2,9 @@ package gradebook;
 
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
-import gradebook.model.AssessmentCreationForm;
-import gradebook.model.AssessmentCreator;
+import gradebook.model.AssessmentCreationBar;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -146,13 +147,13 @@ public class AssessmentCreationController implements Initializable {
 
     //Control//
     private MainController mainController;
-    private AssessmentCreator assessmentCreator;
+    private ObservableList<AssessmentCreationBar> assessmentCreationBars = FXCollections.observableArrayList();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fillComboBoxes();
-        setupAssessmentCreator();
+        addAssessmentCreationBars();
     }
 
     //Initialize Methods//
@@ -178,25 +179,24 @@ public class AssessmentCreationController implements Initializable {
         modalityBox8.getItems().addAll(assessmentFormList);
     }
 
-    private void setupAssessmentCreator() {
-        assessmentCreator = new AssessmentCreator();
+    private void addAssessmentCreationBars() {
 
-        AssessmentCreationForm form1 = new AssessmentCreationForm(modalityBox1, comboBox1, nameField1, quantityField1, bestOfField1, weightField1);
-        assessmentCreator.addForm(form1);
-        AssessmentCreationForm form2 = new AssessmentCreationForm(modalityBox2, comboBox2, nameField2, quantityField2, bestOfField2, weightField2);
-        assessmentCreator.addForm(form2);
-        AssessmentCreationForm form3 = new AssessmentCreationForm(modalityBox3, comboBox3, nameField3, quantityField3, bestOfField3, weightField3);
-        assessmentCreator.addForm(form3);
-        AssessmentCreationForm form4 = new AssessmentCreationForm(modalityBox4, comboBox4, nameField4, quantityField4, bestOfField4, weightField4);
-        assessmentCreator.addForm(form4);
-        AssessmentCreationForm form5 = new AssessmentCreationForm(modalityBox5, comboBox5, nameField5, quantityField5, bestOfField5, weightField5);
-        assessmentCreator.addForm(form5);
-        AssessmentCreationForm form6 = new AssessmentCreationForm(modalityBox6, comboBox6, nameField6, quantityField6, bestOfField6, weightField6);
-        assessmentCreator.addForm(form6);
-        AssessmentCreationForm form7 = new AssessmentCreationForm(modalityBox7, comboBox7, nameField7, quantityField7, bestOfField7, weightField7);
-        assessmentCreator.addForm(form7);
-        AssessmentCreationForm form8 = new AssessmentCreationForm(modalityBox8, comboBox8, nameField8, quantityField8, bestOfField8, weightField8);
-        assessmentCreator.addForm(form8);
+        AssessmentCreationBar bar1 = new AssessmentCreationBar(modalityBox1, comboBox1, clearButton1, nameField1, quantityField1, bestOfField1, weightField1);
+        assessmentCreationBars.add(bar1);
+        AssessmentCreationBar bar2 = new AssessmentCreationBar(modalityBox2, comboBox2, clearButton2, nameField2, quantityField2, bestOfField2, weightField2);
+        assessmentCreationBars.add(bar2);
+        AssessmentCreationBar bar3 = new AssessmentCreationBar(modalityBox3, comboBox3, clearButton3, nameField3, quantityField3, bestOfField3, weightField3);
+        assessmentCreationBars.add(bar3);
+        AssessmentCreationBar bar4 = new AssessmentCreationBar(modalityBox4, comboBox4, clearButton4, nameField4, quantityField4, bestOfField4, weightField4);
+        assessmentCreationBars.add(bar4);
+        AssessmentCreationBar bar5 = new AssessmentCreationBar(modalityBox5, comboBox5, clearButton5, nameField5, quantityField5, bestOfField5, weightField5);
+        assessmentCreationBars.add(bar5);
+        AssessmentCreationBar bar6 = new AssessmentCreationBar(modalityBox6, comboBox6, clearButton6, nameField6, quantityField6, bestOfField6, weightField6);
+        assessmentCreationBars.add(bar6);
+        AssessmentCreationBar bar7 = new AssessmentCreationBar(modalityBox7, comboBox7, clearButton7, nameField7, quantityField7, bestOfField7, weightField7);
+        assessmentCreationBars.add(bar7);
+        AssessmentCreationBar bar8 = new AssessmentCreationBar(modalityBox8, comboBox8, clearButton8, nameField8, quantityField8, bestOfField8, weightField8);
+        assessmentCreationBars.add(bar8);
     }
 
 

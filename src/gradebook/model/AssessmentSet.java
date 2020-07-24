@@ -13,7 +13,7 @@ public class AssessmentSet implements Assessment {
     private IntegerProperty quantity;
     private IntegerProperty bestOf;
 
-    public AssessmentSet(String name, AssessmentType type, double weighting, int quantity, int bestOf) {
+    public AssessmentSet(String name, AssessmentType type, Double weighting, Integer quantity, Integer bestOf) {
         this.name = new SimpleStringProperty(name);
         this.weighting = new SimpleDoubleProperty(weighting);
         this.quantity = new SimpleIntegerProperty(quantity);
