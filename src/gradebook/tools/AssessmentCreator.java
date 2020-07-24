@@ -1,4 +1,4 @@
-package gradebook.model;
+package gradebook.tools;
 
 public class AssessmentCreator {
 }
