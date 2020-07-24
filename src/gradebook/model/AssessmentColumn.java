@@ -4,11 +4,15 @@ import javafx.scene.control.TableColumn;
 
 public class AssessmentColumn<Student, Integer> extends TableColumn<Student, Integer> {
 
-    private StdAssessment stdAssessment;
+    private Assessment assessment;
 
-    public AssessmentColumn(String name, StdAssessment stdAssessment) {
+    public AssessmentColumn(String name) {
+        this(name, null);
+    }
+
+    public AssessmentColumn(String name, Assessment assessment) {
         super(name);
-        this.stdAssessment = stdAssessment;
+        this.assessment = assessment;
     }
 
 }

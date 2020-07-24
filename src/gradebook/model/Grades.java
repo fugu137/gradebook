@@ -18,7 +18,7 @@ public class Grades {
         this.totalGrade = new SimpleObjectProperty<>(null);
     }
 
-    private void updateTotalGrade() {
+    public void updateTotalGrade() {
         Double total = null;
         Double totalWeighting = null;
 
@@ -33,7 +33,13 @@ public class Grades {
                 }
 
                 Double assessmentWeighting = a.getAssessment().getWeighting();
-                Double grade = (double) a.getGrade();
+                double grade;
+
+                if (a.getGrade() instanceof Integer) {
+                    grade = (double) (int) a.getGrade();
+                } else {
+                    grade = (double) a.getGrade();
+                }
 
                 total = total + NumberRounder.round(grade * assessmentWeighting, 1);
                 totalWeighting = totalWeighting + assessmentWeighting;
@@ -57,5 +63,13 @@ public class Grades {
 
     public Collection<AssessmentData> assessmentDataList() {
         return grades.values();
+    }
+
+    public ObjectProperty<Double> totalGradeProperty() {
+        return totalGrade;
+    }
+
+    public Double getTotalGrade() {
+        return totalGrade.getValue();
     }
 }

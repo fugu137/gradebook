@@ -246,35 +246,35 @@ public class MainController implements Initializable {
         StdAssessment essay = new StdAssessment("Essay", AssessmentType.ESSAY, 0.4);
         StdAssessment exam = new StdAssessment("Exam", AssessmentType.EXAM, 0.4);
         AssessmentSet quiz = new AssessmentSet("Quiz", AssessmentType.QUIZ, 0.2, 5, 4);
-        assignedAssessments.addAssessment(essay);
-        assignedAssessments.addAssessment(exam);
+//        assignedAssessments.addAssessment(essay);
+//        assignedAssessments.addAssessment(exam);
         assignedAssessments.addAssessmentSet(quiz);
 
-        fred.addStdAssessmentData(essay);
-        fred.addStdAssessmentData(exam);
+//        fred.addStdAssessmentData(essay);
+//        fred.addStdAssessmentData(exam);
         fred.addAssessmentSetData(quiz);
 
-        mary.addStdAssessmentData(essay);
-        mary.addStdAssessmentData(exam);
+//        mary.addStdAssessmentData(essay);
+//        mary.addStdAssessmentData(exam);
         mary.addAssessmentSetData(quiz);
 
-        jane.addStdAssessmentData(essay);
-        jane.addStdAssessmentData(exam);
+//        jane.addStdAssessmentData(essay);
+//        jane.addStdAssessmentData(exam);
         jane.addAssessmentSetData(quiz);
 
-        blankStudent.addStdAssessmentData(essay);
-        blankStudent.addStdAssessmentData(exam);
+//        blankStudent.addStdAssessmentData(essay);
+//        blankStudent.addStdAssessmentData(exam);
         blankStudent.addAssessmentSetData(quiz);
 
-        AssessmentColumn<Student, Integer> essayColumn = new AssessmentColumn<>(essay.getName(), essay);
-        essayColumn.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(essay));
-        essayColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        table.getColumns().add(essayColumn);
-
-        AssessmentColumn<Student, Integer> examColumn = new AssessmentColumn<>(exam.getName(), exam);
-        examColumn.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(exam));
-        examColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        table.getColumns().add(examColumn);
+//        AssessmentColumn<Student, Integer> essayColumn = new AssessmentColumn<>(essay.getName(), essay);
+//        essayColumn.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(essay));
+//        essayColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+//        table.getColumns().add(essayColumn);
+//
+//        AssessmentColumn<Student, Integer> examColumn = new AssessmentColumn<>(exam.getName(), exam);
+//        examColumn.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(exam));
+//        examColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+//        table.getColumns().add(examColumn);
 
         for (StdAssessment q: quiz.getStdAssessments()) {
             AssessmentColumn<Student, Integer> quizColumn = new AssessmentColumn<>(q.getName(), q);
@@ -282,6 +282,14 @@ public class MainController implements Initializable {
             quizColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
             table.getColumns().add(quizColumn);
         }
+
+        AssessmentColumn<Student, Double> quizTotalColumn = new AssessmentColumn<>(quiz.getName() + " Total", quiz);
+        quizTotalColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(quiz));
+        table.getColumns().add(quizTotalColumn);
+
+        AssessmentColumn<Student, Double> totalColumn = new AssessmentColumn<>("Total Mark");
+        totalColumn.setCellValueFactory(c -> c.getValue().totalGradeProperty());
+        table.getColumns().add(totalColumn);
 
     }
 

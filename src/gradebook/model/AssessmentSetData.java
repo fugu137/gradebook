@@ -1,60 +1,81 @@
 package gradebook.model;
 
 import gradebook.tools.NumberRounder;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class AssessmentSetData implements AssessmentData {
 
     private AssessmentSet assessmentSet;
-    private ObservableList<StdAssessmentData> stdAssessmentData;
-    private ObjectProperty<Double> totalGrade;
+    private ObservableList<StdAssessmentData> stdAssessmentDataList;
+    private ObjectProperty<Double> assessmentSetTotalGrade;
 
     public AssessmentSetData(AssessmentSet assessmentSet) {
         this.assessmentSet = assessmentSet;
-        this.stdAssessmentData = FXCollections.observableArrayList();
+        this.stdAssessmentDataList = FXCollections.observableArrayList();
 
         for (StdAssessment a : assessmentSet.getStdAssessments()) {
-            stdAssessmentData.add(new StdAssessmentData(a));
+            stdAssessmentDataList.add(new StdAssessmentData(a));
         }
-        totalGrade = new SimpleObjectProperty<>(null);
+        assessmentSetTotalGrade = new SimpleObjectProperty<>(null);
     }
 
-    private void updateTotalGrade() {
+    public void updateAssessmentSetTotalGrade() {
         Double total = null;
-        Double totalWeighting = assessmentSet.getWeighting();
+        Integer number = null;
 
-        for (StdAssessmentData s : stdAssessmentData) {
-            if (s.gradeProperty().getValue() != null && s.gradeProperty() != null) {
+        List<Integer> assessmentGrades = getGradeList();
 
-                if (total == null) {
-                    total = 0.0;
-                }
-                total = total + NumberRounder.round(s.getGrade() * totalWeighting, 1);
+        if (assessmentGrades.size() > 0) {
+            total = 0.0;
+            number = assessmentGrades.size();
+
+            if (assessmentSet.getBestOf() < number) {
+                number = assessmentSet.getBestOf();
+            }
+
+            for (int i = 0; i < number; i++) {
+                total = total + assessmentGrades.get(i);
             }
         }
+
         if (total == null) {
-            totalGrade.set(null);
+            assessmentSetTotalGrade.set(null);
         } else {
-            totalGrade.set(total);
+            assessmentSetTotalGrade.set(NumberRounder.round(total / number, 1));
         }
+    }
+
+    private List<Integer> getGradeList() {
+        List<Integer> gradeList = new ArrayList<>();
+
+        for (StdAssessmentData s : stdAssessmentDataList) {
+            if (s.gradeProperty() != null && s.gradeProperty().getValue() != null) {
+                gradeList.add(s.getGrade());
+            }
+        }
+        gradeList.sort(Collections.reverseOrder());
+
+        System.out.println("Grade list: ");
+        System.out.println(gradeList);
+
+        return gradeList;
     }
 
     public AssessmentSet getAssessmentSet() {
         return assessmentSet;
     }
 
-    public ObjectProperty<Double> totalGradeProperty() {
-        return totalGrade;
-    }
-
     public ObjectProperty<Integer> assessmentGradeProperty(StdAssessment stdAssessment) {
         ObjectProperty<Integer> grade = null;
 
-        for (StdAssessmentData d : stdAssessmentData) {
+        for (StdAssessmentData d : stdAssessmentDataList) {
             if (d.getStdAssessment() == stdAssessment) {
                 grade = d.gradeProperty();
                 break;
@@ -63,16 +84,16 @@ public class AssessmentSetData implements AssessmentData {
         return grade;
     }
 
-    public ObservableList<StdAssessmentData> getStdAssessmentData() {
-        return stdAssessmentData;
+    public ObservableList<StdAssessmentData> getStdAssessmentDataList() {
+        return stdAssessmentDataList;
     }
 
     public Double getGrade() {
-        return totalGrade.getValue();
+        return assessmentSetTotalGrade.getValue();
     }
 
     public ObjectProperty<Double> gradeProperty() {
-        return totalGrade;
+        return assessmentSetTotalGrade;
     }
 
     @Override

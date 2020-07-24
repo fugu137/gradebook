@@ -130,13 +130,23 @@ public class Student {
     }
 
 
-    //Main Methods//
+    //Key Methods//
     public void addStdAssessmentData(StdAssessment stdAssessment) {
-        grades.add(stdAssessment, new StdAssessmentData(stdAssessment));
+        StdAssessmentData data = new StdAssessmentData(stdAssessment);
+        grades.add(stdAssessment, data);
+
+        data.gradeProperty().addListener(obs -> grades.updateTotalGrade());
     }
 
     public void addAssessmentSetData(AssessmentSet assessmentSet) {
-        grades.add(assessmentSet, new AssessmentSetData(assessmentSet));
+        AssessmentSetData data = new AssessmentSetData(assessmentSet);
+        grades.add(assessmentSet, data);
+
+        data.gradeProperty().addListener(obs -> grades.updateTotalGrade());
+
+        for (StdAssessmentData d: data.getStdAssessmentDataList()) {
+            d.gradeProperty().addListener(obs -> data.updateAssessmentSetTotalGrade());
+        }
     }
 
     public ObjectProperty<Integer> stdAssessmentGradeProperty(StdAssessment stdAssessment) {
@@ -147,6 +157,18 @@ public class Student {
 
         } else {
             System.out.println("Assessment not found! [Student: " + this.getSurname() + ", Assessment: " + stdAssessment.getName() + "]");
+            return null;
+        }
+    }
+
+    public ObjectProperty<Double> assessmentSetTotalGradeProperty(AssessmentSet assessmentSet) {
+        AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
+
+        if (data != null) {
+            return data.gradeProperty();
+
+        } else {
+            System.out.println("AssessmentSet not found! [Student: " + this.getSurname() + ", Assessment: " + assessmentSet.getName() + "]");
             return null;
         }
     }
@@ -163,6 +185,13 @@ public class Student {
         }
     }
 
+    public ObjectProperty<Double> totalGradeProperty() {
+        return grades.totalGradeProperty();
+    }
+
+    public Double getTotalGrade() {
+        return grades.getTotalGrade();
+    }
 
 
     //Overridden Methods//
@@ -197,7 +226,7 @@ public class Student {
                 ", gender: " + getGender() + ", sid: " + getSid() + ", degree: " + getDegree() + ", email: " + getEmail() + " ");
 
         sb.append(" [");
-        for (AssessmentData d: grades.assessmentDataList()) {
+        for (AssessmentData d : grades.assessmentDataList()) {
             if (d instanceof StdAssessmentData) {
                 StdAssessmentData stdData = (StdAssessmentData) d;
                 sb.append(stdData.getStdAssessment().getName()).append(", ").append(stdData.getGrade()).append("; ");
@@ -206,7 +235,7 @@ public class Student {
                 AssessmentSetData setData = (AssessmentSetData) d;
                 sb.append(setData.getAssessmentSet().getName()).append(": ");
 
-                for (StdAssessmentData s: setData.getStdAssessmentData()) {
+                for (StdAssessmentData s : setData.getStdAssessmentDataList()) {
                     sb.append(s.getStdAssessment().getName()).append(", ").append(s.getGrade()).append("; ");
                 }
             }
