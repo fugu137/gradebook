@@ -308,7 +308,7 @@
                                           <Insets top="1.0" />
                                        </padding>
                                        <children>
-                                          <HBox>
+                                          <HBox spacing="1.0">
                                              <VBox.margin>
                                                 <Insets />
                                              </VBox.margin>
@@ -326,7 +326,7 @@
                                                       </Button>
                                                    </children>
                                                    <padding>
-                                                      <Insets right="4.0" />
+                                                      <Insets right="7.0" />
                                                    </padding>
                                                 </VBox>
                                                 <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" styleClass="toolbar-button" text="Modify">

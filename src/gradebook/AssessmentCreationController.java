@@ -3,6 +3,12 @@ package gradebook;
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
 import gradebook.model.AssessmentCreationBar;
+import gradebook.tools.Formatter;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.util.converter.NumberStringConverter;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -149,11 +156,29 @@ public class AssessmentCreationController implements Initializable {
     private MainController mainController;
     private ObservableList<AssessmentCreationBar> assessmentCreationBars = FXCollections.observableArrayList();
 
+    NumberStringConverter converter = new NumberStringConverter();
+
+    IntegerProperty weight1AsInt = new SimpleIntegerProperty();
+    IntegerProperty weight2AsInt = new SimpleIntegerProperty();
+    IntegerProperty weight3AsInt = new SimpleIntegerProperty();
+    IntegerProperty weight4AsInt = new SimpleIntegerProperty();
+    IntegerProperty weight5AsInt = new SimpleIntegerProperty();
+    IntegerProperty weight6AsInt = new SimpleIntegerProperty();
+    IntegerProperty weight7AsInt = new SimpleIntegerProperty();
+    IntegerProperty weight8AsInt = new SimpleIntegerProperty();
+    IntegerProperty totalWeightAsInt = new SimpleIntegerProperty();
+
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fillComboBoxes();
         addAssessmentCreationBars();
+        bindTotalWeightingField();
+        formatWeightingFields();
     }
 
     //Initialize Methods//
@@ -180,7 +205,6 @@ public class AssessmentCreationController implements Initializable {
     }
 
     private void addAssessmentCreationBars() {
-
         AssessmentCreationBar bar1 = new AssessmentCreationBar(modalityBox1, comboBox1, clearButton1, nameField1, quantityField1, bestOfField1, weightField1);
         assessmentCreationBars.add(bar1);
         AssessmentCreationBar bar2 = new AssessmentCreationBar(modalityBox2, comboBox2, clearButton2, nameField2, quantityField2, bestOfField2, weightField2);
@@ -199,10 +223,50 @@ public class AssessmentCreationController implements Initializable {
         assessmentCreationBars.add(bar8);
     }
 
+    private void bindTotalWeightingField() {
+        BooleanBinding allDisabled = comboBox1.getSelectionModel().selectedItemProperty().isNull()
+                .and(comboBox2.getSelectionModel().selectedItemProperty().isNull())
+                .and(comboBox3.getSelectionModel().selectedItemProperty().isNull())
+                .and(comboBox4.getSelectionModel().selectedItemProperty().isNull())
+                .and(comboBox5.getSelectionModel().selectedItemProperty().isNull())
+                .and(comboBox6.getSelectionModel().selectedItemProperty().isNull())
+                .and(comboBox7.getSelectionModel().selectedItemProperty().isNull())
+                .and(comboBox8.getSelectionModel().selectedItemProperty().isNull());
+        totalWeightField.disableProperty().bind(allDisabled);
 
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+        weightField1.textProperty().bindBidirectional(weight1AsInt, converter);
+        weightField2.textProperty().bindBidirectional(weight2AsInt, converter);
+        weightField3.textProperty().bindBidirectional(weight3AsInt, converter);
+        weightField4.textProperty().bindBidirectional(weight4AsInt, converter);
+        weightField5.textProperty().bindBidirectional(weight5AsInt, converter);
+        weightField6.textProperty().bindBidirectional(weight6AsInt, converter);
+        weightField7.textProperty().bindBidirectional(weight7AsInt, converter);
+        weightField8.textProperty().bindBidirectional(weight8AsInt, converter);
+
+        NumberBinding sum = Bindings.add(weight1AsInt, weight2AsInt).add(weight3AsInt).add(weight4AsInt)
+                .add(weight5AsInt).add(weight6AsInt).add(weight7AsInt).add(weight8AsInt);
+        totalWeightAsInt.bind(sum);
+        totalWeightField.textProperty().bind(totalWeightAsInt.asString());
     }
 
+    private void formatWeightingFields() {
+        Formatter.formatWeightingBox(weightField1);
+        Formatter.formatWeightingBox(weightField2);
+        Formatter.formatWeightingBox(weightField3);
+        Formatter.formatWeightingBox(weightField4);
+        Formatter.formatWeightingBox(weightField5);
+        Formatter.formatWeightingBox(weightField6);
+        Formatter.formatWeightingBox(weightField7);
+        Formatter.formatWeightingBox(weightField8);
+        Formatter.formatWeightingBox(totalWeightField);
 
+        weightField1.setText(null);
+        weightField2.setText(null);
+        weightField3.setText(null);
+        weightField4.setText(null);
+        weightField5.setText(null);
+        weightField6.setText(null);
+        weightField7.setText(null);
+        weightField8.setText(null);
+    }
 }

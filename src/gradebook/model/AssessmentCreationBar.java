@@ -50,7 +50,6 @@ public class AssessmentCreationBar {
         weightingField.disableProperty().bind(noFormSelected);
 
         isActive.bind(noFormSelected.not());
-        System.out.println(isActive.getValue());
     }
 
     public ComboBox<AssessmentForm> getFormComboBox() {
@@ -115,7 +114,7 @@ public class AssessmentCreationBar {
 
     private void createAssessment() {
 
-        if (!this.hasInvalidEntries()) {
+        if (isActive.getValue() && !this.hasInvalidEntries()) {
 
             AssessmentForm assessmentForm = getForm();
             AssessmentType type = getType();

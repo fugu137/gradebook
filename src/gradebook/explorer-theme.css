@@ -319,7 +319,7 @@
     -fx-effect: null;
     -fx-border-color: derive(-fx-box-border, -10%);
     -fx-border-radius: 0;
-    -fx-padding: 0 0 0 2;
+    -fx-padding: 0 0 0 1;
     -fx-background-insets: 0 1 1 0;
 }
 .toolbar-combo-box .text-input {
@@ -335,12 +335,12 @@
 .toolbar-combo-box .list-view .list-cell: hover {
     -fx-background-color: -fx-selection-bar;
     -fx-effect: null;
-    -fx-padding: 0 0 0 1;
+    -fx-padding: 0 0 0 2;
 }
 .toolbar-combo-box .list-view .list-cell: selected {
     -fx-background-color: -fx-selection-bar;
     -fx-effect: null;
-    -fx-padding: 0 0 0 1;
+    -fx-padding: 0 0 0 2;
 }
 .toolbar-combo-box .arrow-button {
     -fx-border-color: derive(-fx-box-border, -10%);
