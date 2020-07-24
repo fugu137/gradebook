@@ -1,7 +1,8 @@
 package gradebook;
 
-import gradebook.enums.Answer;
+import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
+import gradebook.tools.AssessmentCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -17,7 +18,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox1;
     @FXML
-    private ComboBox<Answer> modalityBox1;
+    private ComboBox<AssessmentForm> modalityBox1;
     @FXML
     private Button clearButton1;
     @FXML
@@ -32,7 +33,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox2;
     @FXML
-    private ComboBox<Answer> modalityBox2;
+    private ComboBox<AssessmentForm> modalityBox2;
     @FXML
     private Button clearButton2;
     @FXML
@@ -47,7 +48,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox3;
     @FXML
-    private ComboBox<Answer> modalityBox3;
+    private ComboBox<AssessmentForm> modalityBox3;
     @FXML
     private Button clearButton3;
     @FXML
@@ -62,7 +63,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox4;
     @FXML
-    private ComboBox<Answer> modalityBox4;
+    private ComboBox<AssessmentForm> modalityBox4;
     @FXML
     private Button clearButton4;
     @FXML
@@ -77,7 +78,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox5;
     @FXML
-    private ComboBox<Answer> modalityBox5;
+    private ComboBox<AssessmentForm> modalityBox5;
     @FXML
     private Button clearButton5;
     @FXML
@@ -92,7 +93,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox6;
     @FXML
-    private ComboBox<Answer> modalityBox6;
+    private ComboBox<AssessmentForm> modalityBox6;
     @FXML
     private Button clearButton6;
     @FXML
@@ -107,7 +108,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox7;
     @FXML
-    private ComboBox<Answer> modalityBox7;
+    private ComboBox<AssessmentForm> modalityBox7;
     @FXML
     private Button clearButton7;
     @FXML
@@ -122,7 +123,7 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private ComboBox<AssessmentType> comboBox8;
     @FXML
-    private ComboBox<Answer> modalityBox8;
+    private ComboBox<AssessmentForm> modalityBox8;
     @FXML
     private Button clearButton8;
     @FXML
@@ -147,6 +148,7 @@ public class AssessmentCreationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fillComboBoxes();
+        setupAssessmentCreators();
     }
 
     //Initialize Methods//
@@ -161,23 +163,27 @@ public class AssessmentCreationController implements Initializable {
         comboBox7.getItems().addAll(assessmentList);
         comboBox8.getItems().addAll(assessmentList);
 
-        List<Answer> modalityList = Arrays.asList(Answer.values());
-        modalityBox1.getItems().addAll(modalityList);
+        List<AssessmentForm> assessmentFormList = Arrays.asList(AssessmentForm.values());
+        modalityBox1.getItems().addAll(assessmentFormList);
         modalityBox1.getSelectionModel().selectFirst();
-        modalityBox2.getItems().addAll(modalityList);
+        modalityBox2.getItems().addAll(assessmentFormList);
         modalityBox2.getSelectionModel().selectFirst();
-        modalityBox3.getItems().addAll(modalityList);
+        modalityBox3.getItems().addAll(assessmentFormList);
         modalityBox3.getSelectionModel().selectFirst();
-        modalityBox4.getItems().addAll(modalityList);
+        modalityBox4.getItems().addAll(assessmentFormList);
         modalityBox4.getSelectionModel().selectFirst();
-        modalityBox5.getItems().addAll(modalityList);
+        modalityBox5.getItems().addAll(assessmentFormList);
         modalityBox5.getSelectionModel().selectFirst();
-        modalityBox6.getItems().addAll(modalityList);
+        modalityBox6.getItems().addAll(assessmentFormList);
         modalityBox6.getSelectionModel().selectFirst();
-        modalityBox7.getItems().addAll(modalityList);
+        modalityBox7.getItems().addAll(assessmentFormList);
         modalityBox7.getSelectionModel().selectFirst();
-        modalityBox8.getItems().addAll(modalityList);
+        modalityBox8.getItems().addAll(assessmentFormList);
         modalityBox8.getSelectionModel().selectFirst();
+    }
+
+    private void setupAssessmentCreators() {
+        AssessmentCreator assessmentCreator1 = new AssessmentCreator();
     }
 
 

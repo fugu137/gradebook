@@ -1,13 +1,13 @@
 package gradebook.enums;
 
-public enum Answer {
+public enum AssessmentForm {
 
-    YES("Yes"),
-    NO("No");
+    SINGLE("Single"),
+    SET("Set");
 
     private String name;
 
-    private Answer(String name) {
+    private AssessmentForm(String name) {
         this.name = name;
     }
 
