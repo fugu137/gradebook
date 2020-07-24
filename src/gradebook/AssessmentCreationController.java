@@ -2,6 +2,8 @@ package gradebook;
 
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
+import gradebook.model.AssessmentCreationForm;
+import gradebook.model.AssessmentCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -142,12 +144,15 @@ public class AssessmentCreationController implements Initializable {
     @FXML
     private Button cancelButton;
 
+    //Control//
     private MainController mainController;
+    private AssessmentCreator assessmentCreator;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fillComboBoxes();
-        setupAssessmentCreators();
+        setupAssessmentCreator();
     }
 
     //Initialize Methods//
@@ -173,15 +178,31 @@ public class AssessmentCreationController implements Initializable {
         modalityBox8.getItems().addAll(assessmentFormList);
     }
 
-    private void setupAssessmentCreators() {
-//        AssessmentCreator assessmentCreator1 = new AssessmentCreator();
+    private void setupAssessmentCreator() {
+        assessmentCreator = new AssessmentCreator();
+
+        AssessmentCreationForm form1 = new AssessmentCreationForm(modalityBox1, comboBox1, nameField1, quantityField1, bestOfField1, weightField1);
+        assessmentCreator.addForm(form1);
+        AssessmentCreationForm form2 = new AssessmentCreationForm(modalityBox2, comboBox2, nameField2, quantityField2, bestOfField2, weightField2);
+        assessmentCreator.addForm(form2);
+        AssessmentCreationForm form3 = new AssessmentCreationForm(modalityBox3, comboBox3, nameField3, quantityField3, bestOfField3, weightField3);
+        assessmentCreator.addForm(form3);
+        AssessmentCreationForm form4 = new AssessmentCreationForm(modalityBox4, comboBox4, nameField4, quantityField4, bestOfField4, weightField4);
+        assessmentCreator.addForm(form4);
+        AssessmentCreationForm form5 = new AssessmentCreationForm(modalityBox5, comboBox5, nameField5, quantityField5, bestOfField5, weightField5);
+        assessmentCreator.addForm(form5);
+        AssessmentCreationForm form6 = new AssessmentCreationForm(modalityBox6, comboBox6, nameField6, quantityField6, bestOfField6, weightField6);
+        assessmentCreator.addForm(form6);
+        AssessmentCreationForm form7 = new AssessmentCreationForm(modalityBox7, comboBox7, nameField7, quantityField7, bestOfField7, weightField7);
+        assessmentCreator.addForm(form7);
+        AssessmentCreationForm form8 = new AssessmentCreationForm(modalityBox8, comboBox8, nameField8, quantityField8, bestOfField8, weightField8);
+        assessmentCreator.addForm(form8);
     }
 
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
-
 
 
 }
