@@ -1,11 +1,11 @@
-package gradebook.tools;
+package gradebook.model;
 
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-public class AssessmentCreator {
+public class AssessmentCreationForm {
 
     private ComboBox<AssessmentForm> formComboBox;
     private ComboBox<AssessmentType> typeComboBox;
@@ -14,7 +14,7 @@ public class AssessmentCreator {
     private TextField bestOfField;
     private TextField weightingField;
 
-    public AssessmentCreator(ComboBox<AssessmentForm> formComboBox, ComboBox<AssessmentType> typeComboBox, TextField nameField, TextField quantityField, TextField bestOfField, TextField weightingField) {
+    public AssessmentCreationForm(ComboBox<AssessmentForm> formComboBox, ComboBox<AssessmentType> typeComboBox, TextField nameField, TextField quantityField, TextField bestOfField, TextField weightingField) {
         this.formComboBox = formComboBox;
         this.typeComboBox = typeComboBox;
         this.nameField = nameField;
