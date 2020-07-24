@@ -169,6 +169,44 @@
     -fx-padding: 0;
     -fx-text-fill: white;
 }
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-radius: 0;
+}
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-radius: 0;
+}
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 0.0 10.0 0.0;
+}
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 10.0 0.0 0.0;
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape: " ";
+    -fx-padding: 0.15em 0.0;
+}
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-shape: " ";
+    -fx-padding: 0.0 0.15em;
+}
+
 /*Misc*/
 .white-pane {
     -fx-background-color: white;
@@ -371,117 +409,6 @@
     -fx-background-insets: 0;
     -fx-padding: 0 1 0 1;
 }
-/*.table-combo-box {
-    -fx-background-color: white;
-    -fx-background-radius: 0;
-    -fx-effect: null;
-    -fx-border-color: derive(-fx-box-border, -10%);
-    -fx-border-radius: 0;
-    -fx-padding: 0 0 0 2;
-    -fx-background-insets: 0 1 1 0;
-}
-.table-combo-box: hover {
-    -fx-background-color: -fx-focus-color;
-    -fx-background-radius: 0;
-    -fx-effect: null;
-    -fx-border-color: derive(-fx-box-border, -10%);
-    -fx-border-radius: 0;
-    -fx-padding: 0 0 0 2;
-    -fx-background-insets: 0 1 1 0;
-}
-
-.table-combo-box .text-field {
-    -fx-background-color: white;
-    -fx-border-color: -fx-selection-bar;
-    -fx-background-radius: 1;
-    -fx-border-radius: 1;
-    -fx-effect: null;
-    -fx-padding: 0 0 0 1;
-    -fx-border-insets: -1;
-    -fx-background-insets: -1;
-}
-.table-combo-box .text-field: hover {
-    -fx-background-color: white;
-    -fx-border-color: -fx-selection-bar;
-    -fx-background-radius: 1;
-    -fx-border-radius: 1;
-    -fx-effect: null;
-    -fx-padding: 0 0 0 1;
-    -fx-border-insets: -1;
-    -fx-background-insets: -1;
-}
-.table-combo-box .text-field: focused {
-    -fx-background-color: white;
-    -fx-border-color: -fx-selection-bar;
-    -fx-background-radius: 1;
-    -fx-border-radius: 1;
-    -fx-effect: null;
-    -fx-padding: 0 0 0 1;
-    -fx-border-insets: -1;
-    -fx-background-insets: -1;
-}
-.table-combo-box .text-field: armed {
-    -fx-background-color: white;
-    -fx-border-color: -fx-selection-bar;
-    -fx-background-radius: 1;
-    -fx-border-radius: 1;
-    -fx-effect: null;
-    -fx-padding: 0 0 0 1;
-    -fx-border-insets: -1;
-    -fx-background-insets: -1;
-}
-.table-combo-box .list-cell {
-    -fx-background-color: transparent;
-    -fx-effect: null;
-    -fx-padding: 0 0 0 1;
-}
-.table-combo-box .list-view .list-cell: hover {
-    -fx-background-color: -fx-selection-bar;
-    -fx-effect: null;
-    -fx-padding: 0 0 0 1;
-}
-.table-combo-box .list-view .list-cell: selected {
-    -fx-background-color: -fx-selection-bar;
-    -fx-effect: null;
-    -fx-padding: 0 0 0 1;
-}
-.table-combo-box .arrow-button {
-    -fx-border-color: -fx-selection-bar;
-    -fx-border-insets: -1 -1 -1 -1;
-    -fx-background-insets: -1 -1 -1 -1;
-    -fx-padding: 0 4.2 0 4.2;
-    -fx-background-color: white;
-}
-.table-combo-box .arrow-button: hover {
-    -fx-border-color: -fx-selection-bar;
-    -fx-border-insets: -1 -1 -1 -1;
-    -fx-background-insets: -1 -1 -1 -1;
-    -fx-padding: 1 4.5 1 4.5;
-    -fx-background-color: white;
-}
-.table-combo-box .arrow-button: selected {
-    -fx-border-color: -fx-selection-bar;
-    -fx-border-insets: -1 -1 -1 -1;
-    -fx-background-insets: -1 -1 -1 -1;
-    -fx-padding: 1 4.5 1 4.5;
-    -fx-background-color: white;
-}
-.table-combo-box .arrow-button: focused {
-    -fx-border-color: -fx-selection-bar;
-    -fx-border-insets: -1 -1 -1 -1;
-    -fx-background-insets: -1 -1 -1 -1;
-    -fx-padding: 1 4.5 1 4.5;
-    -fx-background-color: white;
-}
-.text-field-table-cell .text-field {
-    -fx-background-radius: 1;
-    -fx-border-radius: 1;
-    -fx-border-color: none;
-    -fx-background-color: white;
-    -fx-border-insets: 0.5;
-    -fx-background-insets: 0;
-    -fx-padding: 1 2 1 2;
-}*/
 #add-button {
     -fx-background-radius: 0;
     -fx-text-fill: white;
@@ -638,41 +565,6 @@
     -fx-border-color: derive(-fx-box-border, -10%);
     -fx-padding: 0 3 0 1;
 }
-
-/*.spinner {
-    -fx-style: -fx-split-arrows-horizontal;
-    -fx-padding: 0 0 0 0;
-    -fx-background-color: green;
-    -fx-border-color: derive(-fx-box-border, -10%);
-    -fx-background-radius: 0;
-    -fx-border-insets: 2 2 2 2;
-    -fx-background-insets: 0 0 0 0;
-    -fx-border-width: null;
-}
-.spinner .text-field {
-    -fx-padding: 0 0 0 0;
-    -fx-background-color: red;
-    -fx-border-color: blue;
-    -fx-background-radius: 0;
-    -fx-border-insets: 2 2 2 2;
-    -fx-background-insets: 2 2 2 2;
-}
-.spinner .increment-arrow-button {
-    -fx-border-insets: 2 2 2 2;
-    -fx-background-insets 2 2 2 2;
-    -fx-background-color: yellow;
-    -fx-background-radius: 0;
-}
-.spinner .increment-arrow-button .increment-arrow {
-    -fx-padding: 2 2 2 2;
-    -fx-border-insets: 2 2 2 2;
-    -fx-background-insets: 2 2 2 2;
-}*/
-
-
-/*.check-box > .box > .mark {
-    -fx-shape: "M14.1 27.2l7.1 7.2 16.7-16.8";
-}*/
 
 /*TitledPane*/
 .titled-pane .title {

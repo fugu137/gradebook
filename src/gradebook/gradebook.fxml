@@ -315,7 +315,7 @@
                                              <children>
                                                 <VBox>
                                                    <children>
-                                                      <Button fx:id="addAssessmentsButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" styleClass="toolbar-button" text="Add" wrapText="true">
+                                                      <Button fx:id="addAssessmentsButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentCreationWindow" styleClass="toolbar-button" text="Add" wrapText="true">
                                                          <graphic>
                                                             <ImageView pickOnBounds="true" preserveRatio="true">
                                                                <image>

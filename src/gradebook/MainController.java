@@ -5,14 +5,20 @@ import gradebook.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
@@ -100,6 +106,9 @@ public class MainController implements Initializable {
     //Control//
     private CourseManager courseManager = new CourseManager("PHIL1011");    //TODO: request course name
     private Student blankStudent;
+
+    private Scene assessmentCreationWindow;
+    private Stage stage;
 
 
     @Override
@@ -224,6 +233,25 @@ public class MainController implements Initializable {
         selectedStudent.setGender(gender);
     }
 
+    //Toolbar Methods//
+
+    public void displayAssessmentCreationWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("assessment-creation-window.fxml"));
+        Parent root = loader.load();
+
+        AssessmentCreationController assessmentSetupController = loader.getController();
+        assessmentSetupController.setMainController(this);
+
+        assessmentCreationWindow = new Scene(root);
+
+        stage = new Stage();
+        stage.setScene(assessmentCreationWindow);
+        stage.setTitle("Create Assessments");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.resizableProperty().setValue(false);
+        stage.showAndWait();
+    }
+
 
     //Test Methods//
     public void addDummyData() {
@@ -248,7 +276,7 @@ public class MainController implements Initializable {
         AssessmentSet quiz = new AssessmentSet("Quiz", AssessmentType.QUIZ, 0.2, 5, 4);
 //        assignedAssessments.addAssessment(essay);
 //        assignedAssessments.addAssessment(exam);
-        assignedAssessments.addAssessmentSet(quiz);
+//        assignedAssessments.addAssessmentSet(quiz);
 
 //        fred.addStdAssessmentData(essay);
 //        fred.addStdAssessmentData(exam);
