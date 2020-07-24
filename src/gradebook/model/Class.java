@@ -9,7 +9,6 @@ public class Class {
 
     private StringProperty name;
     private ObservableList<Student> students;
-    private AssignedAssessments assessments;
 
     public Class(String name) {
         this.name = new SimpleStringProperty(name);

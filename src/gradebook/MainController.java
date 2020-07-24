@@ -272,7 +272,6 @@ public class MainController implements Initializable {
         courseManager.newStudent(mary);
         courseManager.newStudent(jane);
 
-        AssignedAssessments assignedAssessments = new AssignedAssessments("Assigned Assessments");
         StdAssessment essay = new StdAssessment("Essay", AssessmentType.ESSAY, 0.4);
         StdAssessment exam = new StdAssessment("Exam", AssessmentType.EXAM, 0.4);
         AssessmentSet quiz = new AssessmentSet("Quiz", AssessmentType.QUIZ, 0.2, 5, 4);

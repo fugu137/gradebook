@@ -2,7 +2,6 @@ package gradebook;
 
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
-import gradebook.tools.AssessmentCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -165,25 +164,17 @@ public class AssessmentCreationController implements Initializable {
 
         List<AssessmentForm> assessmentFormList = Arrays.asList(AssessmentForm.values());
         modalityBox1.getItems().addAll(assessmentFormList);
-        modalityBox1.getSelectionModel().selectFirst();
         modalityBox2.getItems().addAll(assessmentFormList);
-        modalityBox2.getSelectionModel().selectFirst();
         modalityBox3.getItems().addAll(assessmentFormList);
-        modalityBox3.getSelectionModel().selectFirst();
         modalityBox4.getItems().addAll(assessmentFormList);
-        modalityBox4.getSelectionModel().selectFirst();
         modalityBox5.getItems().addAll(assessmentFormList);
-        modalityBox5.getSelectionModel().selectFirst();
         modalityBox6.getItems().addAll(assessmentFormList);
-        modalityBox6.getSelectionModel().selectFirst();
         modalityBox7.getItems().addAll(assessmentFormList);
-        modalityBox7.getSelectionModel().selectFirst();
         modalityBox8.getItems().addAll(assessmentFormList);
-        modalityBox8.getSelectionModel().selectFirst();
     }
 
     private void setupAssessmentCreators() {
-        AssessmentCreator assessmentCreator1 = new AssessmentCreator();
+//        AssessmentCreator assessmentCreator1 = new AssessmentCreator();
     }
 
 
