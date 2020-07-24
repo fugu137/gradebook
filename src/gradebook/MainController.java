@@ -105,7 +105,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         newBlankStudent();
-        addDummyStudents();
+        addDummyData();
 
         table.getItems().addAll(courseManager.getAllStudents());
 
@@ -226,7 +226,7 @@ public class MainController implements Initializable {
 
 
     //Test Methods//
-    public void addDummyStudents() {
+    public void addDummyData() {
         Class w15A = new Class("W15A");
         Class t17B = new Class("T17B");
 //        courseManager.addClass(w15A);
@@ -250,21 +250,21 @@ public class MainController implements Initializable {
         assignedAssessments.addAssessment(exam);
         assignedAssessments.addAssessmentSet(quiz);
 
-        fred.addStdAssessmentGrade(essay);
-        fred.addStdAssessmentGrade(exam);
-        fred.addAssessmentSetGrade(quiz);
+        fred.addStdAssessmentData(essay);
+        fred.addStdAssessmentData(exam);
+        fred.addAssessmentSetData(quiz);
 
-        mary.addStdAssessmentGrade(essay);
-        mary.addStdAssessmentGrade(exam);
-        mary.addAssessmentSetGrade(quiz);
+        mary.addStdAssessmentData(essay);
+        mary.addStdAssessmentData(exam);
+        mary.addAssessmentSetData(quiz);
 
-        jane.addStdAssessmentGrade(essay);
-        jane.addStdAssessmentGrade(exam);
-        jane.addAssessmentSetGrade(quiz);
+        jane.addStdAssessmentData(essay);
+        jane.addStdAssessmentData(exam);
+        jane.addAssessmentSetData(quiz);
 
-        blankStudent.addStdAssessmentGrade(essay);
-        blankStudent.addStdAssessmentGrade(exam);
-        blankStudent.addAssessmentSetGrade(quiz);
+        blankStudent.addStdAssessmentData(essay);
+        blankStudent.addStdAssessmentData(exam);
+        blankStudent.addAssessmentSetData(quiz);
 
         AssessmentColumn<Student, Integer> essayColumn = new AssessmentColumn<>(essay.getName(), essay);
         essayColumn.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(essay));
