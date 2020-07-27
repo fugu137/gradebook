@@ -35,7 +35,7 @@
                                  <children>
                                     <VBox alignment="TOP_CENTER">
                                        <children>
-                                          <SplitMenuButton fx:id="importButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" styleClass="toolbar-split-button" text="Import">
+                                          <SplitMenuButton fx:id="importButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#importStudents" styleClass="toolbar-split-button" text="Import">
                                             <items>
                                               <MenuItem mnemonicParsing="false" text="Action 1" />
                                               <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -397,7 +397,7 @@
                 <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
                 <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />
                   <TableColumn fx:id="preferredNameColumn" minWidth="-1.0" prefWidth="125.0" text="Preferred Name" />
-                  <TableColumn fx:id="classColumn" minWidth="-1.0" onEditCommit="#editClassCell" prefWidth="75.0" text="Class" />
+                  <TableColumn fx:id="classColumn" minWidth="-1.0" onEditCommit="#editClassCell" prefWidth="60.0" text="Class" />
                   <TableColumn fx:id="genderColumn" minWidth="-1.0" onEditCommit="#editGenderCell" prefWidth="58.0" text="Gender" />
                   <TableColumn fx:id="sidColumn" minWidth="-1.0" prefWidth="90.0" text="SID" />
                   <TableColumn fx:id="degreeColumn" minWidth="-1.0" prefWidth="65.0" text="Degree" />

@@ -28,13 +28,19 @@ public class CourseManager {
         if (studentClass == null) {
             student.setClassGroup(unassigned);
             unassigned.addStudent(student);
-            allStudents.add(student);
+            allStudents.add(allStudents.size() - 1, student);
 
         } else {
-            classes.add(studentClass);
+            if (classes.contains(studentClass)) {
+                classes.add(studentClass);
+            }
             studentClass.addStudent(student);
-            allStudents.add(student);
+            allStudents.add(allStudents.size() - 1, student);
         }
+    }
+
+    public void newStudents(ObservableList<Student> students) {
+        students.forEach(this::newStudent);
     }
 
     public ObservableList<Student> getAllStudents() {

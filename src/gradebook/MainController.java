@@ -4,10 +4,13 @@ import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
 import gradebook.model.Class;
 import gradebook.model.*;
+import gradebook.tools.FileChooserWindow;
+import gradebook.tools.StudentImporter;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,9 +22,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
@@ -129,10 +134,10 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        newBlankStudent();
-        addDummyData();
+        table.setItems(courseManager.getAllStudents());
 
-        table.getItems().addAll(courseManager.getAllStudents());
+//        addDummyData();
+        newBlankStudent();
 
         loadTableSettings();
         setupColumns();
@@ -659,6 +664,18 @@ public class MainController implements Initializable {
     }
 
     //Toolbar Methods//
+    @FXML
+    public void importStudents(ActionEvent event) {
+        Window window = importButton.getScene().getWindow();
+        List<File> files = FileChooserWindow.displayImportWindow(window, "Choose a file to import from", true);
+
+        for (File file : files) {
+            courseManager.newStudents(StudentImporter.importStudents(file));
+        }
+
+        //TODO: assign assessments (if any) to students
+    }
+
     @FXML
     public void displayAssessmentCreationWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("assessment-creation-window.fxml"));

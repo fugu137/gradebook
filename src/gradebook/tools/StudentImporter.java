@@ -14,11 +14,12 @@ import java.util.Scanner;
 public abstract class StudentImporter {
 
     private static Scanner reader;
-    private static Class classGroup;
 
 
     public static ObservableList<Student> importStudents(File file)  {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
+
+        Class classGroup = null;
 
         try {
             reader = new Scanner(file);
@@ -40,7 +41,7 @@ public abstract class StudentImporter {
                     String email = details.get(7);
 
                     if (classGroup == null) {
-                        Class classGroup = new Class(className);
+                        classGroup = new Class(className);
                     }
 
                     studentList.add(new Student(surname, givenNames, preferredName, classGroup, gender, sid, degree, email));

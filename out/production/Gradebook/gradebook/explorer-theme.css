@@ -274,8 +274,16 @@
     -fx-border-color: derive(#1765ad, 90%);
 }
 .toolbar-toggle-button: selected {
-    -fx-background-color: derive(-fx-background, -5%);
-    -fx-border-color: derive(-fx-box-border, -10%);
+    -fx-background-color: derive(#1765ad, 132%);
+    -fx-border-color: derive(#1765ad, 100%);
+}
+.toolbar-toggle-button: armed {
+    -fx-background-color: derive(#1765ad, 120%);
+    -fx-border-color: derive(#1765ad, 55%);
+}
+.toolbar-toggle-button: selected: hover {
+    -fx-background-color:  derive(#1765ad, 130%);
+    -fx-border-color: derive(#1765ad, 90%);
 }
 .toolbar-icon-button {
     -fx-background-color: transparent;
