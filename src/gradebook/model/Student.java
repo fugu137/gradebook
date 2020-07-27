@@ -128,7 +128,7 @@ public class Student {
     }
 
 
-    //Key Methods//
+    //Main Methods//
     public void addStdAssessmentData(StdAssessment stdAssessment) {
         StdAssessmentData data = new StdAssessmentData(stdAssessment);
         grades.add(stdAssessment, data);

@@ -70,4 +70,10 @@ public class CourseManager {
         return classes;
     }
 
+    public void assignAssessment(Assessment assessment) {
+        for (Class c: classes) {
+            c.addAssessment(assessment);
+        }
+    }
+
 }

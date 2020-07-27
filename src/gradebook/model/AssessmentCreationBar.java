@@ -130,8 +130,10 @@ public class AssessmentCreationBar {
             switch (assessmentForm) {
                 case SINGLE:
                     assessment = new StdAssessment(name, type, weighting);
+                    break;
                 case SET:
                     assessment = new AssessmentSet(name, type, weighting, quantity, bestOf);
+                    break;
                 default:
                     throw new IllegalArgumentException("Not a valid assessment form!");
             }

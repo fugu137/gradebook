@@ -820,7 +820,7 @@
       </GridPane>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Button fx:id="finaliseButton" mnemonicParsing="false" styleClass="confirm-button" text="Finalise" />
+            <Button fx:id="finaliseButton" mnemonicParsing="false" onAction="#finaliseAssessments" styleClass="confirm-button" text="Finalise" />
             <Button fx:id="cancelButton" layoutX="322.0" layoutY="37.0" mnemonicParsing="false" styleClass="cancel-button" text="Cancel" />
          </children>
          <padding>

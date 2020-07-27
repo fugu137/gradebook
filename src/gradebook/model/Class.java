@@ -9,10 +9,12 @@ public class Class {
 
     private StringProperty name;
     private ObservableList<Student> students;
+    private ObservableList<Assessment> assessments;
 
     public Class(String name) {
         this.name = new SimpleStringProperty(name);
         this.students = FXCollections.observableArrayList();
+        this.assessments = FXCollections.observableArrayList();
     }
 
     public String getName() {
@@ -27,7 +29,18 @@ public class Class {
         return students;
     }
 
+    public void addAssessment(Assessment assessment) {
+        assessments.add(assessment);
 
+        for (Student s: students) {
+            if (assessment instanceof StdAssessment) {
+                s.addStdAssessmentData((StdAssessment) assessment);
+            }
+            if (assessment instanceof AssessmentSet) {
+                s.addAssessmentSetData((AssessmentSet) assessment);
+            }
+        }
+    }
 
     @Override
     public String toString() {

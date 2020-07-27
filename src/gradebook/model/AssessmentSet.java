@@ -9,24 +9,26 @@ public class AssessmentSet implements Assessment {
 
     private StringProperty name;
     private ObservableList<StdAssessment> stdAssessments;
+    private AssessmentType type;
     private DoubleProperty weighting;
     private IntegerProperty quantity;
     private IntegerProperty bestOf;
 
     public AssessmentSet(String name, AssessmentType type, Double weighting, Integer quantity, Integer bestOf) {
         this.name = new SimpleStringProperty(name);
+        this.type = type;
         this.weighting = new SimpleDoubleProperty(weighting);
         this.quantity = new SimpleIntegerProperty(quantity);
         this.bestOf = new SimpleIntegerProperty(bestOf);
 
-        createAssessments(type);
+        createAssessments();
     }
 
-    private void createAssessments(AssessmentType type) {
+    private void createAssessments() {
         this.stdAssessments = FXCollections.observableArrayList();
 
         for (int i = 0; i < quantity.getValue(); i++) {
-            stdAssessments.add(new StdAssessment(name.getValue() + " " + (i + 1), type, 1.0/quantity.getValue()));
+            stdAssessments.add(new StdAssessment(name.getValue() + " " + (i + 1), type, null));
         }
     }
 
@@ -48,6 +50,10 @@ public class AssessmentSet implements Assessment {
 
     public Integer getBestOf() {
         return bestOf.getValue();
+    }
+
+    public AssessmentType getType() {
+        return type;
     }
 
 }

@@ -2,7 +2,7 @@ package gradebook.model;
 
 import javafx.scene.control.TableColumn;
 
-public class AssessmentColumn<Student, Integer> extends TableColumn<Student, Integer> {
+public class AssessmentColumn<Student, Number> extends TableColumn<Student, Number> {
 
     private Assessment assessment;
 
@@ -15,6 +15,9 @@ public class AssessmentColumn<Student, Integer> extends TableColumn<Student, Int
         this.assessment = assessment;
     }
 
+    public Assessment getAssessment() {
+        return assessment;
+    }
 }
 
 

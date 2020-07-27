@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
 import java.net.URL;
@@ -288,6 +289,8 @@ public class AssessmentCreationController implements Initializable {
         } else {
             System.out.println("Finalising assessments...");
             createAssessments();
+            Stage stage = (Stage) finaliseButton.getScene().getWindow();
+            stage.close();
         }
     }
 

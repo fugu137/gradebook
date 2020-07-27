@@ -214,8 +214,8 @@
                                     </VBox>
                                     <VBox layoutX="105.0" layoutY="13.0" spacing="4.0">
                                        <children>
-                                          <CheckBox mnemonicParsing="false" text="Presentations" />
-                                          <CheckBox layoutX="15.0" layoutY="10.0" mnemonicParsing="false" text="Other" />
+                                          <CheckBox fx:id="presentationsCheckBox" mnemonicParsing="false" text="Presentations" />
+                                          <CheckBox fx:id="otherCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" text="Other" />
                                        </children>
                                        <padding>
                                           <Insets left="10.0" right="14.0" />
@@ -394,8 +394,8 @@
          <children>
             <TableView fx:id="table" editable="true" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
               <columns>
-                <TableColumn fx:id="surnameColumn" minWidth="-1.0" prefWidth="160.0" text="Surname" />
-                <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" prefWidth="175.0" text="Given Names" />
+                <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
+                <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />
                   <TableColumn fx:id="preferredNameColumn" minWidth="-1.0" prefWidth="125.0" text="Preferred Name" />
                   <TableColumn fx:id="classColumn" minWidth="-1.0" onEditCommit="#editClassCell" prefWidth="75.0" text="Class" />
                   <TableColumn fx:id="genderColumn" minWidth="-1.0" onEditCommit="#editGenderCell" prefWidth="58.0" text="Gender" />

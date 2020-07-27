@@ -12,10 +12,16 @@ public class StdAssessment implements Assessment {
     private AssessmentType type;
     private DoubleProperty weighting;
 
-    public StdAssessment(String name, AssessmentType type, double weighting) {
+    public StdAssessment(String name, AssessmentType type, Double weighting) {
         this.name = new SimpleStringProperty(name);
         this.type = type;
-        this.weighting = new SimpleDoubleProperty(weighting);
+
+        if (weighting != null) {
+            this.weighting = new SimpleDoubleProperty(weighting);
+        } else {
+            this.weighting = null;
+        }
+
     }
 
     public String getName() {
@@ -24,6 +30,10 @@ public class StdAssessment implements Assessment {
 
     public Double getWeighting() {
         return weighting.getValue();
+    }
+
+    public AssessmentType getType() {
+        return type;
     }
 
 }
