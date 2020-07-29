@@ -29,6 +29,10 @@ public class StdAssessmentData implements AssessmentData {
         return grade.getValue();
     }
 
+    public void setGrade(Integer grade) {
+        this.grade.set(grade);
+    }
+
     public StdAssessment getAssessment() {
         return stdAssessment;
     }

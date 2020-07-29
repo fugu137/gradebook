@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Collection;
 import java.util.Objects;
 
 
@@ -191,6 +192,20 @@ public class Student {
         return grades.getTotalGrade();
     }
 
+    public Collection<AssessmentData> getAssessmentDataList() {
+        return grades.assessmentDataList();
+    }
+
+    public AssessmentData getAssessmentData(Assessment assessment) {
+        return grades.get(assessment);
+    }
+
+    public void setStdAssessmentGrade(StdAssessment stdAssessment, Integer grade) {
+        StdAssessmentData stdAssessmentData = (StdAssessmentData) grades.get(stdAssessment);
+        stdAssessmentData.setGrade(grade);
+    }
+
+
 
     //Overridden Methods//
     @Override
@@ -231,7 +246,7 @@ public class Student {
             }
             if (d instanceof AssessmentSetData) {
                 AssessmentSetData setData = (AssessmentSetData) d;
-                sb.append(setData.getAssessmentSet().getName()).append(": ");
+                sb.append(setData.getAssessment().getName()).append(": ");
 
                 for (StdAssessmentData s : setData.getStdAssessmentDataList()) {
                     sb.append(s.getStdAssessment().getName()).append(", ").append(s.getGrade()).append("; ");

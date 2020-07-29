@@ -303,6 +303,6 @@ public class AssessmentCreationController implements Initializable {
                 assessments.add(bar.getAssessment());
             }
         }
-        mainController.setupAssessments(assessments);
+        mainController.setupAllAssessments(assessments);
     }
 }

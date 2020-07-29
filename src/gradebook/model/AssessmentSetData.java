@@ -65,9 +65,9 @@ public class AssessmentSetData implements AssessmentData {
         return gradeList;
     }
 
-    public AssessmentSet getAssessmentSet() {
-        return assessmentSet;
-    }
+//    public AssessmentSet getAssessmentSet() {
+//        return assessmentSet;
+//    }
 
     public ObjectProperty<Integer> assessmentGradeProperty(StdAssessment stdAssessment) {
         ObjectProperty<Integer> grade = null;
@@ -89,6 +89,16 @@ public class AssessmentSetData implements AssessmentData {
         return assessmentSetTotalGrade.getValue();
     }
 
+    public void setSubAssessmentGrades(Integer[] grades) {
+
+        for (int i = 0; i < grades.length; i++) {
+
+            for (StdAssessmentData data: stdAssessmentDataList) {
+                data.setGrade(grades[i]);
+            }
+        }
+    }
+
     public ObjectProperty<Double> gradeProperty() {
         return assessmentSetTotalGrade;
     }
@@ -97,6 +107,5 @@ public class AssessmentSetData implements AssessmentData {
     public AssessmentSet getAssessment() {
         return assessmentSet;
     }
-
 
 }

@@ -56,4 +56,10 @@ public class AssessmentSet implements Assessment {
         return type;
     }
 
+    public void renameStdAssessments(String[] names) {
+        for (int i = 0; i < names.length; i++) {
+            stdAssessments.get(i).setName(names[i]);
+        }
+    }
+
 }

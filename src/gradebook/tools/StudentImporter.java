@@ -74,8 +74,7 @@ public abstract class StudentImporter {
 
     private static String getClassName(String classDetails) {
         int index = classDetails.lastIndexOf('.') + 1;
-        String className = classDetails.substring(index);
-        return className;
+        return classDetails.substring(index);
     }
 
     private static String capitalizeEveryWord(String string) {

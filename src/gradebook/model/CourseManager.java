@@ -12,6 +12,7 @@ public class CourseManager {
     private ObservableList<Student> allStudents;
     private ObservableList<Class> classes;
     private Class unassigned;
+    private ObservableList<Assessment> assessments;
 
     public CourseManager(String courseName) {
         this.courseName = new SimpleStringProperty(courseName);
@@ -19,28 +20,68 @@ public class CourseManager {
         this.classes = FXCollections.observableArrayList();
         this.unassigned = new Class("None");
         classes.add(unassigned);
+        this.assessments = FXCollections.observableArrayList();
+    }
 
+    public void setCourseName(String name) {
+        this.courseName.set(name);
     }
 
     public void newStudent(Student student) {
+
         Class studentClass = student.getClassGroup();
+        ObservableList<Assessment> assessments;
 
         if (studentClass == null) {
             student.setClassGroup(unassigned);
             unassigned.addStudent(student);
-            allStudents.add(allStudents.size() - 1, student);
+            allStudents.add(student);
+
+            assessments = unassigned.getAssessments();
 
         } else {
-            if (classes.contains(studentClass)) {
+            if (!classes.contains(studentClass)) {
                 classes.add(studentClass);
+                addAllAssessments(studentClass);
             }
             studentClass.addStudent(student);
-            allStudents.add(allStudents.size() - 1, student);
+            allStudents.add(student);
+
+            assessments = studentClass.getAssessments();
+        }
+
+//        assessments.stream().filter(a -> a instanceof StdAssessment).map(a -> (StdAssessment) a).forEach(student::addStdAssessmentData);
+//        assessments.stream().filter(a -> a instanceof AssessmentSet).map(a -> (AssessmentSet) a).forEach(student::addAssessmentSetData);
+
+        for (Assessment a : assessments) {
+
+            if (a instanceof StdAssessment) {
+                student.addStdAssessmentData((StdAssessment) a);
+            } else if (a instanceof AssessmentSet) {
+                student.addAssessmentSetData((AssessmentSet) a);
+            } else {
+                System.out.println("Assessment type not found...");
+            }
         }
     }
 
     public void newStudents(ObservableList<Student> students) {
         students.forEach(this::newStudent);
+    }
+
+    public void reAddAllStudentsAt(int index, ObservableList<Student> students) {
+        allStudents.addAll(index, students);
+        for (Student s: students) {
+            Class classGroup = s.getClassGroup();
+            classGroup.addStudent(s);
+        }
+    }
+
+    public void removeStudent(Student student) {
+        allStudents.remove(student);
+        for (Class c: classes) {
+            c.removeStudent(student);
+        }
     }
 
     public ObservableList<Student> getAllStudents() {
@@ -76,10 +117,28 @@ public class CourseManager {
         return classes;
     }
 
+    public Class getUnassigned() {
+        return unassigned;
+    }
+
+    public void addAllAssessments(Class classGroup) {
+        assessments.forEach(classGroup::addAssessment);
+    }
+
     public void assignAssessment(Assessment assessment) {
+        assessments.add(assessment);
+
         for (Class c: classes) {
             c.addAssessment(assessment);
         }
+    }
+
+    public ObservableList<Assessment> getAssessments() {
+        return assessments;
+    }
+
+    public String getCourseName() {
+        return courseName.getValue();
     }
 
 }

@@ -22,7 +22,11 @@ public class Class {
     }
 
     public void addStudent(Student student) {
-        this.students.add(student);
+        students.add(student);
+    }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
     }
 
     public ObservableList<Student> getStudents() {
@@ -40,6 +44,10 @@ public class Class {
                 s.addAssessmentSetData((AssessmentSet) assessment);
             }
         }
+    }
+
+    public ObservableList<Assessment> getAssessments() {
+        return assessments;
     }
 
     @Override

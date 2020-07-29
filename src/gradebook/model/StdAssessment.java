@@ -28,6 +28,10 @@ public class StdAssessment implements Assessment {
         return name.getValue();
     }
 
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
     public Double getWeighting() {
         return weighting.getValue();
     }

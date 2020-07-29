@@ -9,4 +9,5 @@ public interface AssessmentData {
     public ObjectProperty<?> gradeProperty();
 
     public Assessment getAssessment();
+
 }

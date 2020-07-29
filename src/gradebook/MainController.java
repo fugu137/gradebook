@@ -5,6 +5,8 @@ import gradebook.enums.Gender;
 import gradebook.model.Class;
 import gradebook.model.*;
 import gradebook.tools.FileChooserWindow;
+import gradebook.tools.FileManager;
+import gradebook.tools.StudentCloner;
 import gradebook.tools.StudentImporter;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -29,10 +31,7 @@ import javafx.util.converter.IntegerStringConverter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
@@ -127,15 +126,21 @@ public class MainController implements Initializable {
     //Control//
     private CourseManager courseManager = new CourseManager("PHIL1011");    //TODO: request course name
     private Student blankStudent;
+    private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
 
     private Scene assessmentCreationWindow;
     private Stage stage;
+    private FileManager fileManager;
 
+
+    public void setCourseManager(CourseManager newCourseManager) {
+        this.courseManager = newCourseManager;
+        setupClassListBox();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        table.setItems(courseManager.getAllStudents());
-
+        table.getItems().addAll(courseManager.getAllStudents());
 //        addDummyData();
         newBlankStudent();
 
@@ -258,6 +263,7 @@ public class MainController implements Initializable {
     private void setupToolbarBindings() {
         toggleButtonBindings();
         checkBoxBindings();
+        setupClassListBox();
     }
 
     private void toggleButtonBindings() {
@@ -623,8 +629,45 @@ public class MainController implements Initializable {
 //
 //    }
 
+    private void setupClassListBox() {
+        classListBox.setItems(courseManager.getClasses());
+
+        Class all = new Class("All");
+        classListBox.getItems().add(0, all);
+        classListBox.getSelectionModel().selectFirst();
+
+        classListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
+            Class selectedClass = classListBox.getSelectionModel().getSelectedItem();
+
+            if (selectedClass == all) {
+                table.getItems().clear();
+                table.getItems().addAll(courseManager.getAllStudents());
+                table.getItems().add(blankStudent);
+
+            } else if (selectedClass == courseManager.getUnassigned()) {
+                table.getItems().clear();
+                table.getItems().addAll(courseManager.getUnassigned().getStudents());
+                table.getItems().add(blankStudent);
+
+            } else {
+                if (selectedClass != null) {
+                    table.getItems().clear();
+                    table.getItems().addAll(courseManager.getClass(selectedClass.getName()).getStudents());
+                    table.getItems().add(blankStudent);
+                }
+            }
+        });
+    }
+
 
     //Table Methods//
+    public void addAllStudentsToTable(ObservableList<Student> students) {
+        table.getItems().clear();
+        table.getItems().add(blankStudent);
+        table.getItems().addAll(students);
+        table.sort();
+    }
+
     @FXML
     public void editSurnameCell(TableColumn.CellEditEvent<Student, String> editedCell) {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
@@ -663,17 +706,105 @@ public class MainController implements Initializable {
         selectedStudent.setGender(gender);
     }
 
+
     //Toolbar Methods//
+    public void loadGradebook() {
+        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
+        File file = FileChooserWindow.displayLoadWindow(window, "Load");
+
+        fileManager = new FileManager();
+
+        //TODO: warning about unsaved file before loading
+        fileManager.load(file, this);
+    }
+
+    public void saveGradebook() {
+
+        if (fileManager == null) {
+            System.out.println("No file to save!");
+
+        } else {
+            fileManager.save(courseManager.getCourseName(), courseManager.getClasses());
+        }
+    }
+
+    public void saveGradebookAs() {
+        Window window = saveAsMenuItem.getParentPopup().getScene().getWindow();
+
+        File file = FileChooserWindow.displaySaveWindow(window, "Save As...");
+
+        fileManager = new FileManager();
+
+        fileManager.saveAs(file, courseManager.getCourseName(), courseManager.getClasses());
+        saveMenuItem.setDisable(false);
+    }
+
     @FXML
     public void importStudents(ActionEvent event) {
         Window window = importButton.getScene().getWindow();
         List<File> files = FileChooserWindow.displayImportWindow(window, "Choose a file to import from", true);
 
         for (File file : files) {
-            courseManager.newStudents(StudentImporter.importStudents(file));
+            ObservableList<Student> students = StudentImporter.importStudents(file);
+            courseManager.newStudents(students);
+
+//            table.getItems().remove(blankStudent);
+            table.getItems().addAll(students);
+//            table.getItems().add(blankStudent);
+            table.sort();
         }
 
         //TODO: assign assessments (if any) to students
+    }
+
+    @FXML
+    public void copyStudents() {
+        clipBoardStudents.clear();
+        ObservableList<Student> toCopy = table.getSelectionModel().getSelectedItems();
+        clipBoardStudents.addAll(StudentCloner.run(toCopy));
+    }
+
+    @FXML
+    public void cutStudents() {
+        clipBoardStudents.clear();
+        ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
+        clipBoardStudents.addAll(StudentCloner.run(toCut));
+
+        for (Student s: toCut) {
+            courseManager.removeStudent(s);
+        }
+        table.getItems().removeAll(toCut);
+    }
+
+    @FXML
+    public void pasteStudents() {
+        int index = table.getSelectionModel().getSelectedIndex();
+        courseManager.reAddAllStudentsAt(index, clipBoardStudents);
+        table.getItems().addAll(index, clipBoardStudents);
+
+    }
+
+    @FXML
+    public void deleteStudents() {
+        List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
+        selected.remove(blankStudent);
+
+        for (Student s: selected) {
+            courseManager.removeStudent(s);
+        }
+        table.getItems().removeAll(selected);
+    }
+
+    @FXML
+    public void selectAll() {
+        table.requestFocus();
+        table.getSelectionModel().selectAll();
+        table.getSelectionModel().clearSelection(table.getItems().size() - 1);
+    }
+
+    @FXML
+    public void selectNone() {
+        table.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -694,11 +825,10 @@ public class MainController implements Initializable {
         stage.showAndWait();
     }
 
-    public void setupAssessments(ObservableList<Assessment> assessments) {
+    public void setupAllAssessments(ObservableList<Assessment> assessments) {
         Map<Boolean, List<Assessment>> split = assessments.stream().collect(Collectors.partitioningBy(a -> a instanceof StdAssessment));
         List<StdAssessment> stdAssessments = split.get(true).stream().map(a -> (StdAssessment) a).collect(Collectors.toList());
         List<AssessmentSet> assessmentSets = split.get(false).stream().map(a -> (AssessmentSet) a).collect(Collectors.toList());
-        ;
 
         for (StdAssessment std : stdAssessments) {
             courseManager.assignAssessment(std);
@@ -715,6 +845,38 @@ public class MainController implements Initializable {
         createTotalColumn();
         addAssessmentsButton.setDisable(true);
     }
+
+    public void setupStdAssessment(StdAssessment stdAssessment) {
+        courseManager.assignAssessment(stdAssessment);
+        blankStudent.addStdAssessmentData(stdAssessment);
+        createStdAssessmentColumn(stdAssessment);
+    }
+
+    public void setupAssessmentSet(AssessmentSet assessmentSet) {
+        courseManager.assignAssessment(assessmentSet);
+        blankStudent.addAssessmentSetData(assessmentSet);
+        createAssessmentSetColumns(assessmentSet);
+    }
+
+//    public void setupStdAssessments(ObservableList<StdAssessment> stdAssessments) {
+//        for (StdAssessment std : stdAssessments) {
+//            courseManager.assignAssessment(std);
+//            blankStudent.addStdAssessmentData(std);
+//            createStdAssessmentColumn(std);
+//
+//            addAssessmentsButton.setDisable(true);
+//        }
+//    }
+//
+//    public void setupAssessmentSets(ObservableList<AssessmentSet> assessmentSets) {
+//        for (AssessmentSet set : assessmentSets) {
+//            courseManager.assignAssessment(set);
+//            blankStudent.addAssessmentSetData(set);
+//            createAssessmentSetColumns(set);
+//        }
+//
+//        addAssessmentsButton.setDisable(true);
+//    }
 
     private void createStdAssessmentColumn(StdAssessment std) {
         AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
@@ -742,7 +904,7 @@ public class MainController implements Initializable {
         addToColumnsList(totalColumn);
     }
 
-    private void createTotalColumn() {
+    public void createTotalColumn() {
         AssessmentColumn<Student, Double> totalColumn = new AssessmentColumn<Student, Double>("Total Mark");
         totalColumn.setCellValueFactory(c -> c.getValue().totalGradeProperty());
 
@@ -798,6 +960,10 @@ public class MainController implements Initializable {
         courseManager.newStudent(fred);
         courseManager.newStudent(mary);
         courseManager.newStudent(jane);
+
+        table.getItems().add(fred);
+        table.getItems().add(mary);
+        table.getItems().add(jane);
 
 //        StdAssessment essay = new StdAssessment("Essay", AssessmentType.ESSAY, 0.4);
 //        StdAssessment exam = new StdAssessment("Exam", AssessmentType.EXAM, 0.4);
@@ -864,6 +1030,16 @@ public class MainController implements Initializable {
         System.out.println("Table Students");
         ObservableList<Student> students = table.getItems();
         students.forEach(System.out::println);
+    }
+
+    @FXML
+    public void printAssessments() {
+        System.out.println("Assessments");
+        System.out.println("Total: " + courseManager.getAssessments());
+        for (Class c: courseManager.getClasses()) {
+            System.out.println(c.getName());
+            System.out.println("Assessments: " + c.getAssessments());
+        }
     }
 }
 
