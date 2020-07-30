@@ -37,8 +37,8 @@
                                        <children>
                                           <SplitMenuButton fx:id="importButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#importStudents" styleClass="toolbar-split-button" text="Import">
                                             <items>
-                                              <MenuItem mnemonicParsing="false" text="Action 1" />
-                                              <MenuItem mnemonicParsing="false" text="Action 2" />
+                                              <MenuItem mnemonicParsing="false" text="Import..." />
+                                              <MenuItem mnemonicParsing="false" text="Export..." />
                                             </items>
                                              <graphic>
                                                 <ImageView pickOnBounds="true" preserveRatio="true">

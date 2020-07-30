@@ -706,15 +706,27 @@ public class MainController implements Initializable {
         selectedStudent.setGender(gender);
     }
 
+    public void clearTable() {
+        blankStudent = new Student();
+        removeAssessmentColumns();
+    }
+
+    private void removeAssessmentColumns() {
+        table.getColumns().removeIf(column -> column instanceof AssessmentColumn);
+    }
+
 
     //Toolbar Methods//
     public void loadGradebook() {
-        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
-        File file = FileChooserWindow.displayLoadWindow(window, "Load");
+//        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
+        Stage stage = (Stage) table.getParent().getScene().getWindow();
+
+        File file = FileChooserWindow.displayLoadWindow(stage, "Load...");
 
         fileManager = new FileManager();
 
         //TODO: warning about unsaved file before loading
+
         fileManager.load(file, this);
     }
 
@@ -729,9 +741,9 @@ public class MainController implements Initializable {
     }
 
     public void saveGradebookAs() {
-        Window window = saveAsMenuItem.getParentPopup().getScene().getWindow();
+        Stage stage = (Stage) table.getParent().getScene().getWindow();
 
-        File file = FileChooserWindow.displaySaveWindow(window, "Save As...");
+        File file = FileChooserWindow.displaySaveWindow(stage, "Save As...");
 
         fileManager = new FileManager();
 
@@ -753,8 +765,6 @@ public class MainController implements Initializable {
 //            table.getItems().add(blankStudent);
             table.sort();
         }
-
-        //TODO: assign assessments (if any) to students
     }
 
     @FXML

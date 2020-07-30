@@ -106,6 +106,7 @@ public class FileManager {
         Map<String, Class> classMap = new HashMap<>();
 
         mainController.setCourseManager(courseManager);
+        mainController.clearTable();
 
         try {
             Scanner reader = new Scanner(fileFromFileChooser);
@@ -137,8 +138,6 @@ public class FileManager {
                     addAssessmentsAndGrades(mainController, stdAssessmentMap, assessmentSetMap, lineNumber, student, stdAssessments, assessmentSets);
 
                     lineNumber++;
-                    System.out.println("Line: " + lineNumber);
-                    System.out.println("Assessments: " + courseManager.getUnassigned().getAssessments());
                 }
             }
 //            mainController.setupAssessments(assessments);
