@@ -675,9 +675,11 @@ public class MainController implements Initializable {
     private void filterByGroupSelection() {
         StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
 
-        table.getItems().clear();
-        table.getItems().addAll(selectedGroup.getStudents());
-        table.getItems().add(blankStudent);
+        if (selectedGroup != null) {
+            table.getItems().clear();
+            table.getItems().addAll(selectedGroup.getStudents());
+            table.getItems().add(blankStudent);
+        }
 
     }
 
@@ -685,29 +687,31 @@ public class MainController implements Initializable {
         Grade selectedGrade = gradeListBox.getSelectionModel().getSelectedItem();
         StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
 
-        switch (selectedGrade) {
-            case ANY:
-                break;
-            case HD:
-                ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-                table.getItems().removeAll(nonHDStudents);
-                break;
-            case D:
-                ObservableList<Student> nonDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
-                table.getItems().removeAll(nonDStudents);
-                break;
-            case CR:
-                ObservableList<Student> nonCRStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
-                table.getItems().removeAll(nonCRStudents);
-                break;
-            case P:
-                ObservableList<Student> nonPStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
-                table.getItems().removeAll(nonPStudents);
-                break;
-            case F:
-                ObservableList<Student> nonFStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
-                table.getItems().removeAll(nonFStudents);
-                break;
+        if (selectedGrade != null) {
+            switch (selectedGrade) {
+                case ANY:
+                    break;
+                case HD:
+                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+                    table.getItems().removeAll(nonHDStudents);
+                    break;
+                case D:
+                    ObservableList<Student> nonDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
+                    table.getItems().removeAll(nonDStudents);
+                    break;
+                case CR:
+                    ObservableList<Student> nonCRStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
+                    table.getItems().removeAll(nonCRStudents);
+                    break;
+                case P:
+                    ObservableList<Student> nonPStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
+                    table.getItems().removeAll(nonPStudents);
+                    break;
+                case F:
+                    ObservableList<Student> nonFStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
+                    table.getItems().removeAll(nonFStudents);
+                    break;
+            }
         }
     }
 
