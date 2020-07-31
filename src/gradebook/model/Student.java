@@ -15,6 +15,7 @@ public class Student {
     private StringProperty surname;
     private StringProperty givenNames;
     private StringProperty preferredName;
+    private Course course;
     private Class classGroup;
     private Gender gender;
     private ObjectProperty<Integer> sid;
@@ -38,6 +39,23 @@ public class Student {
         this.degree = new SimpleStringProperty(degree);
         this.email = new SimpleStringProperty(email);
         this.grades = new Grades();
+
+        addTotalGradeListener();
+    }
+
+    private void addTotalGradeListener() {
+        grades.totalGradeProperty().addListener(obs -> {
+            if (classGroup != null) {
+                classGroup.updateTotalGradeStatistics(this, grades.totalGradeProperty());
+            }
+            if (course != null) {
+                course.updateTotalGradeStatistics(this, grades.totalGradeProperty());
+            }
+        });
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public String getSurname() {
@@ -134,18 +152,44 @@ public class Student {
         StdAssessmentData data = new StdAssessmentData(stdAssessment);
         grades.add(stdAssessment, data);
 
-        data.gradeProperty().addListener(obs -> grades.updateTotalGrade());
+        data.gradeProperty().addListener(obs -> {
+            grades.updateTotalGrade();
+
+            if (data.gradeProperty() != null && data.gradeProperty().getValue() != null) {
+                if (classGroup != null) {
+                    classGroup.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
+                }
+                if (course != null) {
+                    course.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
+                }
+            }
+        });
     }
 
     public void addAssessmentSetData(AssessmentSet assessmentSet) {
         AssessmentSetData data = new AssessmentSetData(assessmentSet);
         grades.add(assessmentSet, data);
 
-        data.gradeProperty().addListener(obs -> grades.updateTotalGrade());
+        data.gradeProperty().addListener(obs -> {
+            grades.updateTotalGrade();
 
-        for (StdAssessmentData d: data.getStdAssessmentDataList()) {
+            if (data.gradeProperty() != null && data.gradeProperty().getValue() != null) {
+                if (classGroup != null) {
+                    classGroup.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());
+                }
+                if (course != null) {
+                    course.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());
+                }
+            }
+        });
+
+        for (StdAssessmentData d : data.getStdAssessmentDataList()) {
             d.gradeProperty().addListener(obs -> data.updateAssessmentSetTotalGrade());
         }
+    }
+
+    public void removeAssessmentData(Assessment assessment) {
+        grades.remove(assessment);
     }
 
     public ObjectProperty<Integer> stdAssessmentGradeProperty(StdAssessment stdAssessment) {
@@ -172,7 +216,8 @@ public class Student {
         }
     }
 
-    public ObjectProperty<Integer> assessmentSetGradeProperty(AssessmentSet assessmentSet, StdAssessment stdAssessment) {
+    public ObjectProperty<Integer> assessmentSetGradeProperty(AssessmentSet assessmentSet, StdAssessment
+            stdAssessment) {
         AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
 
         if (data != null) {
@@ -204,7 +249,6 @@ public class Student {
         StdAssessmentData stdAssessmentData = (StdAssessmentData) grades.get(stdAssessment);
         stdAssessmentData.setGrade(grade);
     }
-
 
 
     //Overridden Methods//

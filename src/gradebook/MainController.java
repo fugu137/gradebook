@@ -2,6 +2,7 @@ package gradebook;
 
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
+import gradebook.enums.Grade;
 import gradebook.model.Class;
 import gradebook.model.*;
 import gradebook.tools.FileChooserWindow;
@@ -103,7 +104,9 @@ public class MainController implements Initializable {
     private CheckBox otherCheckBox;
 
     @FXML
-    private ComboBox<Class> classListBox;
+    private ComboBox<StudentGroup> classListBox;
+    @FXML
+    private ComboBox<Grade> gradeListBox;
 
     @FXML
     private ToggleButton studentViewToggleButton;
@@ -122,6 +125,7 @@ public class MainController implements Initializable {
     private ObservableList<AssessmentColumn<Student, ?>> quizColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private ObservableList<AssessmentColumn<Student, ?>> presentationColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private ObservableList<AssessmentColumn<Student, ?>> otherColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private AssessmentColumn<Student, Double> totalColumn;
 
     //Control//
     private CourseManager courseManager = new CourseManager("PHIL1011");    //TODO: request course name
@@ -216,9 +220,14 @@ public class MainController implements Initializable {
                     if (classGroup != null) {
                         return classGroup;
                     } else {
-                        Class newClass = new Class(className);
-                        courseManager.addClass(newClass);
-                        return newClass;
+
+                        if (!className.isBlank()) {
+                            Class newClass = new Class(className);
+                            courseManager.addClass(newClass);
+                            return newClass;
+                        } else {
+                            return null;
+                        }
                     }
                 }
             });
@@ -263,7 +272,10 @@ public class MainController implements Initializable {
     private void setupToolbarBindings() {
         toggleButtonBindings();
         checkBoxBindings();
-        setupClassListBox();
+
+        setupFilterBoxes();
+//        setupClassListBox();
+//        setupGradeListBox();
     }
 
     private void toggleButtonBindings() {
@@ -302,7 +314,8 @@ public class MainController implements Initializable {
             for (TableColumn<Student, ?> c : columns) {
                 if (!(c instanceof AssessmentColumn)) {
                     c.setVisible(true);
-                };
+                }
+                ;
             }
 
         } else {
@@ -629,34 +642,79 @@ public class MainController implements Initializable {
 //
 //    }
 
+    private void setupFilterBoxes() {
+        setupClassListBox();
+        setupGradeListBox();
+
+        classListBoxBinding();
+        gradeListBoxBinding();
+    }
+
     private void setupClassListBox() {
-        classListBox.setItems(courseManager.getClasses());
 
-        Class all = new Class("All");
-        classListBox.getItems().add(0, all);
+        classListBox.setItems(courseManager.getStudentGroups());
+//        classListBox.getItems().add(0, courseManager.getClassAll());
+
         classListBox.getSelectionModel().selectFirst();
+    }
 
+    private void classListBoxBinding() {
         classListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
-            Class selectedClass = classListBox.getSelectionModel().getSelectedItem();
-
-            if (selectedClass == all) {
-                table.getItems().clear();
-                table.getItems().addAll(courseManager.getAllStudents());
-                table.getItems().add(blankStudent);
-
-            } else if (selectedClass == courseManager.getUnassigned()) {
-                table.getItems().clear();
-                table.getItems().addAll(courseManager.getUnassigned().getStudents());
-                table.getItems().add(blankStudent);
-
-            } else {
-                if (selectedClass != null) {
-                    table.getItems().clear();
-                    table.getItems().addAll(courseManager.getClass(selectedClass.getName()).getStudents());
-                    table.getItems().add(blankStudent);
-                }
-            }
+            filterByGroupSelection();
+            filterByGradeSelection();
         });
+    }
+
+    private void gradeListBoxBinding() {
+        gradeListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
+            filterByGroupSelection();
+            filterByGradeSelection();
+        });
+    }
+
+    private void filterByGroupSelection() {
+        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
+
+        table.getItems().clear();
+        table.getItems().addAll(selectedGroup.getStudents());
+        table.getItems().add(blankStudent);
+
+    }
+
+    private void filterByGradeSelection() {
+        Grade selectedGrade = gradeListBox.getSelectionModel().getSelectedItem();
+        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
+
+        switch (selectedGrade) {
+            case ANY:
+                break;
+            case HD:
+                ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+                table.getItems().removeAll(nonHDStudents);
+                break;
+            case D:
+                ObservableList<Student> nonDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
+                table.getItems().removeAll(nonDStudents);
+                break;
+            case CR:
+                ObservableList<Student> nonCRStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
+                table.getItems().removeAll(nonCRStudents);
+                break;
+            case P:
+                ObservableList<Student> nonPStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
+                table.getItems().removeAll(nonPStudents);
+                break;
+            case F:
+                ObservableList<Student> nonFStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
+                table.getItems().removeAll(nonFStudents);
+                break;
+        }
+    }
+
+    private void setupGradeListBox() {
+        List<Grade> grades = Arrays.asList(Grade.values());
+        gradeListBox.getItems().addAll(grades);
+        gradeListBox.getSelectionModel().selectFirst();
     }
 
 
@@ -713,6 +771,14 @@ public class MainController implements Initializable {
 
     private void removeAssessmentColumns() {
         table.getColumns().removeIf(column -> column instanceof AssessmentColumn);
+    }
+
+    public void removeTotalColumn() {
+        table.getColumns().remove(totalColumn);
+    }
+
+    public void reAddTotalColumn() {
+        table.getColumns().add(totalColumn);
     }
 
 
@@ -780,7 +846,7 @@ public class MainController implements Initializable {
         ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
         clipBoardStudents.addAll(StudentCloner.run(toCut));
 
-        for (Student s: toCut) {
+        for (Student s : toCut) {
             courseManager.removeStudent(s);
         }
         table.getItems().removeAll(toCut);
@@ -799,7 +865,7 @@ public class MainController implements Initializable {
         List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
         selected.remove(blankStudent);
 
-        for (Student s: selected) {
+        for (Student s : selected) {
             courseManager.removeStudent(s);
         }
         table.getItems().removeAll(selected);
@@ -832,6 +898,13 @@ public class MainController implements Initializable {
         stage.setTitle("Create Assessments");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.resizableProperty().setValue(false);
+        stage.showAndWait();
+    }
+
+    @FXML
+    public void displayAssessmentEditWindow() throws IOException {
+
+        stage.setTitle("Modify Assessments");
         stage.showAndWait();
     }
 
@@ -868,6 +941,13 @@ public class MainController implements Initializable {
         createAssessmentSetColumns(assessmentSet);
     }
 
+    public void removeAssessment(Assessment assessment) {
+        courseManager.unassignAssessment(assessment);
+        blankStudent.removeAssessmentData(assessment);
+        removeAssessmentColumn(assessment);
+        removeTotalColumn();
+    }
+
 //    public void setupStdAssessments(ObservableList<StdAssessment> stdAssessments) {
 //        for (StdAssessment std : stdAssessments) {
 //            courseManager.assignAssessment(std);
@@ -890,6 +970,7 @@ public class MainController implements Initializable {
 
     private void createStdAssessmentColumn(StdAssessment std) {
         AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
+        column.textProperty().bind(std.nameProperty());
         column.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(std));
         column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
@@ -901,6 +982,7 @@ public class MainController implements Initializable {
         for (StdAssessment std : assessmentSet.getStdAssessments()) {
 
             AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
+            column.textProperty().bind(std.nameProperty());
             column.setCellValueFactory(c -> c.getValue().assessmentSetGradeProperty(assessmentSet, std));
             column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
@@ -908,6 +990,7 @@ public class MainController implements Initializable {
             addToColumnsList(column);
         }
         AssessmentColumn<Student, Double> totalColumn = new AssessmentColumn<>(assessmentSet.getName() + " Total", assessmentSet);
+        totalColumn.textProperty().bind(assessmentSet.nameProperty());
         totalColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(assessmentSet));
 
         table.getColumns().add(totalColumn);
@@ -915,10 +998,64 @@ public class MainController implements Initializable {
     }
 
     public void createTotalColumn() {
-        AssessmentColumn<Student, Double> totalColumn = new AssessmentColumn<Student, Double>("Total Mark");
-        totalColumn.setCellValueFactory(c -> c.getValue().totalGradeProperty());
+        if (totalColumn == null) {
+            totalColumn = new AssessmentColumn<Student, Double>("Total Mark");
+            totalColumn.setCellValueFactory(c -> c.getValue().totalGradeProperty());
 
-        table.getColumns().add(totalColumn);
+            table.getColumns().add(totalColumn);
+        } else {
+            removeTotalColumn();
+            reAddTotalColumn();
+        }
+    }
+
+    private void removeAssessmentColumn(Assessment assessment) {
+        AssessmentType type = assessment.getType();
+        AssessmentColumn<Student, ?> column = null;
+
+        switch (type) {
+            case ESSAY:
+                column = findAndRemoveAssessmentColumn(essayColumns, assessment);
+                break;
+            case ESSAY_PLAN:
+                column = findAndRemoveAssessmentColumn(essayPlanColumns, assessment);
+                break;
+            case EXAM:
+                column = findAndRemoveAssessmentColumn(examColumns, assessment);
+                break;
+            case QUIZ:
+                column = findAndRemoveAssessmentColumn(quizColumns, assessment);
+                break;
+            case ARG_ANALYSIS:
+                column = findAndRemoveAssessmentColumn(argAnalysisColumns, assessment);
+                break;
+            case PARTICIPATION:
+                column = findAndRemoveAssessmentColumn(participationColumns, assessment);
+                break;
+            case PRESENTATION:
+                column = findAndRemoveAssessmentColumn(presentationColumns, assessment);
+                break;
+            case OTHER:
+                column = findAndRemoveAssessmentColumn(otherColumns, assessment);
+                break;
+        }
+
+        if (column != null) {
+            table.getColumns().remove(column);
+        }
+    }
+
+    private AssessmentColumn<Student, ?> findAndRemoveAssessmentColumn(ObservableList<AssessmentColumn<Student, ?>> columnList, Assessment assessment) {
+        AssessmentColumn<Student, ?> column = null;
+
+        for (AssessmentColumn<Student, ?> c : columnList) {
+            if (c.getAssessment() == assessment) {
+                columnList.remove(c);
+                column = c;
+                break;
+            }
+        }
+        return column;
     }
 
     private void addToColumnsList(AssessmentColumn<Student, ?> column) {
@@ -950,7 +1087,6 @@ public class MainController implements Initializable {
                 otherColumns.add(column);
                 break;
         }
-
     }
 
 
@@ -1043,14 +1179,30 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void printAssessments() {
-        System.out.println("Assessments");
-        System.out.println("Total: " + courseManager.getAssessments());
-        for (Class c: courseManager.getClasses()) {
+    public void printAssessmentStatistics() {
+
+        for (StudentGroup c : classListBox.getItems()) {
             System.out.println(c.getName());
-            System.out.println("Assessments: " + c.getAssessments());
+            c.getAssessments().forEach(a -> {
+                System.out.println(a.getName() + ":");
+                System.out.println("number of HDs = " + c.getStatistics(a).numberOfHDs());
+                System.out.println("number of Ds = " + c.getStatistics(a).numberOfDs());
+                System.out.println("number of CRs = " + c.getStatistics(a).numberOfCRs());
+                System.out.println("number of Ps = " + c.getStatistics(a).numberOfPs());
+                System.out.println("number of Fs = " + c.getStatistics(a).numberOfFs());
+                System.out.println("Number of compeleted assessments = " + c.getNumberAttempted(a));
+                System.out.println("Number of students = " + c.getNumberOfStudents());
+            });
+
+            System.out.println("Total Grade:");
+            System.out.println("number of HDs = " + c.getTotalStatistics().numberOfHDs());
+            System.out.println("number of Ds = " + c.getTotalStatistics().numberOfDs());
+            System.out.println("number of CRs = " + c.getTotalStatistics().numberOfCRs());
+            System.out.println("number of Ps = " + c.getTotalStatistics().numberOfPs());
+            System.out.println("number of Fs = " + c.getTotalStatistics().numberOfFs());
         }
     }
+
 }
 
 

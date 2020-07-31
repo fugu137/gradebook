@@ -9,7 +9,7 @@ import javafx.collections.ObservableMap;
 
 import java.util.LinkedHashMap;
 
-public class Class implements StudentGroup {
+public class Course implements StudentGroup {
 
     private StringProperty name;
     private ObservableList<Student> students;
@@ -17,7 +17,7 @@ public class Class implements StudentGroup {
     private ObservableMap<Assessment, Statistics> assessmentStatistics;
     private Statistics totalGradeStatistics;
 
-    public Class(String name) {
+    public Course(String name) {
         this.name = new SimpleStringProperty(name);
         this.students = FXCollections.observableArrayList();
         this.assessments = FXCollections.observableArrayList();
@@ -27,6 +27,10 @@ public class Class implements StudentGroup {
 
     public String getName() {
         return name.getValue();
+    }
+
+    public void setName(String name) {
+        this.name.set(name);
     }
 
     public void addStudent(Student student) {
@@ -43,29 +47,6 @@ public class Class implements StudentGroup {
 
     public ObservableList<Student> getStudents() {
         return students;
-    }
-
-    public void addAssessment(Assessment assessment) {
-        assessments.add(assessment);
-        assessmentStatistics.put(assessment, new Statistics());
-
-        for (Student s: students) {
-            if (assessment instanceof StdAssessment) {
-                s.addStdAssessmentData((StdAssessment) assessment);
-            }
-            if (assessment instanceof AssessmentSet) {
-                s.addAssessmentSetData((AssessmentSet) assessment);
-            }
-        }
-    }
-
-    public void removeAssessment(Assessment assessment) {
-        assessments.remove(assessment);
-        assessmentStatistics.remove(assessment);
-
-        for (Student s: students) {
-            s.removeAssessmentData(assessment);
-        }
     }
 
     public ObservableList<Assessment> getAssessments() {
@@ -96,8 +77,13 @@ public class Class implements StudentGroup {
         totalGradeStatistics.updateStatistics(student, gradeProperty);
     }
 
+    public void addAssessment(Assessment assessment) {
+        assessments.add(assessment);
+        assessmentStatistics.put(assessment, new Statistics());
+    }
+
     @Override
     public String toString() {
-        return name.getValue();
+        return "All";
     }
 }

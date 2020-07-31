@@ -12,6 +12,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -299,10 +300,25 @@ public class AssessmentCreationController implements Initializable {
 
         for (AssessmentCreationBar bar: assessmentCreationBars) {
             if (bar.isActive()) {
-                bar.createAssessment();
-                assessments.add(bar.getAssessment());
+
+                if (bar.getAssessment() == null) {
+                    bar.createAssessment();
+                    assessments.add(bar.getAssessment());
+
+                } else {
+                    bar.modifyAssessment();
+                }
             }
         }
         mainController.setupAllAssessments(assessments);
+    }
+
+    @FXML
+    public void clearButtonPressed(ActionEvent event) {
+        Button button = (Button) event.getSource();
+        AssessmentCreationBar bar = (AssessmentCreationBar) button.getUserData();
+        Assessment assessment = bar.clear();
+
+        mainController.removeAssessment(assessment);
     }
 }

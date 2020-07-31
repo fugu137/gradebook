@@ -1,30 +1,30 @@
 package gradebook.model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
 public class CourseManager {
 
-    private StringProperty courseName;
-    private ObservableList<Student> allStudents;
+    private Course cohort;
+    private ObservableList<StudentGroup> studentGroups;
     private ObservableList<Class> classes;
     private Class unassigned;
     private ObservableList<Assessment> assessments;
 
     public CourseManager(String courseName) {
-        this.courseName = new SimpleStringProperty(courseName);
-        this.allStudents = FXCollections.observableArrayList();
-        this.classes = FXCollections.observableArrayList();
+        this.cohort = new Course(courseName);
         this.unassigned = new Class("None");
+        this.studentGroups = FXCollections.observableArrayList();
+        this.classes = FXCollections.observableArrayList();
+        studentGroups.add(cohort);
+        studentGroups.add(unassigned);
         classes.add(unassigned);
         this.assessments = FXCollections.observableArrayList();
     }
 
     public void setCourseName(String name) {
-        this.courseName.set(name);
+        this.cohort.setName(name);
     }
 
     public void newStudent(Student student) {
@@ -32,20 +32,23 @@ public class CourseManager {
         Class studentClass = student.getClassGroup();
         ObservableList<Assessment> assessments;
 
+        student.setCourse(cohort);
+
         if (studentClass == null) {
             student.setClassGroup(unassigned);
             unassigned.addStudent(student);
-            allStudents.add(student);
+            cohort.addStudent(student);
 
             assessments = unassigned.getAssessments();
 
         } else {
             if (!classes.contains(studentClass)) {
                 classes.add(studentClass);
+                studentGroups.add(studentClass);
                 addAllAssessments(studentClass);
             }
             studentClass.addStudent(student);
-            allStudents.add(student);
+            cohort.addStudent(student);
 
             assessments = studentClass.getAssessments();
         }
@@ -70,7 +73,7 @@ public class CourseManager {
     }
 
     public void reAddAllStudentsAt(int index, ObservableList<Student> students) {
-        allStudents.addAll(index, students);
+        cohort.addAllAt(index, students);
         for (Student s: students) {
             Class classGroup = s.getClassGroup();
             classGroup.addStudent(s);
@@ -78,14 +81,14 @@ public class CourseManager {
     }
 
     public void removeStudent(Student student) {
-        allStudents.remove(student);
+        cohort.removeStudent(student);
         for (Class c: classes) {
             c.removeStudent(student);
         }
     }
 
     public ObservableList<Student> getAllStudents() {
-        return allStudents;
+        return cohort.getStudents();
     }
 
     public void addClass(Class classGroup) {
@@ -113,8 +116,25 @@ public class CourseManager {
         return targetClass;
     }
 
+    public StudentGroup getStudentGroup(String groupName) {
+        StudentGroup targetGroup = null;
+
+        for (StudentGroup g: studentGroups) {
+            if (g.getName().equals(groupName)) {
+                targetGroup = g;
+                break;
+            }
+        }
+        return targetGroup;
+    }
+
     public ObservableList<Class> getClasses() {
         return classes;
+    }
+
+
+    public Course getCohort() {
+        return cohort;
     }
 
     public Class getUnassigned() {
@@ -128,8 +148,16 @@ public class CourseManager {
     public void assignAssessment(Assessment assessment) {
         assessments.add(assessment);
 
+        for (StudentGroup g: studentGroups) {
+            g.addAssessment(assessment);
+        }
+    }
+
+    public void unassignAssessment(Assessment assessment) {
+        assessments.remove(assessment);
+
         for (Class c: classes) {
-            c.addAssessment(assessment);
+            c.removeAssessment(assessment);
         }
     }
 
@@ -138,7 +166,11 @@ public class CourseManager {
     }
 
     public String getCourseName() {
-        return courseName.getValue();
+        return getCohort().getName();
+    }
+
+    public ObservableList<StudentGroup> getStudentGroups() {
+        return studentGroups;
     }
 
 }

@@ -36,6 +36,14 @@ public class AssessmentSet implements Assessment {
         return name.getValue();
     }
 
+    public StringProperty nameProperty() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
     public ObservableList<StdAssessment> getStdAssessments() {
         return stdAssessments;
     }
@@ -44,16 +52,32 @@ public class AssessmentSet implements Assessment {
         return weighting.getValue();
     }
 
+    public void setWeighting(Double weighting) {
+        this.weighting.set(weighting);
+    }
+
     public Integer getQuantity() {
         return quantity.getValue();
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity.set(quantity);
     }
 
     public Integer getBestOf() {
         return bestOf.getValue();
     }
 
+    public void setBestOf(Integer bestOf) {
+        this.bestOf.set(bestOf);
+    }
+
     public AssessmentType getType() {
         return type;
+    }
+
+    public void setType(AssessmentType type) {
+        this.type = type;
     }
 
     public void renameStdAssessments(String[] names) {

@@ -224,12 +224,13 @@
                                           <Insets top="3.0" />
                                        </HBox.margin>
                                     </VBox>
-                                    <VBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="59.0" spacing="4.0">
+                                    <VBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="65.0" spacing="5.0">
                                        <padding>
-                                          <Insets bottom="2.0" top="4.5" />
+                                          <Insets bottom="2.0" right="5.0" top="4.5" />
                                        </padding>
                                        <children>
                                           <ComboBox fx:id="classListBox" prefWidth="150.0" promptText="Class" styleClass="toolbar-combo-box" />
+                                          <ComboBox fx:id="gradeListBox" layoutX="10.0" layoutY="15.0" prefWidth="150.0" promptText="Grade" styleClass="toolbar-combo-box" />
                                        </children>
                                     </VBox>
                                     <VBox spacing="5.0">
@@ -329,7 +330,7 @@
                                                       <Insets right="7.0" />
                                                    </padding>
                                                 </VBox>
-                                                <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" styleClass="toolbar-button" text="Modify">
+                                                <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentEditWindow" styleClass="toolbar-button" text="Modify">
                                                    <graphic>
                                                       <ImageView pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -408,7 +409,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#printSelectedStudent" text="Print Selected Student Info" />
                       <MenuItem mnemonicParsing="false" onAction="#printStudents" text="Print Student List" />
-                        <MenuItem mnemonicParsing="false" onAction="#printAssessments" text="Print Assessments" />
+                        <MenuItem mnemonicParsing="false" onAction="#printAssessmentStatistics" text="Print Assessment Statistics" />
                     </items>
                   </ContextMenu>
                </contextMenu>

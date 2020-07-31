@@ -5,6 +5,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
@@ -55,6 +56,10 @@ public class Grades {
 
     public void add(Assessment assessment, AssessmentData assessmentData) {
         grades.putIfAbsent(assessment, assessmentData);
+    }
+
+    public void remove(Assessment assessment) {
+        grades.remove(assessment);
     }
 
     public AssessmentData get(Assessment assessment) {

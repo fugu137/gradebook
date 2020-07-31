@@ -38,6 +38,7 @@ public class AssessmentCreationBar {
 
     private void initialSettings() {
         clearButton.disableProperty().bind(formComboBox.disableProperty().not());
+        clearButton.setUserData(this);
         BooleanBinding notSetAssessment = formComboBox.getSelectionModel().selectedItemProperty().isNotEqualTo(AssessmentForm.SET);
 
         quantityField.disableProperty().bind(notSetAssessment);
@@ -116,6 +117,21 @@ public class AssessmentCreationBar {
 //        }
     }
 
+    public Assessment clear() {
+        Assessment toReturn = this.assessment;
+        this.assessment = null;
+
+        formComboBox.setDisable(false);
+        formComboBox.getSelectionModel().clearSelection();
+        typeComboBox.getSelectionModel().clearSelection();
+        nameField.clear();
+        quantityField.clear();
+        bestOfField.clear();
+        weightingField.clear();
+
+        return toReturn;
+    }
+
     public void createAssessment() {
 
         if (isActive.getValue() && !this.hasInvalidEntries()) {
@@ -137,6 +153,38 @@ public class AssessmentCreationBar {
                 default:
                     throw new IllegalArgumentException("Not a valid assessment form!");
             }
+            formComboBox.setDisable(true);
         }
     }
+
+    public void modifyAssessment() {
+
+        if (isActive.getValue() && !this.hasInvalidEntries()) {
+            AssessmentForm assessmentForm = getForm();
+            AssessmentType type = getType();
+            String name = getName();
+            Integer quantity = getQuantity();
+            Integer bestOf = getBestOf();
+            Double weighting = (double) ((int) getWeighting()) / 100;
+
+            if (assessment instanceof StdAssessment) {
+                StdAssessment stdAssessment = (StdAssessment) assessment;
+                stdAssessment.setType(type);
+                stdAssessment.setName(name);
+                stdAssessment.setWeighting(weighting);
+            }
+
+            if (assessment instanceof AssessmentSet) {
+                AssessmentSet set = (AssessmentSet) assessment;
+                set.setType(type);
+                set.setName(name);
+                set.setWeighting(weighting);
+                set.setQuantity(quantity);
+                set.setBestOf(bestOf);
+            }
+        }
+    }
+
+
 }
+

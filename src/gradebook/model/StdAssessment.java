@@ -28,6 +28,10 @@ public class StdAssessment implements Assessment {
         return name.getValue();
     }
 
+    public StringProperty nameProperty() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name.set(name);
     }
@@ -36,8 +40,17 @@ public class StdAssessment implements Assessment {
         return weighting.getValue();
     }
 
+    public void setWeighting(Double weighting) {
+        this.weighting.set(weighting);
+    }
+
     public AssessmentType getType() {
         return type;
+    }
+
+    @Override
+    public void setType(AssessmentType type) {
+        this.type = type;
     }
 
 }
