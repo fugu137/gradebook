@@ -116,7 +116,20 @@ public class MainController implements Initializable {
     @FXML
     private Button addAssessmentsButton;
 
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private Tab statisticsTab;
 
+
+    //Footer Bar//
+    @FXML
+    private Label numberOfStudentsLabel;
+    @FXML
+    private Label numberSelectedLabel;
+
+
+    //Control//
     private ObservableList<AssessmentColumn<Student, ?>> essayColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private ObservableList<AssessmentColumn<Student, ?>> examColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private ObservableList<AssessmentColumn<Student, ?>> essayPlanColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
@@ -127,7 +140,6 @@ public class MainController implements Initializable {
     private ObservableList<AssessmentColumn<Student, ?>> otherColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private AssessmentColumn<Student, Double> totalColumn;
 
-    //Control//
     private CourseManager courseManager = new CourseManager("PHIL1011");    //TODO: request course name
     private Student blankStudent;
     private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
@@ -144,6 +156,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadTabPaneSettings();
+
         table.getItems().addAll(courseManager.getAllStudents());
 //        addDummyData();
         newBlankStudent();
@@ -154,6 +168,8 @@ public class MainController implements Initializable {
 
         loadToolbarSettings();
         setupToolbarBindings();
+
+        loadFooterSettings();
     }
 
     //Initialize Methods//
@@ -181,6 +197,18 @@ public class MainController implements Initializable {
 //        });
 //    }
 
+    private void loadTabPaneSettings() {
+        statisticsTab.selectedProperty().addListener(obs -> {
+
+            if (statisticsTab.isSelected()) {
+                tabPane.getStyleClass().add("special-tab-pane");
+
+            } else {
+                tabPane.getStyleClass().remove("special-tab-pane");
+            }
+        });
+    }
+
     private void loadTableSettings() {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -193,6 +221,51 @@ public class MainController implements Initializable {
             FXCollections.sort(t.getItems(), comparator);
             return true;
         });
+
+    }
+
+    private void loadFooterSettings() {
+        numberSelectedLabel.setText("");
+        numberOfStudentsLabel.setText("Number of students: 0");
+
+        table.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Student> () {
+            @Override
+            public void onChanged(Change<? extends Student> change) {
+                updateNumberSelectedLabel();
+            }
+        });
+
+        table.getItems().addListener(new ListChangeListener<Student> () {
+            @Override
+            public void onChanged(Change<? extends Student> change) {
+                updateNumberSelectedLabel();
+                updateNumberOfStudentsLabel();
+            }
+        });
+    }
+
+    private void updateNumberSelectedLabel() {
+        int n = table.getSelectionModel().getSelectedItems().size();
+
+        if (table.getSelectionModel().getSelectedItems().contains(blankStudent)) {
+            n = n - 1;
+        }
+
+        if (n > 0) {
+            numberSelectedLabel.setText("Selected students: " + n);
+        } else {
+            numberSelectedLabel.setText("");
+        }
+
+    }
+
+    private void updateNumberOfStudentsLabel() {
+        int n = table.getItems().size();
+
+        if (table.getItems().contains(blankStudent)) {
+            n = n - 1;
+        }
+        numberOfStudentsLabel.setText("Number of students: " + n);
     }
 
     private void setupColumns() {

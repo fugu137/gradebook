@@ -1,15 +1,18 @@
 /*TabPane*/
 
 * {
-    -fx-faint-border: derive(-fx-box-border, 60%);
-    -fx-border: derive(-fx-box-border, 20%);
+    -fx-faint-border: derive(-fx-border, 50%);
+    -fx-border: derive(#f5f5f7, -12%);
     -fx-disabled: #FBFCFC;
-    -fx-blue-text: derive(#1765ad, -20%);
+    -fx-blue-text: #0b3f8c;
+    -fx-grey-background: #f5f5f7;
+    -fx-faint-background: #FBFBFD;
 }
 
 .tab-pane {
     -fx-border-color: white transparent -fx-border transparent;
     -fx-effect: none;
+    -fx-background-color: -fx-grey-background;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab {
     /* This is how it is done in Button, but the -1 inset caused a white line  */
@@ -20,30 +23,28 @@
     /*-fx-background-insets: 0, 1, 2;*/
     /*-fx-background-insets: 0 1 1 0, 1 2 1 1, 2 3 1 2;*/
     -fx-background-radius: 0;
-    -fx-padding: 1 15 1 15; /* 1 6 1 6 */
+    -fx-padding: 1 12 1 12; /* 1 6 1 6 */
 /*    -fx-text-fill: -fx-text-base-color;*/
     -fx-border-color: transparent;
-    -fx-border-insets: 0 1 0 1;
+    -fx-border-insets: 0 1 0 0;
     -fx-background-insets: 0 1 0 1;
     -fx-pref-height: 24;
-
 }
-
 .tab-pane > .tab-header-area > .headers-region > .tab: selected {
     /* This is how it is done in Button, but the -1 inset caused a white line  */
     /* to appear beneath the tab, which looks bad, so it's taken out below.    */
-    -fx-background-color: -fx-background;
+    -fx-background-color: -fx-grey-background;
     /*-fx-background-radius: 5 5 0 0, 5 5 0 0, 4 4 0 0, 3 3 0 0;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;*/
     /*-fx-background-insets: 0, 1, 2;*/
-    -fx-background-insets: 0 1 -1 0, 1 2 -1 1, 2 3 -1 2;
+    /*-fx-background-insets: 0 1 -1 0, 1 2 -1 1, 2 3 -1 2;*/
     -fx-background-radius: 0;
-    -fx-padding: 1 15 1 15; /* 1 6 1 6 */
+    -fx-padding: 1 12 1 12; /* 1 6 1 6 */
 /*    -fx-text-fill: -fx-text-base-color;*/
     -fx-border-color: -fx-border -fx-border transparent -fx-border;
+    -fx-border-insets: 0 1 0 0;
     -fx-background-insets: 0 1 0 1;
     -fx-pref-height: 24;
-
 }
 .tab-pane *.tab-header-background {
     -fx-background-color: white;
@@ -57,12 +58,44 @@
     -fx-faint-focus-color: transparent;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab: hover {
-    -fx-background-color: #FBFCFC;
+    -fx-background-color: -fx-faint-background;
     -fx-border-color: -fx-faint-border -fx-faint-border -fx-border -fx-faint-border;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab: selected: hover {
     -fx-background-color: -fx-background;
     -fx-border-color: -fx-border -fx-border -fx-background -fx-border;
+}
+.special-tab-pane *.tab-header-background {
+    -fx-background-color: white;
+    -fx-border-color: white white red red;
+}
+.special-tab-pane > .tab-header-area > .headers-region > .tab: selected {
+    /* This is how it is done in Button, but the -1 inset caused a white line  */
+    /* to appear beneath the tab, which looks bad, so it's taken out below.    */
+    -fx-background-color: -fx-background;
+    /*-fx-background-radius: 5 5 0 0, 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;*/
+    /*-fx-background-insets: 0, 1, 2;*/
+    /*-fx-background-insets: 0 1 -1 0, 1 2 -1 1, 2 3 -1 2;*/
+    -fx-background-radius: 0;
+    -fx-padding: 1 12 1 12; /* 1 6 1 6 */
+/*    -fx-text-fill: -fx-text-base-color;*/
+    -fx-border-color: red red transparent red;
+    -fx-border-insets: 0 1 0 1;
+    -fx-background-insets: 0 1 0 1;
+    -fx-pref-height: 24;
+}
+.special-tab-pane > .tab-header-area > .headers-region > .tab: hover {
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: -fx-faint-border -fx-faint-border red -fx-faint-border;
+    -fx-border-insets: 0 1 0 1;
+         -fx-background-insets: 0 1 0 1;
+}
+.special-tab-pane > .tab-header-area > .headers-region > .tab: selected: hover {
+     -fx-background-color: -fx-background;
+     -fx-border-color: red red -fx-background red;
+     -fx-border-insets: 0 1 0 1;
+     -fx-background-insets: 0 1 0 1;
 }
 #left-tab {
     -fx-background-insets: 0 0 1 0;
@@ -110,99 +143,129 @@
     -fx-text-fill: white;
 }
 
+
 /*TableView*/
 .table-view {
     -fx-background-color: transparent;
-    -fx-border-color: -fx-box-border;
+    -fx-border-color: derive(-fx-table-cell-border-color, -1%);
+    -fx-border-insets: 0 -1 0 -1;
+    -fx-border-radius: 0;
+    /*-fx-border-style: solid hidden solid hidden;*/
+}
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+.table-view .column-header .arrow {
+    -fx-background-color: derive(-fx-blue-text, 20%);
 }
 .table-view .column-header .label {
     -fx-text-fill: -fx-blue-text;
-    /*-fx-text-fill: derive(black, 50%);*/
     -fx-font-weight: normal;
     -fx-font-size: 14px;
     -fx-alignment: center-left;
     -fx-padding: 0 0 0 0;
 }
-/*.table-view .column-header,
-.table-view .column-header .filler {
-    -fx-background-color: -fx-background,
-                                  linear-gradient(-fx-faint-border 0%, -fx-faint-border 20%, -fx-background 100%),
-                                  linear-gradient(-fx-background 0%, -fx-background 5%, -fx-faint-border 50%, -fx-faint-border 51%, -fx-faint-border 100%);
-    -fx-border-color: transparent -fx-border -fx-border transparent;
-}
-.table-view .column-header-background .filler {
-    -fx-background-color: -fx-background,
-                                        linear-gradient(-fx-faint-border 0%, -fx-faint-border 20%, -fx-background 100%),
-                                        linear-gradient(-fx-background 0%, -fx-background 5%, -fx-faint-border 50%, -fx-faint-border 51%, -fx-faint-border 100%);
-    -fx-border-color: transparent transparent -fx-border transparent;
-}*/
-/*.table-view {
-    -fx-effect: dropshadow(one-pass-box, -fx-border, 8, 0, 1, 2);
-}*/
 .table-view .column-header,
 .table-view .column-header .filler {
-    -fx-background-color: -fx-background;
-    -fx-border-color: transparent -fx-border -fx-border transparent;
-}
-.table-view > .column-header-background > .show-hide-columns-button {
-    -fx-background-color: -fx-background;
-    -fx-border-color: -fx-border -fx-border -fx-border -fx-border;
-    -fx-background-insets: 0 0 1 2;
-    -fx-border-insets: -1;
-    -fx-margin: 0 1 0 0;
-}
-.table-view > .column-header-background > .show-hide-columns-button: hover {
-    -fx-background-color: derive(-fx-background, -2%);
-    -fx-border-color: transparent transparent -fx-border -fx-border;
-    -fx-background-insets: 0 0 1 0;
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: transparent -fx-table-cell-border-color -fx-table-cell-border-color -fx-table-cell-border-color;
+    -fx-border-insets: 0 0 0 -1;
 }
 .table-view .column-header-background .filler {
-    -fx-background-color: -fx-background;
-    -fx-background-insets: 0 -10 0 0;
-    -fx-border-insets: 0 -10 0 0;
-    -fx-border-color: transparent -fx-border -fx-border transparent;
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: transparent -fx-table-cell-border-color -fx-table-cell-border-color -fx-table-cell-border-color;
+    -fx-border-insets: 0 0 0 -1;
+}
+.table-view .column-header: hover {
+    -fx-background-color: derive(-fx-faint-background, -1%);
+    -fx-border-color: transparent -fx-table-cell-border-color -fx-table-cell-border-color -fx-table-cell-border-color;
+    -fx-border-insets: 0 0 0 -1;
+}
+.table-view .column-header: pressed {
+    -fx-background-color: derive(-fx-faint-background, -2%);
+    -fx-border-color: transparent -fx-table-cell-border-color -fx-table-cell-border-color transparent;
+}
+.table-view .column-header-background .filler: hover {
+    -fx-background-color: derive(-fx-faint-background, -1%);
+    -fx-border-color: transparent -fx-table-cell-border-color -fx-table-cell-border-color -fx-table-cell-border-color;
+    -fx-border-insets: 0 0 0 -1;
+}
+.table-view .column-header-background .filler: pressed {
+    -fx-background-color: derive(-fx-faint-background, -2%);
+    -fx-border-color: transparent -fx-table-cell-border-color -fx-table-cell-border-color transparent;
+}
+.table-view > .column-header-background > .show-hide-columns-button {
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: transparent transparent -fx-table-cell-border-color transparent;
+}
+.table-view > .column-header-background > .show-hide-columns-button: hover {
+    -fx-background-color: derive(-fx-faint-background, -1%);
+    -fx-border-color: transparent transparent -fx-table-cell-border-color -fx-table-cell-border-color;
+    -fx-border-insets: 0 0 0 -1;
+}
+.table-view > .column-header-background > .show-hide-columns-button: pressed {
+    -fx-background-color: derive(-fx-faint-background, -2%);
+}
+.table-row-cell: even {
+    -fx-background-color: white;
+    -fx-border-insets: 0 1;
+}
+.table-row-cell: odd {
+   -fx-background-color: -fx-faint-background;
+   -fx-border-insets: 0 1;
 }
 .table-row-cell: selected {
     -fx-background: transparent;
-    -fx-background-color: -fx-selection-bar;
+    -fx-background-color: -fx-focus-color;
     -fx-background-insets: 0 0 1 0;
     -fx-padding: 0;
     -fx-text-fill: white;
 }
-.scroll-bar:horizontal .track,
-.scroll-bar:vertical .track{
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
+.table-view .scroll-bar:horizontal .track {
+    -fx-background-color: white;
+    -fx-border-color: -fx-table-cell-border-color transparent transparent transparent;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
 }
-.scroll-bar:horizontal .thumb,
-.scroll-bar:vertical .thumb {
+.table-view .scroll-bar:vertical .track{
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent transparent -fx-table-cell-border-color;
     -fx-background-radius: 0;
+    -fx-border-radius: 0;
 }
-.scroll-bar:horizontal .thumb:hover,
-.scroll-bar:vertical .thumb:hover {
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: -fx-table-cell-border-color;
     -fx-background-radius: 0;
+    -fx-background-insets: 0;
 }
-.scroll-bar:horizontal .increment-button ,
-.scroll-bar:horizontal .decrement-button {
+.table-view .scroll-bar:horizontal .thumb:hover,
+.table-view .scroll-bar:vertical .thumb: hover {
+    -fx-background-color: derive(-fx-faint-background, -1%);
+    -fx-border-color: derive(-fx-table-cell-border-color, -2%);
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+.table-view .scroll-bar:horizontal .increment-button ,
+.table-view .scroll-bar:horizontal .decrement-button {
     -fx-background-color: transparent;
     -fx-background-radius: 0.0em;
     -fx-padding: 0.0 0.0 10.0 0.0;
 }
-.scroll-bar:vertical .increment-button ,
-.scroll-bar:vertical .decrement-button {
+.table-view .scroll-bar:vertical .increment-button ,
+.table-view .scroll-bar:vertical .decrement-button {
     -fx-background-color: transparent;
     -fx-background-radius: 0.0em;
     -fx-padding: 0.0 10.0 0.0 0.0;
 }
-.scroll-bar .increment-arrow,
-.scroll-bar .decrement-arrow{
+.table-view .scroll-bar .increment-arrow,
+.table-view .scroll-bar .decrement-arrow{
     -fx-shape: " ";
     -fx-padding: 0.15em 0.0;
 }
-.scroll-bar:vertical .increment-arrow,
-.scroll-bar:vertical .decrement-arrow{
+.table-view .scroll-bar: vertical .increment-arrow,
+.table-view .scroll-bar: vertical .decrement-arrow {
     -fx-shape: " ";
     -fx-padding: 0.0 0.15em;
 }
@@ -232,6 +295,26 @@
     -fx-border-color: derive(#1765ad, 90%);
 }
 .toolbar-button: armed {
+    -fx-background-color: derive(#1765ad, 120%);
+    -fx-border-color: derive(#1765ad, 55%);
+}
+.toolbar-button-big {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-insets: 0 0 -1 0;
+    -fx-padding: 3 2 3 2;
+    -fx-effect: null;
+    -fx-opacity: 1;
+}
+.toolbar-button-big: disabled {
+    -fx-opacity: 40%;
+}
+.toolbar-button-big: hover {
+    -fx-background-color: derive(#1765ad, 130%);
+    -fx-border-color: derive(#1765ad, 90%);
+}
+.toolbar-button-big: armed {
     -fx-background-color: derive(#1765ad, 120%);
     -fx-border-color: derive(#1765ad, 55%);
 }
@@ -340,13 +423,16 @@
     -fx-effect: null;
     -fx-padding: 0 0 0 1;
 }
+.toolbar-combo-box .list-view {
+    -fx-border-color: -fx-border;
+}
 .toolbar-combo-box .list-view .list-cell: hover {
-    -fx-background-color: -fx-selection-bar;
+    -fx-background-color: -fx-focus-color;
     -fx-effect: null;
     -fx-padding: 0 0 0 2;
 }
 .toolbar-combo-box .list-view .list-cell: selected {
-    -fx-background-color: -fx-selection-bar;
+    -fx-background-color: -fx-focus-color;
     -fx-effect: null;
     -fx-padding: 0 0 0 2;
 }
@@ -355,7 +441,7 @@
     -fx-border-insets: -1 -1 -1 -1;
     -fx-background-insets: -1 -1 -1 -1;
     -fx-padding: 1 4.3 1 4.3;
-    -fx-background-color: -fx-background;
+    -fx-background-color: -fx-grey-background;
 }
 .toolbar-combo-box .arrow-button: hover {
     -fx-border-color: derive(-fx-box-border, -10%);
@@ -364,6 +450,54 @@
     -fx-padding: 1 4.3 1 4.3;
     -fx-background-color: derive(-fx-background, 25%);
 }
+.toolbar-combo-box .scroll-bar: horizontal .track {
+    -fx-background-color: white;
+    -fx-border-color: -fx-faint-border transparent transparent transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+ }
+.toolbar-combo-box .scroll-bar:vertical .track{
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent transparent -fx-faint-border;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+.toolbar-combo-box .scroll-bar:horizontal .thumb,
+.toolbar-combo-box .scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: -fx-faint-border;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+.toolbar-combo-box .scroll-bar:horizontal .thumb:hover,
+.toolbar-combo-box .scroll-bar:vertical .thumb: hover {
+    -fx-background-color: derive(-fx-faint-background, -1.5%);
+    -fx-border-color: derive(-fx-faint-border, -4%);
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+.toolbar-combo-box .scroll-bar:horizontal .increment-button ,
+.toolbar-combo-box .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 0.0 10.0 0.0;
+}
+.toolbar-combo-box .scroll-bar:vertical .increment-button ,
+.toolbar-combo-box .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 10.0 0.0 0.0;
+}
+.toolbar-combo-box .scroll-bar .increment-arrow,
+.toolbar-combo-box .scroll-bar .decrement-arrow{
+    -fx-shape: " ";
+    -fx-padding: 0.15em 0.0;
+}
+.toolbar-combo-box .scroll-bar: vertical .increment-arrow,
+.toolbar-combo-box .scroll-bar: vertical .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.0 0.15em;
+}
 .combo-box-table-cell .list-cell {
     -fx-background-color: white;
     -fx-background-radius: 0;
@@ -371,17 +505,17 @@
     -fx-padding: 0 0 0 1;
 }
 .combo-box-table-cell .list-view .list-cell: hover {
-    -fx-background-color: -fx-selection-bar;
+    -fx-background-color: -fx-focus-color;
     -fx-effect: null;
     -fx-padding: 0 0 0 2;
 }
 .combo-box-table-cell .list-view .list-cell: selected {
-    -fx-background-color: -fx-selection-bar;
+    -fx-background-color: -fx-focus-color;
     -fx-effect: null;
     -fx-padding: 0 0 0 2;
 }
 .combo-box-table-cell .list-view .list-cell: selected: hover {
-    -fx-background-color: -fx-selection-bar;
+    -fx-background-color: -fx-focus-color;
     -fx-effect: null;
     -fx-padding: 0 0 0 2;
 }

@@ -4,9 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1280.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.MainController">
+<?import javafx.scene.text.*?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.MainController">
    <top>
-      <TabPane prefHeight="117.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="tabPane" prefHeight="117.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab id="left-tab" disable="true">
             <content>
@@ -22,7 +23,7 @@
                   </MenuButton>
                </graphic>
           </Tab>
-          <Tab id="second-from-left-tab" text="Table">
+          <Tab id="second-from-left-tab" text="Home">
                <content>
                   <HBox prefHeight="100.0">
                      <children>
@@ -60,9 +61,9 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <Separator orientation="VERTICAL">
+                        <Separator opacity="0.6" orientation="VERTICAL">
                            <padding>
-                              <Insets left="5.0" right="5.0" />
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
                         </Separator>
                         <VBox alignment="TOP_CENTER">
@@ -160,7 +161,7 @@
                                     <Insets top="1.0" />
                                  </padding>
                               </HBox>
-                              <HBox alignment="BASELINE_CENTER" prefHeight="18.0">
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
                                  <children>
                                     <Label text="Edit">
                                        <HBox.margin>
@@ -174,12 +175,205 @@
                               </HBox>
                            </children>
                            <padding>
-                              <Insets left="-2.0" />
+                              <Insets right="5.0" />
                            </padding>
                         </VBox>
-                        <Separator orientation="VERTICAL">
+                        <Separator opacity="0.6" orientation="VERTICAL">
                            <padding>
-                              <Insets left="10.0" right="8.0" />
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox alignment="BOTTOM_CENTER">
+                                 <padding>
+                                    <Insets bottom="0.5" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets top="6.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <VBox layoutX="10.0" layoutY="10.0" spacing="1.0">
+                                       <padding>
+                                          <Insets top="1.0" />
+                                       </padding>
+                                       <children>
+                                          <HBox>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <Button fx:id="addAssessmentsButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentCreationWindow" styleClass="toolbar-button" text="Add" wrapText="true">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../resources/icons/204966-3.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets right="8.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <HBox spacing="2.0">
+                                                   <children>
+                                                      <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentEditWindow" styleClass="toolbar-button" text="Modify">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../resources/icons/879429-4.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                      <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" styleClass="toolbar-button" text="Finalise" wrapText="true">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../resources/icons/991256-4.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                 <children>
+                                    <Label alignment="CENTER" text="Assessments" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets bottom="2.0" />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </VBox>
+                        <Separator opacity="0.6" orientation="VERTICAL">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets bottom="1.0" top="2.0" />
+                     </padding>
+                  </HBox>
+               </content>
+          </Tab>
+            <Tab text="View">
+              <content>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <HBox VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <VBox spacing="5.0">
+                                                   <children>
+                                                      <ToggleButton fx:id="studentViewToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Student Info View" textAlignment="CENTER">
+                                                         <VBox.margin>
+                                                            <Insets />
+                                                         </VBox.margin>
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../resources/icons/588406-7.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </ToggleButton>
+                                                      <ToggleButton fx:id="anonymiseToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Anonymize">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../resources/icons/676665-7.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </ToggleButton>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets right="14.0" top="4.5" />
+                                                   </padding>
+                                                </VBox>
+                                                <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                                   </padding>
+                                                </Separator>
+                                                <VBox alignment="TOP_CENTER" spacing="5.0">
+                                                   <padding>
+                                                      <Insets bottom="2.0" left="4.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                   <children>
+                                                      <HBox spacing="5.0">
+                                                         <children>
+                                                            <Label prefWidth="35.0" text="Class:" />
+                                                            <ComboBox fx:id="classListBox" prefWidth="60.0" promptText="Class" styleClass="toolbar-combo-box" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox spacing="5.0">
+                                                         <children>
+                                                            <Label text="Grade:" />
+                                                            <ComboBox fx:id="gradeListBox" prefWidth="60.0" promptText="Grade" styleClass="toolbar-combo-box" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                             <children>
+                                                <Label text="Filter">
+                                                   <padding>
+                                                      <Insets bottom="0.5" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets bottom="2.0" />
+                                             </opaqueInsets>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets left="16.0" right="5.0" top="1.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <Separator opacity="0.6" orientation="VERTICAL">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
                         </Separator>
                         <VBox alignment="TOP_CENTER">
@@ -217,56 +411,16 @@
                                           <CheckBox fx:id="presentationsCheckBox" mnemonicParsing="false" text="Presentations" />
                                           <CheckBox fx:id="otherCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" text="Other" />
                                        </children>
-                                       <padding>
-                                          <Insets left="10.0" right="14.0" />
-                                       </padding>
                                        <HBox.margin>
                                           <Insets top="3.0" />
                                        </HBox.margin>
-                                    </VBox>
-                                    <VBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="65.0" spacing="5.0">
                                        <padding>
-                                          <Insets bottom="2.0" right="5.0" top="4.5" />
-                                       </padding>
-                                       <children>
-                                          <ComboBox fx:id="classListBox" prefWidth="150.0" promptText="Class" styleClass="toolbar-combo-box" />
-                                          <ComboBox fx:id="gradeListBox" layoutX="10.0" layoutY="15.0" prefWidth="150.0" promptText="Grade" styleClass="toolbar-combo-box" />
-                                       </children>
-                                    </VBox>
-                                    <VBox spacing="5.0">
-                                       <children>
-                                          <ToggleButton fx:id="studentViewToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Student Info View" textAlignment="CENTER">
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                             <graphic>
-                                                <ImageView pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../resources/icons/588406-7.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </ToggleButton>
-                                          <ToggleButton fx:id="anonymiseToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Anonymise">
-                                             <graphic>
-                                                <ImageView pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../resources/icons/676665-7.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </ToggleButton>
-                                       </children>
-                                       <padding>
-                                          <Insets left="10.0" top="4.5" />
+                                          <Insets left="10.0" right="10.0" />
                                        </padding>
                                     </VBox>
                                  </children>
-                                 <padding>
-                                    <Insets left="4.0" right="6.0" />
-                                 </padding>
                               </HBox>
-                              <HBox alignment="BASELINE_CENTER" prefHeight="18.0">
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
                                  <children>
                                     <Label text="Show/Hide ">
                                        <padding>
@@ -280,99 +434,12 @@
                               </HBox>
                            </children>
                            <padding>
-                              <Insets top="1.0" />
+                              <Insets left="5.0" top="1.0" />
                            </padding>
                         </VBox>
-                        <VBox alignment="TOP_CENTER">
-                           <children>
-                              <HBox alignment="BOTTOM_CENTER">
-                                 <padding>
-                                    <Insets bottom="0.5" />
-                                 </padding>
-                              </HBox>
-                           </children>
+                        <Separator opacity="0.6" orientation="VERTICAL">
                            <padding>
-                              <Insets top="6.0" />
-                           </padding>
-                        </VBox>
-                        <Separator orientation="VERTICAL">
-                           <padding>
-                              <Insets left="8.0" right="1.0" />
-                           </padding>
-                        </Separator>
-                        <VBox alignment="TOP_CENTER">
-                           <children>
-                              <HBox VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <VBox layoutX="10.0" layoutY="10.0" spacing="1.0">
-                                       <padding>
-                                          <Insets top="1.0" />
-                                       </padding>
-                                       <children>
-                                          <HBox spacing="1.0">
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                             <children>
-                                                <VBox>
-                                                   <children>
-                                                      <Button fx:id="addAssessmentsButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentCreationWindow" styleClass="toolbar-button" text="Add" wrapText="true">
-                                                         <graphic>
-                                                            <ImageView pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@../resources/icons/204966-3.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </graphic>
-                                                      </Button>
-                                                   </children>
-                                                   <padding>
-                                                      <Insets right="7.0" />
-                                                   </padding>
-                                                </VBox>
-                                                <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentEditWindow" styleClass="toolbar-button" text="Modify">
-                                                   <graphic>
-                                                      <ImageView pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../resources/icons/879429-4.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" styleClass="toolbar-button" text="Finalise" wrapText="true">
-                                                   <graphic>
-                                                      <ImageView pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../resources/icons/991256-4.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="BASELINE_CENTER" prefHeight="18.0">
-                                 <children>
-                                    <Label alignment="CENTER" prefHeight="20.0" text="Assessments" />
-                                 </children>
-                                 <opaqueInsets>
-                                    <Insets bottom="2.0" />
-                                 </opaqueInsets>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="2.0" right="6.0" />
-                           </padding>
-                        </VBox>
-                        <Separator orientation="VERTICAL" prefHeight="87.0" prefWidth="0.0">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
                         </Separator>
                      </children>
@@ -380,20 +447,186 @@
                         <Insets bottom="1.0" top="2.0" />
                      </padding>
                   </HBox>
-               </content>
-          </Tab>
-            <Tab text="Statistics">
+              </content>
+            </Tab>
+            <Tab fx:id="statisticsTab" text="Statistics">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <HBox>
+                     <padding>
+                        <Insets bottom="1.0" top="2.0" />
+                     </padding>
+                     <children>
+                        <VBox>
+                           <children>
+                              <ComboBox prefHeight="19.0" prefWidth="60.0" styleClass="toolbar-combo-box" />
+                           </children>
+                           <padding>
+                              <Insets left="16.0" right="7.0" top="6.0" />
+                           </padding>
+                        </VBox>
+                        <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <VBox>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Median">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label text="70" textFill="GREEN">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Average">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label text="69">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Highest">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label text="93">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Lowest">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label text="45">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                 <children>
+                                    <Label text="Quick Stats" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                           <padding>
+                              <Insets bottom="2.0" left="2.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <HBox>
+                           <children>
+                              <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Grade Distribution" textAlignment="CENTER" wrapText="true">
+                                 <graphic>
+                                    <ImageView fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/icons/line-graph-icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Demographic Info" textAlignment="CENTER" wrapText="true">
+                                 <graphic>
+                                    <ImageView fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/icons/325803-3.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets right="6.0" top="1.0" />
+                           </padding>
+                        </HBox>
+                        <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                     </children></HBox>
               </content>
             </Tab>
         </tabs>
       </TabPane>
    </top>
    <center>
-      <AnchorPane styleClass="white-pane" BorderPane.alignment="CENTER">
+      <VBox styleClass="white-pane">
          <children>
-            <TableView fx:id="table" editable="true" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <TableView fx:id="table" editable="true" prefHeight="446.0" prefWidth="1278.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
                 <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />
@@ -415,6 +648,23 @@
                </contextMenu>
             </TableView>
          </children>
-      </AnchorPane>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="4.0" left="8.0" right="8.0" top="10.0" />
+         </padding>
+      </VBox>
    </center>
+   <bottom>
+      <HBox prefHeight="23.0" prefWidth="1280.0" spacing="20.0" styleClass="white-pane" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="numberOfStudentsLabel" layoutX="16.0" layoutY="11.0" text="Number of students:" />
+            <Label fx:id="numberSelectedLabel" text="Selected students: " />
+         </children>
+         <padding>
+            <Insets left="6.0" right="5.0" />
+         </padding>
+      </HBox>
+   </bottom>
 </BorderPane>
