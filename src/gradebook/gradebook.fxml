@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.MainController">
    <top>
       <TabPane fx:id="tabPane" prefHeight="117.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
@@ -23,7 +23,7 @@
                   </MenuButton>
                </graphic>
           </Tab>
-          <Tab id="second-from-left-tab" text="Home">
+          <Tab id="second-from-left-tab" text="Edit">
                <content>
                   <HBox prefHeight="100.0">
                      <children>
@@ -456,12 +456,13 @@
                         <Insets bottom="1.0" top="2.0" />
                      </padding>
                      <children>
-                        <VBox>
+                        <VBox prefHeight="88.0" prefWidth="115.0" spacing="5.0">
                            <children>
-                              <ComboBox prefHeight="19.0" prefWidth="60.0" styleClass="toolbar-combo-box" />
+                              <Label text="Column" />
+                              <ComboBox fx:id="columnComboBox" prefHeight="19.0" prefWidth="98.0" styleClass="toolbar-combo-box" />
                            </children>
                            <padding>
-                              <Insets left="16.0" right="7.0" top="6.0" />
+                              <Insets left="16.0" right="12.0" top="6.0" />
                            </padding>
                         </VBox>
                         <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
@@ -473,13 +474,13 @@
                            <children>
                               <HBox>
                                  <children>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Median">
                                                    <font>
-                                                      <Font size="13.0" />
+                                                      <Font size="12.5" />
                                                    </font>
                                                 </Label>
                                              </children>
@@ -489,22 +490,18 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="70" textFill="GREEN">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="medianLabel" text="N/A" textFill="GREEN" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Average">
                                                    <font>
-                                                      <Font size="13.0" />
+                                                      <Font size="12.5" />
                                                    </font>
                                                 </Label>
                                              </children>
@@ -514,22 +511,18 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="69">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="averageLabel" text="N/A" textFill="#dd9700" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Highest">
                                                    <font>
-                                                      <Font size="13.0" />
+                                                      <Font size="12.5" />
                                                    </font>
                                                 </Label>
                                              </children>
@@ -539,22 +532,18 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="93">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="highestLabel" text="N/A" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Lowest">
                                                    <font>
-                                                      <Font size="13.0" />
+                                                      <Font size="12.5" />
                                                    </font>
                                                 </Label>
                                              </children>
@@ -564,11 +553,7 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="45">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="lowestLabel" text="N/A" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -640,7 +625,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#printSelectedStudent" text="Print Selected Student Info" />
+                        <MenuItem mnemonicParsing="false" onAction="#printSelectedStudents" text="Print Selected Student Info" />
                       <MenuItem mnemonicParsing="false" onAction="#printStudents" text="Print Student List" />
                         <MenuItem mnemonicParsing="false" onAction="#printAssessmentStatistics" text="Print Assessment Statistics" />
                     </items>

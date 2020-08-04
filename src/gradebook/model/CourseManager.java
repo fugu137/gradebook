@@ -6,25 +6,25 @@ import javafx.collections.ObservableList;
 
 public class CourseManager {
 
-    private Course cohort;
+    private CourseCohort courseCohort;
     private ObservableList<StudentGroup> studentGroups;
     private ObservableList<Class> classes;
     private Class unassigned;
     private ObservableList<Assessment> assessments;
 
     public CourseManager(String courseName) {
-        this.cohort = new Course(courseName);
+        this.courseCohort = new CourseCohort(courseName);
         this.unassigned = new Class("None");
         this.studentGroups = FXCollections.observableArrayList();
         this.classes = FXCollections.observableArrayList();
-        studentGroups.add(cohort);
+        studentGroups.add(courseCohort);
         studentGroups.add(unassigned);
         classes.add(unassigned);
         this.assessments = FXCollections.observableArrayList();
     }
 
     public void setCourseName(String name) {
-        this.cohort.setName(name);
+        this.courseCohort.setName(name);
     }
 
     public void newStudent(Student student) {
@@ -32,12 +32,12 @@ public class CourseManager {
         Class studentClass = student.getClassGroup();
         ObservableList<Assessment> assessments;
 
-        student.setCourse(cohort);
+        student.setCourseCohort(courseCohort);
 
         if (studentClass == null) {
             student.setClassGroup(unassigned);
             unassigned.addStudent(student);
-            cohort.addStudent(student);
+            courseCohort.addStudent(student);
 
             assessments = unassigned.getAssessments();
 
@@ -48,7 +48,7 @@ public class CourseManager {
                 addAllAssessments(studentClass);
             }
             studentClass.addStudent(student);
-            cohort.addStudent(student);
+            courseCohort.addStudent(student);
 
             assessments = studentClass.getAssessments();
         }
@@ -73,7 +73,7 @@ public class CourseManager {
     }
 
     public void reAddAllStudentsAt(int index, ObservableList<Student> students) {
-        cohort.addAllAt(index, students);
+        courseCohort.addAllAt(index, students);
         for (Student s: students) {
             Class classGroup = s.getClassGroup();
             classGroup.addStudent(s);
@@ -81,14 +81,14 @@ public class CourseManager {
     }
 
     public void removeStudent(Student student) {
-        cohort.removeStudent(student);
+        courseCohort.removeStudent(student);
         for (Class c: classes) {
             c.removeStudent(student);
         }
     }
 
     public ObservableList<Student> getAllStudents() {
-        return cohort.getStudents();
+        return courseCohort.getStudents();
     }
 
     public void addClass(Class classGroup) {
@@ -133,8 +133,8 @@ public class CourseManager {
     }
 
 
-    public Course getCohort() {
-        return cohort;
+    public CourseCohort getCourseCohort() {
+        return courseCohort;
     }
 
     public Class getUnassigned() {
@@ -166,7 +166,7 @@ public class CourseManager {
     }
 
     public String getCourseName() {
-        return getCohort().getName();
+        return getCourseCohort().getName();
     }
 
     public ObservableList<StudentGroup> getStudentGroups() {

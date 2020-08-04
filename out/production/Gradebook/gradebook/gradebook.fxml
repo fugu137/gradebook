@@ -41,7 +41,7 @@
                   </MenuButton>
                </graphic>
           </Tab>
-          <Tab id="second-from-left-tab" text="Home">
+          <Tab id="second-from-left-tab" text="Edit">
                <content>
                   <HBox prefHeight="100.0">
                      <children>
@@ -325,7 +325,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </ToggleButton>
-                                                      <ToggleButton fx:id="anonymiseToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Anonymise">
+                                                      <ToggleButton fx:id="anonymiseToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Anonymize">
                                                          <graphic>
                                                             <ImageView pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -336,7 +336,7 @@
                                                       </ToggleButton>
                                                    </children>
                                                    <padding>
-                                                      <Insets right="10.0" top="4.5" />
+                                                      <Insets right="14.0" top="4.5" />
                                                    </padding>
                                                 </VBox>
                                                 <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
@@ -382,7 +382,7 @@
                                           </HBox>
                                        </children>
                                        <padding>
-                                          <Insets left="12.0" right="5.0" top="1.0" />
+                                          <Insets left="16.0" right="5.0" top="1.0" />
                                        </padding>
                                     </VBox>
                                  </children>
@@ -474,26 +474,27 @@
                         <Insets bottom="1.0" top="2.0" />
                      </padding>
                      <children>
-                        <HBox prefHeight="88.0" spacing="8.0">
-                           <padding>
-                              <Insets left="12.0" right="7.0" top="6.0" />
-                           </padding>
+                        <VBox prefHeight="88.0" prefWidth="115.0" spacing="5.0">
                            <children>
-                              <ComboBox prefHeight="19.0" prefWidth="60.0" styleClass="toolbar-combo-box" />
+                              <Label text="Column" />
+                              <ComboBox fx:id="columnComboBox" prefHeight="19.0" prefWidth="98.0" styleClass="toolbar-combo-box" />
                            </children>
-                        </HBox>
+                           <padding>
+                              <Insets left="16.0" right="12.0" top="6.0" />
+                           </padding>
+                        </VBox>
                         <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
                            <padding>
-                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                              <Insets bottom="2.0" left="5.0" top="1.0" />
                            </padding>
                         </Separator>
                         <VBox>
                            <children>
                               <HBox>
                                  <children>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Median">
                                                    <font>
@@ -507,18 +508,14 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="70">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="medianLabel" text="N/A" textFill="GREEN" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Average">
                                                    <font>
@@ -532,18 +529,14 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="69">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="averageLabel" text="N/A" textFill="#dd9700" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Highest">
                                                    <font>
@@ -557,18 +550,14 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="93">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="highestLabel" text="N/A" />
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="64.0">
+                                    <VBox prefHeight="88.0" prefWidth="55.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="65.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
                                                 <Label text="Lowest">
                                                    <font>
@@ -582,11 +571,7 @@
                                           </HBox>
                                           <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
                                              <children>
-                                                <Label text="45">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
+                                                <Label fx:id="lowestLabel" text="N/A" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -595,38 +580,46 @@
                               </HBox>
                               <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
                                  <children>
-                                    <Label text="Quick View" />
+                                    <Label text="Quick Stats" />
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
                         <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
                            <padding>
-                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                              <Insets bottom="2.0" left="2.0" right="5.0" top="1.0" />
                            </padding>
                         </Separator>
                         <HBox>
                            <children>
-                              <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" prefHeight="83.0" prefWidth="79.0" styleClass="toolbar-button" text="Grade Distribution" textAlignment="CENTER" wrapText="true">
+                              <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Grade Distribution" textAlignment="CENTER" wrapText="true">
                                  <graphic>
-                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../resources/icons/204966-3.png" />
+                                          <Image url="@../resources/icons/line-graph-icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Demographic Info" textAlignment="CENTER" wrapText="true">
+                                 <graphic>
+                                    <ImageView fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/icons/325803-3.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
                            </children>
+                           <padding>
+                              <Insets right="6.0" top="1.0" />
+                           </padding>
                         </HBox>
-                        <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" prefHeight="83.0" prefWidth="95.0" styleClass="toolbar-button" text="Demographics" textAlignment="CENTER" wrapText="true">
-                           <graphic>
-                              <ImageView pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/icons/204966-3.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
+                        <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
                      </children></HBox>
               </content>
             </Tab>
@@ -650,7 +643,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#printSelectedStudent" text="Print Selected Student Info" />
+                        <MenuItem mnemonicParsing="false" onAction="#printSelectedStudents" text="Print Selected Student Info" />
                       <MenuItem mnemonicParsing="false" onAction="#printStudents" text="Print Student List" />
                         <MenuItem mnemonicParsing="false" onAction="#printAssessmentStatistics" text="Print Assessment Statistics" />
                     </items>

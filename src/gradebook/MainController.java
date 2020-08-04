@@ -10,6 +10,7 @@ import gradebook.tools.FileManager;
 import gradebook.tools.StudentCloner;
 import gradebook.tools.StudentImporter;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -59,6 +61,7 @@ public class MainController implements Initializable {
     private TableColumn<Student, String> emailColumn;
 
     //Toolbar//
+    //Edit//
     @FXML
     private MenuItem loadMenuItem;
     @FXML
@@ -86,6 +89,7 @@ public class MainController implements Initializable {
     @FXML
     private Button deleteButton;
 
+    //View//
     @FXML
     private CheckBox essaysCheckBox;
     @FXML
@@ -116,10 +120,24 @@ public class MainController implements Initializable {
     @FXML
     private Button addAssessmentsButton;
 
+    //Statistics//
     @FXML
     private TabPane tabPane;
     @FXML
     private Tab statisticsTab;
+
+    @FXML
+    private ComboBox<AssessmentColumn<Student, ?>> columnComboBox;
+
+    @FXML
+    private Label medianLabel;
+    @FXML
+    private Label averageLabel;
+    @FXML
+    private Label highestLabel;
+    @FXML
+    private Label lowestLabel;
+
 
 
     //Footer Bar//
@@ -228,14 +246,14 @@ public class MainController implements Initializable {
         numberSelectedLabel.setText("");
         numberOfStudentsLabel.setText("Number of students: 0");
 
-        table.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Student> () {
+        table.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Student>() {
             @Override
             public void onChanged(Change<? extends Student> change) {
                 updateNumberSelectedLabel();
             }
         });
 
-        table.getItems().addListener(new ListChangeListener<Student> () {
+        table.getItems().addListener(new ListChangeListener<Student>() {
             @Override
             public void onChanged(Change<? extends Student> change) {
                 updateNumberSelectedLabel();
@@ -349,6 +367,8 @@ public class MainController implements Initializable {
         setupFilterBoxes();
 //        setupClassListBox();
 //        setupGradeListBox();
+        setupStatisticsLabels();
+        setupColumnsBox();
     }
 
     private void toggleButtonBindings() {
@@ -608,6 +628,7 @@ public class MainController implements Initializable {
         quizzesCheckBox.selectedProperty().addListener(obs -> {
             if ((quizzesCheckBox.isSelected())) {
                 quizColumns.forEach(c -> c.setVisible(true));
+                quizzesCheckBox.setSelected(true);
             } else {
                 quizColumns.forEach(c -> c.setVisible(false));
             }
@@ -724,17 +745,23 @@ public class MainController implements Initializable {
     }
 
     private void setupClassListBox() {
-
         classListBox.setItems(courseManager.getStudentGroups());
-//        classListBox.getItems().add(0, courseManager.getClassAll());
-
         classListBox.getSelectionModel().selectFirst();
+    }
+
+
+    private void setupGradeListBox() {
+        List<Grade> grades = Arrays.asList(Grade.values());
+        gradeListBox.getItems().addAll(grades);
+        gradeListBox.getSelectionModel().selectFirst();
     }
 
     private void classListBoxBinding() {
         classListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
             filterByGroupSelection();
             filterByGradeSelection();
+
+            setupStatisticsLabels();
         });
     }
 
@@ -765,33 +792,106 @@ public class MainController implements Initializable {
                 case ANY:
                     break;
                 case HD:
-                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-                    table.getItems().removeAll(nonHDStudents);
+//                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+//                    removeIf(s -> {
+//                        if (s.getTotalGrade() == null) {
+//                            return true;
+//                        } else {
+//                            return !(s.getTotalGrade() <= 100 && s.getTotalGrade() >= 85);
+//                        }
+//                    });
                     break;
                 case D:
-                    ObservableList<Student> nonDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
-                    table.getItems().removeAll(nonDStudents);
+                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
                     break;
                 case CR:
-                    ObservableList<Student> nonCRStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
-                    table.getItems().removeAll(nonCRStudents);
+                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
                     break;
                 case P:
-                    ObservableList<Student> nonPStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
-                    table.getItems().removeAll(nonPStudents);
+                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
                     break;
                 case F:
-                    ObservableList<Student> nonFStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
-                    table.getItems().removeAll(nonFStudents);
+                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
                     break;
             }
         }
     }
 
-    private void setupGradeListBox() {
-        List<Grade> grades = Arrays.asList(Grade.values());
-        gradeListBox.getItems().addAll(grades);
-        gradeListBox.getSelectionModel().selectFirst();
+    private void setupStatisticsLabels() {
+        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
+        AssessmentColumn<Student, ?> selectedColumn = columnComboBox.getSelectionModel().getSelectedItem();
+
+        if (selectedGroup != null && selectedColumn != null) {
+
+            if (selectedColumn == totalColumn) {
+                medianLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.totalGradeMedianProperty().asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.totalGradeMedianProperty().asString())
+                );
+                averageLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.totalGradeAverageProperty().asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.totalGradeAverageProperty().asString())
+                );
+                highestLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.totalGradeHighestProperty().asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.totalGradeHighestProperty().asString())
+                );
+                lowestLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.totalGradeLowestProperty().asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.totalGradeLowestProperty().asString())
+                );
+
+            } else {
+                Assessment assessment = selectedColumn.getAssessment();
+
+                medianLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.assessmentMedianProperty(assessment).asString().isEqualTo("null"))
+                        .then("N/A")
+                        .otherwise(selectedGroup.assessmentMedianProperty(assessment).asString())
+                );
+                averageLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.assessmentAverageProperty(assessment).asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.assessmentAverageProperty(assessment).asString())
+                );
+               highestLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.assessmentHighestProperty(assessment).asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.assessmentHighestProperty(assessment).asString())
+                );
+                lowestLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.assessmentLowestProperty(assessment).asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.assessmentLowestProperty(assessment).asString())
+                );
+            }
+        }
+
+        medianLabel.textProperty().addListener(obs -> {
+            if (medianLabel.getText() != null && !medianLabel.getText().equals("null")) {
+                try {
+                    if (Double.parseDouble(medianLabel.getText()) >= 70) {
+                        medianLabel.setTextFill(Color.GREEN);
+                    } else {
+                        medianLabel.setTextFill(Color.RED);
+                    }
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+    }
+
+    private void setupColumnsBox() {
+        this.columnComboBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
+            setupStatisticsLabels();
+        });
     }
 
 
@@ -851,11 +951,13 @@ public class MainController implements Initializable {
     }
 
     public void removeTotalColumn() {
+        columnComboBox.getSelectionModel().clearSelection();
         table.getColumns().remove(totalColumn);
     }
 
     public void reAddTotalColumn() {
         table.getColumns().add(totalColumn);
+        columnComboBox.getSelectionModel().select(totalColumn);
     }
 
 
@@ -1050,9 +1152,12 @@ public class MainController implements Initializable {
         column.textProperty().bind(std.nameProperty());
         column.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(std));
         column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        column.setPrefWidth(62);
 
         table.getColumns().add(column);
         addToColumnsList(column);
+
+        this.columnComboBox.getItems().add(column);
     }
 
     private void createAssessmentSetColumns(AssessmentSet assessmentSet) {
@@ -1062,24 +1167,33 @@ public class MainController implements Initializable {
             column.textProperty().bind(std.nameProperty());
             column.setCellValueFactory(c -> c.getValue().assessmentSetGradeProperty(assessmentSet, std));
             column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            column.setPrefWidth(62);
 
             table.getColumns().add(column);
             addToColumnsList(column);
         }
-        AssessmentColumn<Student, Double> totalColumn = new AssessmentColumn<>(assessmentSet.getName() + " Total", assessmentSet);
-        totalColumn.textProperty().bind(assessmentSet.nameProperty());
-        totalColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(assessmentSet));
+        AssessmentColumn<Student, Double> setColumn = new AssessmentColumn<>(assessmentSet.getName() + " Total", assessmentSet);
+        setColumn.textProperty().bind(assessmentSet.nameProperty().concat(" Total"));
+        setColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(assessmentSet));
+        setColumn.setPrefWidth(86);
 
-        table.getColumns().add(totalColumn);
-        addToColumnsList(totalColumn);
+        table.getColumns().add(setColumn);
+        addToColumnsList(setColumn);
+
+        this.columnComboBox.getItems().add(setColumn);
     }
 
     public void createTotalColumn() {
         if (totalColumn == null) {
             totalColumn = new AssessmentColumn<Student, Double>("Total Mark");
             totalColumn.setCellValueFactory(c -> c.getValue().totalGradeProperty());
+            totalColumn.setPrefWidth(91);
 
             table.getColumns().add(totalColumn);
+
+            this.columnComboBox.getItems().add(0, totalColumn);
+            columnComboBox.getSelectionModel().select(totalColumn);
+
         } else {
             removeTotalColumn();
             reAddTotalColumn();
@@ -1240,8 +1354,8 @@ public class MainController implements Initializable {
 
 
     @FXML
-    public void printSelectedStudent() {
-        System.out.println(table.getSelectionModel().getSelectedItem());
+    public void printSelectedStudents() {
+        table.getSelectionModel().getSelectedItems().forEach(System.out::println);
     }
 
     @FXML
@@ -1269,6 +1383,7 @@ public class MainController implements Initializable {
                 System.out.println("number of Fs = " + c.getStatistics(a).numberOfFs());
                 System.out.println("Number of compeleted assessments = " + c.getNumberAttempted(a));
                 System.out.println("Number of students = " + c.getNumberOfStudents());
+                System.out.println();
             });
 
             System.out.println("Total Grade:");
@@ -1277,6 +1392,7 @@ public class MainController implements Initializable {
             System.out.println("number of CRs = " + c.getTotalStatistics().numberOfCRs());
             System.out.println("number of Ps = " + c.getTotalStatistics().numberOfPs());
             System.out.println("number of Fs = " + c.getTotalStatistics().numberOfFs());
+            System.out.println();
         }
     }
 

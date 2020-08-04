@@ -14,7 +14,7 @@ public class Class implements StudentGroup {
     private StringProperty name;
     private ObservableList<Student> students;
     private ObservableList<Assessment> assessments;
-    private ObservableMap<Assessment, Statistics> assessmentStatistics;
+    private ObservableMap<Assessment, AssessmentStatistics> assessmentStatistics;
     private Statistics totalGradeStatistics;
 
     public Class(String name) {
@@ -22,7 +22,7 @@ public class Class implements StudentGroup {
         this.students = FXCollections.observableArrayList();
         this.assessments = FXCollections.observableArrayList();
         this.assessmentStatistics = FXCollections.observableMap(new LinkedHashMap<>());
-        this.totalGradeStatistics = new Statistics();
+        this.totalGradeStatistics = new Statistics(students);
     }
 
     public String getName() {
@@ -47,7 +47,7 @@ public class Class implements StudentGroup {
 
     public void addAssessment(Assessment assessment) {
         assessments.add(assessment);
-        assessmentStatistics.put(assessment, new Statistics());
+        assessmentStatistics.put(assessment, new AssessmentStatistics(students, assessment));
 
         for (Student s: students) {
             if (assessment instanceof StdAssessment) {
@@ -72,7 +72,7 @@ public class Class implements StudentGroup {
         return assessments;
     }
 
-    public Statistics getStatistics(Assessment assessment) {
+    public AssessmentStatistics getStatistics(Assessment assessment) {
         return assessmentStatistics.get(assessment);
     }
 
@@ -89,12 +89,45 @@ public class Class implements StudentGroup {
     }
 
     public void updateAssessmentStatistics(Assessment assessment, Student student, ObjectProperty<?> gradeProperty) {
-        assessmentStatistics.get(assessment).updateStatistics(student, gradeProperty);
+        assessmentStatistics.get(assessment).update(student, gradeProperty);
     }
 
     public void updateTotalGradeStatistics(Student student, ObjectProperty<Double> gradeProperty) {
-        totalGradeStatistics.updateStatistics(student, gradeProperty);
+        totalGradeStatistics.update(student, gradeProperty);
     }
+
+    public ObjectProperty<Double> totalGradeMedianProperty() {
+        return totalGradeStatistics.medianProperty();
+    }
+
+    public ObjectProperty<Double> totalGradeAverageProperty() {
+        return totalGradeStatistics.averageProperty();
+    }
+
+    public ObjectProperty<Double> totalGradeHighestProperty() {
+        return totalGradeStatistics.highestGradeProperty();
+    }
+
+    public ObjectProperty<Double> totalGradeLowestProperty() {
+        return totalGradeStatistics.lowestGradeProperty();
+    }
+
+    public ObjectProperty<Double> assessmentMedianProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).medianProperty();
+    }
+
+    public ObjectProperty<Double> assessmentAverageProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).averageProperty();
+    }
+
+    public ObjectProperty<Double> assessmentHighestProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).highestGradeProperty();
+    }
+
+    public ObjectProperty<Double> assessmentLowestProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).lowestGradeProperty();
+    }
+
 
     @Override
     public String toString() {

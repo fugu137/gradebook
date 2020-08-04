@@ -9,20 +9,20 @@ import javafx.collections.ObservableMap;
 
 import java.util.LinkedHashMap;
 
-public class Course implements StudentGroup {
+public class CourseCohort implements StudentGroup {
 
     private StringProperty name;
     private ObservableList<Student> students;
     private ObservableList<Assessment> assessments;
-    private ObservableMap<Assessment, Statistics> assessmentStatistics;
+    private ObservableMap<Assessment, AssessmentStatistics> assessmentStatistics;
     private Statistics totalGradeStatistics;
 
-    public Course(String name) {
+    public CourseCohort(String name) {
         this.name = new SimpleStringProperty(name);
         this.students = FXCollections.observableArrayList();
         this.assessments = FXCollections.observableArrayList();
         this.assessmentStatistics = FXCollections.observableMap(new LinkedHashMap<>());
-        this.totalGradeStatistics = new Statistics();
+        this.totalGradeStatistics = new Statistics(students);
     }
 
     public String getName() {
@@ -70,16 +70,48 @@ public class Course implements StudentGroup {
     }
 
     public void updateAssessmentStatistics(Assessment assessment, Student student, ObjectProperty<?> gradeProperty) {
-        assessmentStatistics.get(assessment).updateStatistics(student, gradeProperty);
+        assessmentStatistics.get(assessment).update(student, gradeProperty);
     }
 
     public void updateTotalGradeStatistics(Student student, ObjectProperty<Double> gradeProperty) {
-        totalGradeStatistics.updateStatistics(student, gradeProperty);
+        totalGradeStatistics.update(student, gradeProperty);
     }
 
     public void addAssessment(Assessment assessment) {
         assessments.add(assessment);
-        assessmentStatistics.put(assessment, new Statistics());
+        assessmentStatistics.put(assessment, new AssessmentStatistics(students, assessment));
+    }
+
+    public ObjectProperty<Double> totalGradeMedianProperty() {
+        return totalGradeStatistics.medianProperty();
+    }
+
+    public ObjectProperty<Double> totalGradeAverageProperty() {
+        return totalGradeStatistics.averageProperty();
+    }
+
+    public ObjectProperty<Double> totalGradeHighestProperty() {
+        return totalGradeStatistics.highestGradeProperty();
+    }
+
+    public ObjectProperty<Double> totalGradeLowestProperty() {
+        return totalGradeStatistics.lowestGradeProperty();
+    }
+
+    public ObjectProperty<Double> assessmentMedianProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).medianProperty();
+    }
+
+    public ObjectProperty<Double> assessmentAverageProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).averageProperty();
+    }
+
+    public ObjectProperty<Double> assessmentHighestProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).highestGradeProperty();
+    }
+
+    public ObjectProperty<Double> assessmentLowestProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).lowestGradeProperty();
     }
 
     @Override

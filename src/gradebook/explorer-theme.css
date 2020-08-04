@@ -270,11 +270,15 @@
     -fx-padding: 0.0 0.15em;
 }
 
+
 /*Misc*/
 .white-pane {
     -fx-background-color: white;
     -fx-border-color: white;
     -fx-effect: null;
+}
+.sub-title-text {
+    -fx-text-fill: -fx-blue-text;
 }
 
 /*Toolbar*/

@@ -270,11 +270,15 @@
     -fx-padding: 0.0 0.15em;
 }
 
+
 /*Misc*/
 .white-pane {
     -fx-background-color: white;
     -fx-border-color: white;
     -fx-effect: null;
+}
+.sub-title-text {
+    -fx-text-fill: -fx-blue-text;
 }
 
 /*Toolbar*/
@@ -295,6 +299,26 @@
     -fx-border-color: derive(#1765ad, 90%);
 }
 .toolbar-button: armed {
+    -fx-background-color: derive(#1765ad, 120%);
+    -fx-border-color: derive(#1765ad, 55%);
+}
+.toolbar-button-big {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-insets: 0 0 -1 0;
+    -fx-padding: 3 2 3 2;
+    -fx-effect: null;
+    -fx-opacity: 1;
+}
+.toolbar-button-big: disabled {
+    -fx-opacity: 40%;
+}
+.toolbar-button-big: hover {
+    -fx-background-color: derive(#1765ad, 130%);
+    -fx-border-color: derive(#1765ad, 90%);
+}
+.toolbar-button-big: armed {
     -fx-background-color: derive(#1765ad, 120%);
     -fx-border-color: derive(#1765ad, 55%);
 }

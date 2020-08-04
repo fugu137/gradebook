@@ -15,7 +15,7 @@ public class Student {
     private StringProperty surname;
     private StringProperty givenNames;
     private StringProperty preferredName;
-    private Course course;
+    private CourseCohort courseCohort;
     private Class classGroup;
     private Gender gender;
     private ObjectProperty<Integer> sid;
@@ -48,14 +48,14 @@ public class Student {
             if (classGroup != null) {
                 classGroup.updateTotalGradeStatistics(this, grades.totalGradeProperty());
             }
-            if (course != null) {
-                course.updateTotalGradeStatistics(this, grades.totalGradeProperty());
+            if (courseCohort != null) {
+                courseCohort.updateTotalGradeStatistics(this, grades.totalGradeProperty());
             }
         });
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseCohort(CourseCohort courseCohort) {
+        this.courseCohort = courseCohort;
     }
 
     public String getSurname() {
@@ -159,8 +159,8 @@ public class Student {
                 if (classGroup != null) {
                     classGroup.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
                 }
-                if (course != null) {
-                    course.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
+                if (courseCohort != null) {
+                    courseCohort.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
                 }
             }
         });
@@ -177,8 +177,8 @@ public class Student {
                 if (classGroup != null) {
                     classGroup.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());
                 }
-                if (course != null) {
-                    course.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());
+                if (courseCohort != null) {
+                    courseCohort.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());
                 }
             }
         });
@@ -282,7 +282,7 @@ public class Student {
         StringBuilder sb = new StringBuilder(getGivenNames() + " " + getSurname() + ", class: " + getClassGroup() + ", preferred name: " + getPreferredName() +
                 ", gender: " + getGender() + ", sid: " + getSid() + ", degree: " + getDegree() + ", email: " + getEmail() + " ");
 
-        sb.append(" [");
+        sb.append(" [Total Grade: ").append(getTotalGrade()).append(" ");
         for (AssessmentData d : grades.assessmentDataList()) {
             if (d instanceof StdAssessmentData) {
                 StdAssessmentData stdData = (StdAssessmentData) d;

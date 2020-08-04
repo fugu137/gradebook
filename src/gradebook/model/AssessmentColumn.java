@@ -18,6 +18,11 @@ public class AssessmentColumn<Student, Number> extends TableColumn<Student, Numb
     public Assessment getAssessment() {
         return assessment;
     }
+
+    @Override
+    public String toString() {
+        return getText();
+    }
 }
 
 
