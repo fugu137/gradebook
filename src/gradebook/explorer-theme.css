@@ -270,12 +270,15 @@
     -fx-padding: 0.0 0.15em;
 }
 
-
 /*Misc*/
 .white-pane {
     -fx-background-color: white;
     -fx-border-color: white;
     -fx-effect: null;
+}
+.bordered-white-pane {
+    -fx-background-color: white;
+    -fx-border-color: -fx-faint-border;
 }
 .sub-title-text {
     -fx-text-fill: -fx-blue-text;
@@ -730,6 +733,58 @@
 .titled-pane:focused > .title > .arrow-button .arrow {
     -fx-effect: null;
 }
+
+/*Chart*/
+.chart-title {
+    -fx-font-size: 14;
+    -fx-wrap: true;
+    -fx-alignment: CENTER;
+
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-alignment: CENTER;
+}
+.chart-legend-item-symbol{
+   -fx-background-radius: 0;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: -fx-faint-border;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: -fx-faint-border;
+}
+
+.chart-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: derive(black, 60%);
+    -fx-border-color: -fx-box-border;
+    -fx-border-radius: 0;
+    -fx-padding: 0 3 0 3;
+    -fx-border-insets: 0 0 0 0;
+}
+.chart-button: disabled {
+    -fx-opacity: 40%;
+}
+.chart-button: hover {
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: -fx-box-border;
+}
+.chart-button: armed {
+    -fx-background-color: white;
+    -fx-border-color: -fx-border;
+}
+
+
+
+
 
 
 

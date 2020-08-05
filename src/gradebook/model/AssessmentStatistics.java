@@ -2,6 +2,7 @@ package gradebook.model;
 
 import gradebook.tools.NumberRounder;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.BarChart;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,12 +46,19 @@ public class AssessmentStatistics extends Statistics {
 
         Collections.sort(grades);
 
-        lowestGradeProperty().set(grades.get(0));
-        highestGradeProperty().set(grades.get(grades.size() - 1));
+        if (grades.size() > 0) {
+            lowestGradeProperty().set(grades.get(0));
+            highestGradeProperty().set(grades.get(grades.size() - 1));
 
-        super.setMedian(grades);
-        super.setAverage(grades);
+            super.setMedian(grades);
+            super.setAverage(grades);
+        }
     }
 
+    @Override
+    public void fillBarChart(BarChart<String, Number> barChart, StudentGroup group) {
+        barChart.setTitle(assessment.getName());
+        addChartData(barChart, group);
+    }
 
 }

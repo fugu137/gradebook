@@ -10,6 +10,7 @@ public interface StudentGroup {
     Statistics getStatistics(Assessment assessment);
     Statistics getTotalStatistics();
     ObservableList<Assessment> getAssessments();
+    int getNumberAttempted();
     int getNumberAttempted(Assessment assessment);
     int getNumberOfStudents();
     void addAssessment(Assessment assessment);

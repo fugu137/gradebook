@@ -1,9 +1,13 @@
 package gradebook.model;
 
+import gradebook.tools.NumberRounder;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,12 +94,13 @@ public class Statistics {
         }
         Collections.sort(grades);
 
-        this.lowestGrade.set(grades.get(0));
-        this.highestGrade.set(grades.get(grades.size() - 1));
+        if (grades.size() > 0) {
+            this.lowestGrade.set(grades.get(0));
+            this.highestGrade.set(grades.get(grades.size() - 1));
 
-        setMedian(grades);
-        setAverage(grades);
-
+            setMedian(grades);
+            setAverage(grades);
+        }
     }
 
     void setMedian(List<Double> grades) {
@@ -104,6 +109,7 @@ public class Statistics {
         if (grades.size() % 2 == 0) {
             int middleIndex = (grades.size() / 2) - 1;
             median = (grades.get(middleIndex) + grades.get(middleIndex + 1)) / 2;
+            median = NumberRounder.round(median, 1);
 
         } else {
             int middleIndex = grades.size() / 2;
@@ -121,7 +127,7 @@ public class Statistics {
             sum = sum + d;
             number++;
         }
-        this.average.set(sum / number);
+        this.average.set(NumberRounder.round(sum / number, 1));
     }
 
     public int numberOfHDs() {
@@ -144,7 +150,7 @@ public class Statistics {
         return fStudents.size();
     }
 
-    public int numberOfStudents() {
+    public int numberOfStudentsWithGrades() {
         return hdStudents.size() + dStudents.size() + crStudents.size() + pStudents.size() + fStudents.size();
     }
 
@@ -166,6 +172,46 @@ public class Statistics {
 
     public ObservableList<Student> getFStudents() {
         return fStudents;
+    }
+
+    public Double getPercentageOfHDs() {
+        if (numberOfHDs() > 0) {
+            return NumberRounder.round((double) numberOfHDs() * 100 / numberOfStudentsWithGrades(), 1);
+        } else {
+            return 0.0;
+        }
+    }
+
+    public Double getPercentageOfDs() {
+        if (numberOfDs() > 0) {
+            return NumberRounder.round((double) numberOfDs() * 100 / numberOfStudentsWithGrades(), 1);
+        } else {
+            return 0.0;
+        }
+    }
+
+    public Double getPercentageOfCRs() {
+        if (numberOfCRs() > 0) {
+            return NumberRounder.round((double) numberOfCRs() * 100 / numberOfStudentsWithGrades(), 1);
+        } else {
+            return 0.0;
+        }
+    }
+
+    public Double getPercentageOfPs() {
+        if (numberOfPs() > 0) {
+            return NumberRounder.round((double) numberOfPs() * 100 / numberOfStudentsWithGrades(), 1);
+        } else {
+            return 0.0;
+        }
+    }
+
+    public Double getPercentageOfFs() {
+        if (numberOfFs() > 0) {
+            return NumberRounder.round((double) numberOfFs() * 100 / numberOfStudentsWithGrades(), 1);
+        } else {
+            return 0.0;
+        }
     }
 
     public Double getMedian() {
@@ -202,5 +248,83 @@ public class Statistics {
 
     public ObservableList<Student> getClassStudents() {
         return classStudents;
+    }
+
+    public void fillBarChart(BarChart<String, Number> barChart, StudentGroup group) {
+        barChart.setTitle("All Assessments");
+        addChartData(barChart, group);
+
+    }
+
+    void addChartData(BarChart<String, Number> barChart, StudentGroup group) {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(group.getName());
+
+        XYChart.Data<String, Number> hdData = new XYChart.Data<>("HD", getPercentageOfHDs());
+        series.getData().add(hdData);
+        hdStudents.addListener(new ListChangeListener<Student>() {
+            @Override
+            public void onChanged(Change<? extends Student> change) {
+                while (change.next()) {
+                    if (change.wasRemoved() || change.wasAdded()) {
+                        hdData.setYValue(getPercentageOfHDs());
+                    }
+                }
+            }
+        });
+
+        XYChart.Data<String, Number> dData = new XYChart.Data<>("D", getPercentageOfDs());
+        series.getData().add(dData);
+        dStudents.addListener(new ListChangeListener<Student>() {
+            @Override
+            public void onChanged(Change<? extends Student> change) {
+                while (change.next()) {
+                    if (change.wasRemoved() || change.wasAdded()) {
+                        hdData.setYValue(getPercentageOfDs());
+                    }
+                }
+            }
+        });
+
+        XYChart.Data<String, Number> crData = new XYChart.Data<>("CR", getPercentageOfCRs());
+        series.getData().add(crData);
+        crStudents.addListener(new ListChangeListener<Student>() {
+            @Override
+            public void onChanged(Change<? extends Student> change) {
+                while (change.next()) {
+                    if (change.wasRemoved() || change.wasAdded()) {
+                        hdData.setYValue(getPercentageOfCRs());
+                    }
+                }
+            }
+        });
+
+        XYChart.Data<String, Number> pData = new XYChart.Data<>("P", getPercentageOfPs());
+        series.getData().add(pData);
+        pStudents.addListener(new ListChangeListener<Student>() {
+            @Override
+            public void onChanged(Change<? extends Student> change) {
+                while (change.next()) {
+                    if (change.wasRemoved() || change.wasAdded()) {
+                        hdData.setYValue(getPercentageOfPs());
+                    }
+                }
+            }
+        });
+
+        XYChart.Data<String, Number> fData = new XYChart.Data<>("F", getPercentageOfFs());
+        series.getData().add(fData);
+        fStudents.addListener(new ListChangeListener<Student>() {
+            @Override
+            public void onChanged(Change<? extends Student> change) {
+                while (change.next()) {
+                    if (change.wasRemoved() || change.wasAdded()) {
+                        hdData.setYValue(getPercentageOfFs());
+                    }
+                }
+            }
+        });
+
+        barChart.getData().add(series);
     }
 }

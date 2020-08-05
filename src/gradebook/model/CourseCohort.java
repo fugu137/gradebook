@@ -6,6 +6,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.scene.chart.BarChart;
 
 import java.util.LinkedHashMap;
 
@@ -61,8 +62,12 @@ public class CourseCohort implements StudentGroup {
         return totalGradeStatistics;
     }
 
+    public int getNumberAttempted() {
+        return totalGradeStatistics.numberOfStudentsWithGrades();
+    }
+
     public int getNumberAttempted(Assessment assessment) {
-        return assessmentStatistics.get(assessment).numberOfStudents();
+        return assessmentStatistics.get(assessment).numberOfStudentsWithGrades();
     }
 
     public int getNumberOfStudents() {
@@ -112,6 +117,18 @@ public class CourseCohort implements StudentGroup {
 
     public ObjectProperty<Double> assessmentLowestProperty(Assessment assessment) {
         return assessmentStatistics.get(assessment).lowestGradeProperty();
+    }
+
+    public void fillBarChartWithOverallGrades(BarChart<String, Number> barChart) {
+        totalGradeStatistics.fillBarChart(barChart, this);
+        barChart.setBarGap(0.0);
+        barChart.setCategoryGap(35);
+    }
+
+    public void fillBarChartWithAssessmentGrades(BarChart<String, Number> barChart, Assessment assessment) {
+        assessmentStatistics.get(assessment).fillBarChart(barChart,this);
+        barChart.setBarGap(0.0);
+        barChart.setCategoryGap(35);
     }
 
     @Override

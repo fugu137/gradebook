@@ -102,6 +102,8 @@ public class FileManager {
 
     public void load(File fileFromFileChooser, MainController mainController) {
 
+        this.file = fileFromFileChooser;
+
         CourseManager courseManager = new CourseManager(null);
         Map<String, Class> classMap = new HashMap<>();
 

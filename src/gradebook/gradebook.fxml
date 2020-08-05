@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.MainController">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.MainController">
    <top>
       <TabPane fx:id="tabPane" prefHeight="117.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -23,7 +23,7 @@
                   </MenuButton>
                </graphic>
           </Tab>
-          <Tab id="second-from-left-tab" text="Edit">
+          <Tab id="second-from-left-tab" text="Home">
                <content>
                   <HBox prefHeight="100.0">
                      <children>
@@ -61,7 +61,7 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <Separator opacity="0.6" orientation="VERTICAL">
+                        <Separator opacity="0.65" orientation="VERTICAL">
                            <padding>
                               <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
@@ -178,7 +178,7 @@
                               <Insets right="5.0" />
                            </padding>
                         </VBox>
-                        <Separator opacity="0.6" orientation="VERTICAL">
+                        <Separator opacity="0.65" orientation="VERTICAL">
                            <padding>
                               <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
@@ -266,10 +266,10 @@
                               </HBox>
                            </children>
                            <padding>
-                              <Insets right="5.0" />
+                              <Insets right="6.0" />
                            </padding>
                         </VBox>
-                        <Separator opacity="0.6" orientation="VERTICAL">
+                        <Separator opacity="0.65" orientation="VERTICAL">
                            <padding>
                               <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
@@ -321,7 +321,7 @@
                                                       <Insets right="14.0" top="4.5" />
                                                    </padding>
                                                 </VBox>
-                                                <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                                                <Separator opacity="0.49" orientation="VERTICAL" prefHeight="200.0">
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
                                                    </padding>
@@ -371,7 +371,7 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <Separator opacity="0.6" orientation="VERTICAL">
+                        <Separator opacity="0.65" orientation="VERTICAL">
                            <padding>
                               <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
@@ -437,7 +437,7 @@
                               <Insets left="5.0" top="1.0" />
                            </padding>
                         </VBox>
-                        <Separator opacity="0.6" orientation="VERTICAL">
+                        <Separator opacity="0.65" orientation="VERTICAL">
                            <padding>
                               <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
@@ -465,7 +465,7 @@
                               <Insets left="16.0" right="12.0" top="6.0" />
                            </padding>
                         </VBox>
-                        <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                        <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
                            <padding>
                               <Insets bottom="2.0" left="5.0" top="1.0" />
                            </padding>
@@ -474,7 +474,7 @@
                            <children>
                               <HBox>
                                  <children>
-                                    <VBox prefHeight="88.0" prefWidth="55.0">
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
                                        <children>
                                           <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
@@ -495,7 +495,12 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="55.0">
+                                    <Separator opacity="0.5" orientation="VERTICAL" prefHeight="200.0">
+                                       <padding>
+                                          <Insets bottom="11.0" left="5.0" top="2.0" />
+                                       </padding>
+                                    </Separator>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
                                        <children>
                                           <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
@@ -516,7 +521,12 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="55.0">
+                                    <Separator opacity="0.5" orientation="VERTICAL" prefHeight="200.0">
+                                       <padding>
+                                          <Insets bottom="11.0" left="5.0" top="2.0" />
+                                       </padding>
+                                    </Separator>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
                                        <children>
                                           <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
@@ -537,7 +547,12 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="88.0" prefWidth="55.0">
+                                    <Separator opacity="0.5" orientation="VERTICAL" prefHeight="200.0">
+                                       <padding>
+                                          <Insets bottom="11.0" left="5.0" top="2.0" />
+                                       </padding>
+                                    </Separator>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
                                        <children>
                                           <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
@@ -567,27 +582,27 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                        <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
                            <padding>
                               <Insets bottom="2.0" left="2.0" right="5.0" top="1.0" />
                            </padding>
                         </Separator>
                         <HBox>
                            <children>
-                              <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Grade Distribution" textAlignment="CENTER" wrapText="true">
+                              <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#showStatisticsPane" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Grade Distribution" textAlignment="CENTER" wrapText="true">
                                  <graphic>
-                                    <ImageView fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../resources/icons/line-graph-icon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Demographic Info" textAlignment="CENTER" wrapText="true">
+                              <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Demographic Data" textAlignment="CENTER" wrapText="true">
                                  <graphic>
-                                    <ImageView fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../resources/icons/325803-3.png" />
+                                          <Image url="@../resources/icons/245369-4.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -597,7 +612,7 @@
                               <Insets right="6.0" top="1.0" />
                            </padding>
                         </HBox>
-                        <Separator opacity="0.6" orientation="VERTICAL" prefHeight="200.0">
+                        <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
                            <padding>
                               <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                            </padding>
@@ -637,19 +652,26 @@
             <Insets />
          </BorderPane.margin>
          <padding>
-            <Insets bottom="4.0" left="8.0" right="8.0" top="10.0" />
+            <Insets left="8.0" right="8.0" top="10.0" />
          </padding>
       </VBox>
    </center>
    <bottom>
-      <HBox prefHeight="23.0" prefWidth="1280.0" spacing="20.0" styleClass="white-pane" BorderPane.alignment="CENTER">
+      <HBox prefHeight="28.0" prefWidth="1280.0" spacing="20.0" styleClass="white-pane" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="numberOfStudentsLabel" layoutX="16.0" layoutY="11.0" text="Number of students:" />
             <Label fx:id="numberSelectedLabel" text="Selected students: " />
          </children>
          <padding>
-            <Insets left="6.0" right="5.0" />
+            <Insets left="6.0" right="5.0" top="2.0" />
          </padding>
       </HBox>
    </bottom>
+   <right>
+      <AnchorPane styleClass="white-pane" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </AnchorPane>
+   </right>
 </BorderPane>

@@ -24,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -38,6 +39,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
+
+    //Main Layout//
+    @FXML
+    BorderPane mainPane;
 
     //Table//
     @FXML
@@ -138,6 +143,8 @@ public class MainController implements Initializable {
     @FXML
     private Label lowestLabel;
 
+    StatisticsPane statisticsPane;
+
 
 
     //Footer Bar//
@@ -188,6 +195,8 @@ public class MainController implements Initializable {
         setupToolbarBindings();
 
         loadFooterSettings();
+
+//        showStatisticsPane();
     }
 
     //Initialize Methods//
@@ -429,6 +438,8 @@ public class MainController implements Initializable {
     }
 
     private void checkBoxBindings() {
+        //TODO: fix issue with checkboxes not disabling on removal of assessment
+
         essaysCheckBoxBinding();
         essayColumnBinding();
 
@@ -973,6 +984,9 @@ public class MainController implements Initializable {
         //TODO: warning about unsaved file before loading
 
         fileManager.load(file, this);
+
+        //TODO: allow save (rather than just saveas) after loading
+        saveMenuItem.setDisable(false);
     }
 
     public void saveGradebook() {
@@ -1393,6 +1407,21 @@ public class MainController implements Initializable {
             System.out.println("number of Ps = " + c.getTotalStatistics().numberOfPs());
             System.out.println("number of Fs = " + c.getTotalStatistics().numberOfFs());
             System.out.println();
+        }
+    }
+
+    @FXML
+    public void showStatisticsPane() {
+
+        if (courseManager.getAssessments().size() < 1) {
+            System.out.println("No assessments statistics found!");
+            //TODO: popup message
+
+        } else {
+            statisticsPane = new StatisticsPane();
+            mainPane.setRight(statisticsPane);
+            statisticsPane.fillBarChart(courseManager);
+            statisticsPane.fillPieChart(courseManager);
         }
     }
 
