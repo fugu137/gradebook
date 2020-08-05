@@ -2,6 +2,7 @@ package gradebook.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.BarChart;
 
 public interface StudentGroup {
 
@@ -22,6 +23,8 @@ public interface StudentGroup {
     ObjectProperty<Double> assessmentAverageProperty(Assessment assessment);
     ObjectProperty<Double> assessmentHighestProperty(Assessment assessment);
     ObjectProperty<Double> assessmentLowestProperty(Assessment assessment);
+    void fillBarChartWithOverallGrades(BarChart<String, Number> barChart);
+    void fillBarChartWithAssessmentGrades(BarChart<String, Number> barChart, Assessment assessment);
 
 
 }

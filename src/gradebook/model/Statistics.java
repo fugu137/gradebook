@@ -250,8 +250,8 @@ public class Statistics {
         return classStudents;
     }
 
-    public void fillBarChart(BarChart<String, Number> barChart, StudentGroup group) {
-        barChart.setTitle("All Assessments");
+    void fillBarChart(BarChart<String, Number> barChart, StudentGroup group) {
+        barChart.setTitle("Total Grade (" + group.getName() + ")");
         addChartData(barChart, group);
 
     }

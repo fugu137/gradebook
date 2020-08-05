@@ -456,13 +456,18 @@
                         <Insets bottom="1.0" top="2.0" />
                      </padding>
                      <children>
-                        <VBox prefHeight="88.0" prefWidth="115.0" spacing="5.0">
+                        <VBox prefHeight="88.0" spacing="8.0">
                            <children>
-                              <Label text="Column" />
-                              <ComboBox fx:id="columnComboBox" prefHeight="19.0" prefWidth="98.0" styleClass="toolbar-combo-box" />
+                              <HBox spacing="6.0">
+                                 <children>
+                                    <ComboBox fx:id="statisticsClassComboBox" prefHeight="19.0" prefWidth="68.0" styleClass="toolbar-combo-box" />
+                                    <Label text="Class" />
+                                 </children>
+                              </HBox>
+                              <ComboBox fx:id="columnComboBox" prefHeight="19.0" prefWidth="101.0" styleClass="toolbar-combo-box" />
                            </children>
                            <padding>
-                              <Insets left="16.0" right="12.0" top="6.0" />
+                              <Insets left="16.0" right="12.0" top="8.0" />
                            </padding>
                         </VBox>
                         <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">

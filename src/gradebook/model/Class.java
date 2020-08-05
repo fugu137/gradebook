@@ -133,7 +133,7 @@ public class Class implements StudentGroup {
         return assessmentStatistics.get(assessment).lowestGradeProperty();
     }
 
-    public void fillBarChartWithOverAllGrades(BarChart<String, Number> barChart) {
+    public void fillBarChartWithOverallGrades(BarChart<String, Number> barChart) {
         totalGradeStatistics.fillBarChart(barChart,this);
         barChart.setBarGap(0.0);
         barChart.setCategoryGap(35);

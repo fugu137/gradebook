@@ -86,4 +86,7 @@ public class AssessmentSet implements Assessment {
         }
     }
 
+    public String columnName() {
+        return name.getValue() + " Total";
+    }
 }

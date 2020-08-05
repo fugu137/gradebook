@@ -301,7 +301,7 @@ public class CourseManager {
 
 
     public void fillBarChartWithAssessmentGrades(BarChart<String, Number> barChart, Assessment assessment) {
-        barChart.setTitle(assessment.getName());
+        barChart.setTitle(assessment.columnName());
         addOverallGradeChartData(barChart);
     }
 

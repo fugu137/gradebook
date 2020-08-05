@@ -39,8 +39,8 @@ public class FileChooserWindow {
     public static File displayLoadWindow(Window window, String title) {
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Gradebook Files", "*.gbk"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         fileChooser.setTitle(title);
 
         return fileChooser.showOpenDialog(window);
@@ -50,8 +50,8 @@ public class FileChooserWindow {
     public static File displaySaveWindow(Window window, String title) {
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Gradebook Files", "*.gbk"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         fileChooser.setTitle(title);
 
         return fileChooser.showSaveDialog(window);

@@ -48,6 +48,10 @@ public class StdAssessment implements Assessment {
         return type;
     }
 
+    public String columnName() {
+        return name.getValue();
+    }
+
     @Override
     public void setType(AssessmentType type) {
         this.type = type;

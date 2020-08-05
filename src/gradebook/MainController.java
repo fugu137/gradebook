@@ -132,6 +132,8 @@ public class MainController implements Initializable {
     private Tab statisticsTab;
 
     @FXML
+    private ComboBox<StudentGroup> statisticsClassComboBox;
+    @FXML
     private ComboBox<AssessmentColumn<Student, ?>> columnComboBox;
 
     @FXML
@@ -177,6 +179,7 @@ public class MainController implements Initializable {
     public void setCourseManager(CourseManager newCourseManager) {
         this.courseManager = newCourseManager;
         setupClassListBox();
+        setupStatisticsClassBox();
     }
 
     @Override
@@ -377,7 +380,10 @@ public class MainController implements Initializable {
 //        setupClassListBox();
 //        setupGradeListBox();
         setupStatisticsLabels();
-        setupColumnsBox();
+        setupStatisticsClassBox();
+        columnsComboBoxBinding();
+
+        statisticsClassBoxBinding();
     }
 
     private void toggleButtonBindings() {
@@ -771,8 +777,6 @@ public class MainController implements Initializable {
         classListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
             filterByGroupSelection();
             filterByGradeSelection();
-
-            setupStatisticsLabels();
         });
     }
 
@@ -830,7 +834,7 @@ public class MainController implements Initializable {
     }
 
     private void setupStatisticsLabels() {
-        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
+        StudentGroup selectedGroup = statisticsClassComboBox.getSelectionModel().getSelectedItem();
         AssessmentColumn<Student, ?> selectedColumn = columnComboBox.getSelectionModel().getSelectedItem();
 
         if (selectedGroup != null && selectedColumn != null) {
@@ -899,10 +903,30 @@ public class MainController implements Initializable {
         });
     }
 
-    private void setupColumnsBox() {
+    private void columnsComboBoxBinding() {
         this.columnComboBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
             setupStatisticsLabels();
+            updateBarChart();
         });
+    }
+
+
+    private void statisticsClassBoxBinding() {
+        statisticsClassComboBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
+            setupStatisticsLabels();
+            updateBarChart();
+        });
+    }
+
+    private void setupStatisticsClassBox() {
+        statisticsClassComboBox.setItems(courseManager.getStudentGroups());
+        statisticsClassComboBox.getSelectionModel().selectFirst();
+    }
+
+    private void updateBarChart() {
+        if (statisticsPane != null) {
+            statisticsPane.replaceAndFillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
+        }
     }
 
 
@@ -1294,6 +1318,40 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    public void showStatisticsPane() {
+
+        if (courseManager.getAssessments().size() < 1) {
+            System.out.println("No assessments statistics found!");
+            //TODO: popup message
+
+        } else {
+            if (statisticsPane == null) {
+                statisticsPane = new StatisticsPane();
+
+                setupCloseButton(statisticsPane.getCloseButton());
+
+                mainPane.setRight(statisticsPane);
+                statisticsPane.fillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
+                statisticsPane.fillPieChart(courseManager);
+            } else {
+//                statisticsPane = new StatisticsPane();
+//
+//                setupCloseButton(statisticsPane.getCloseButton());
+//
+                mainPane.setRight(statisticsPane);
+//                statisticsPane.fillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
+//                statisticsPane.fillPieChart(courseManager);
+            }
+        }
+    }
+
+    private void setupCloseButton(Button closeButton) {
+        closeButton.setOnAction(e -> {
+            mainPane.setRight(null);
+        });
+    }
+
 
     //Test Methods//
     public void addDummyData() {
@@ -1410,20 +1468,7 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    public void showStatisticsPane() {
 
-        if (courseManager.getAssessments().size() < 1) {
-            System.out.println("No assessments statistics found!");
-            //TODO: popup message
-
-        } else {
-            statisticsPane = new StatisticsPane();
-            mainPane.setRight(statisticsPane);
-            statisticsPane.fillBarChart(courseManager);
-            statisticsPane.fillPieChart(courseManager);
-        }
-    }
 
 }
 
