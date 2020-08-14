@@ -26,6 +26,13 @@ public class CourseCohort implements StudentGroup {
         this.totalGradeStatistics = new Statistics(students);
     }
 
+    public void clear() {
+        students.clear();
+        assessments.clear();
+        assessmentStatistics.clear();
+        totalGradeStatistics = new Statistics(students);
+    }
+
     public String getName() {
         return name.getValue();
     }

@@ -30,6 +30,14 @@ public class CourseManager {
         this.assessments = FXCollections.observableArrayList();
     }
 
+    public void clear() {
+        courseCohort.clear();
+        unassigned.clear();
+        studentGroups.removeIf(s -> !(s == courseCohort) && !(s == unassigned));
+        classes.removeIf(s -> !(s == unassigned));
+        assessments.clear();
+    }
+
     public void setCourseName(String name) {
         this.courseCohort.setName(name);
     }
@@ -73,6 +81,15 @@ public class CourseManager {
                 System.out.println("Assessment type not found...");
             }
         }
+
+        addClassListener(student);
+    }
+
+    private void addClassListener(Student student) {
+        student.classGroupProperty().addListener((obs, oldValue, newValue) -> {
+            oldValue.removeStudent(student);
+            newValue.addStudent(student);
+        });
     }
 
     public void newStudents(ObservableList<Student> students) {
@@ -81,9 +98,16 @@ public class CourseManager {
 
     public void reAddAllStudentsAt(int index, ObservableList<Student> students) {
         courseCohort.addAllAt(index, students);
+
         for (Student s : students) {
-            Class classGroup = s.getClassGroup();
-            classGroup.addStudent(s);
+
+            if (s.getAssessmentDataList().size() > 0) {
+                Class classGroup = s.getClassGroup();
+                classGroup.addStudent(s);
+
+            } else {
+                newStudent(s);
+            }
         }
     }
 

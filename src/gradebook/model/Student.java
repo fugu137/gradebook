@@ -16,7 +16,7 @@ public class Student {
     private StringProperty givenNames;
     private StringProperty preferredName;
     private CourseCohort courseCohort;
-    private Class classGroup;
+    private ObjectProperty<Class> classGroup;
     private Gender gender;
     private ObjectProperty<Integer> sid;
     private StringProperty degree;
@@ -33,7 +33,7 @@ public class Student {
         this.surname = new SimpleStringProperty(surname);
         this.givenNames = new SimpleStringProperty(givenNames);
         this.preferredName = new SimpleStringProperty(preferredName);
-        this.classGroup = classGroup;
+        this.classGroup = new SimpleObjectProperty<>(classGroup);
         this.gender = gender;
         this.sid = new SimpleObjectProperty<>(sid);
         this.degree = new SimpleStringProperty(degree);
@@ -44,9 +44,11 @@ public class Student {
     }
 
     private void addTotalGradeListener() {
+        Class studentClass = classGroup.getValue();
+
         grades.totalGradeProperty().addListener(obs -> {
-            if (classGroup != null) {
-                classGroup.updateTotalGradeStatistics(this, grades.totalGradeProperty());
+            if (studentClass != null) {
+                studentClass.updateTotalGradeStatistics(this, grades.totalGradeProperty());
             }
             if (courseCohort != null) {
                 courseCohort.updateTotalGradeStatistics(this, grades.totalGradeProperty());
@@ -95,11 +97,15 @@ public class Student {
     }
 
     public Class getClassGroup() {
+        return classGroup.getValue();
+    }
+
+    public ObjectProperty<Class> classGroupProperty() {
         return classGroup;
     }
 
     public void setClassGroup(Class classGroup) {
-        this.classGroup = classGroup;
+        this.classGroup.set(classGroup);
     }
 
     public Gender getGender() {
@@ -149,6 +155,8 @@ public class Student {
 
     //Main Methods//
     public void addStdAssessmentData(StdAssessment stdAssessment) {
+        Class studentClass = classGroup.getValue();
+
         StdAssessmentData data = new StdAssessmentData(stdAssessment);
         grades.add(stdAssessment, data);
 
@@ -156,8 +164,8 @@ public class Student {
             grades.updateTotalGrade();
 
             if (data.gradeProperty() != null && data.gradeProperty().getValue() != null) {
-                if (classGroup != null) {
-                    classGroup.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
+                if (studentClass != null) {
+                    studentClass.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
                 }
                 if (courseCohort != null) {
                     courseCohort.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
@@ -167,6 +175,8 @@ public class Student {
     }
 
     public void addAssessmentSetData(AssessmentSet assessmentSet) {
+        Class studentClass = classGroup.getValue();
+
         AssessmentSetData data = new AssessmentSetData(assessmentSet);
         grades.add(assessmentSet, data);
 
@@ -174,8 +184,8 @@ public class Student {
             grades.updateTotalGrade();
 
             if (data.gradeProperty() != null && data.gradeProperty().getValue() != null) {
-                if (classGroup != null) {
-                    classGroup.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());
+                if (studentClass != null) {
+                    studentClass.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());
                 }
                 if (courseCohort != null) {
                     courseCohort.updateAssessmentStatistics(assessmentSet, this, data.gradeProperty());

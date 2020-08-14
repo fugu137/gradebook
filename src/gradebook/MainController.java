@@ -11,6 +11,8 @@ import gradebook.tools.StudentCloner;
 import gradebook.tools.StudentImporter;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -94,6 +96,14 @@ public class MainController implements Initializable {
     @FXML
     private Button deleteButton;
 
+
+    @FXML
+    private Button addAssessmentsButton;
+    @FXML
+    private Button modifyAssessmentsButton;
+    @FXML
+    private Button finaliseButton;
+
     //View//
     @FXML
     private CheckBox essaysCheckBox;
@@ -122,9 +132,6 @@ public class MainController implements Initializable {
     @FXML
     private ToggleButton anonymiseToggleButton;
 
-    @FXML
-    private Button addAssessmentsButton;
-
     //Statistics//
     @FXML
     private TabPane tabPane;
@@ -145,8 +152,10 @@ public class MainController implements Initializable {
     @FXML
     private Label lowestLabel;
 
-    StatisticsPane statisticsPane;
+    @FXML
+    private Button statisticsButton;
 
+    StatisticsPane statisticsPane;
 
 
     //Footer Bar//
@@ -176,10 +185,14 @@ public class MainController implements Initializable {
     private FileManager fileManager;
 
 
-    public void setCourseManager(CourseManager newCourseManager) {
-        this.courseManager = newCourseManager;
-        setupClassListBox();
-        setupStatisticsClassBox();
+//    public void setCourseManager(CourseManager newCourseManager) {
+//        this.courseManager = newCourseManager;
+//        setupClassListBox();
+//        setupStatisticsClassBox();
+//    }
+
+    public CourseManager getCourseManager() {
+        return courseManager;
     }
 
     @Override
@@ -375,6 +388,8 @@ public class MainController implements Initializable {
     private void setupToolbarBindings() {
         toggleButtonBindings();
         checkBoxBindings();
+        editBarBindings();
+        otherButtonBindings();
 
         setupFilterBoxes();
 //        setupClassListBox();
@@ -385,6 +400,31 @@ public class MainController implements Initializable {
 
         statisticsClassBoxBinding();
     }
+
+    private void otherButtonBindings() {
+        finaliseButton.disableProperty().bind(Bindings.size(courseManager.getAssessments()).lessThan(1));
+        statisticsButton.disableProperty().bind(Bindings.size(courseManager.getAssessments()).lessThan(1));
+    }
+
+    private void editBarBindings() {
+        copyButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
+        cutButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
+
+        IntegerBinding clipBoardSize = Bindings.size(clipBoardStudents);
+        BooleanBinding studentsInClipBoard = clipBoardSize.greaterThan(0);
+        pasteButton.disableProperty().bind(studentsInClipBoard.not());
+
+        deleteButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
+
+        selectAllButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
+        selectNoneButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
+    }
+
+//    public void refreshCourseManagerBindings() {
+//        finaliseButton.disableProperty().bind(Bindings.size(courseManager.getAssessments()).lessThan(1));
+//        selectAllButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
+//        selectNoneButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
+//    }
 
     private void toggleButtonBindings() {
 
@@ -795,7 +835,6 @@ public class MainController implements Initializable {
             table.getItems().addAll(selectedGroup.getStudents());
             table.getItems().add(blankStudent);
         }
-
     }
 
     private void filterByGradeSelection() {
@@ -808,6 +847,10 @@ public class MainController implements Initializable {
                     break;
                 case HD:
 //                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+                    table.getItems().forEach(s -> {
+                        System.out.println(selectedGroup + " contains student " + s.getSurname());
+                        System.out.println(selectedGroup + " contains HD student " + s.getSurname() + ": " + selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+                    });
                     table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
 //                    removeIf(s -> {
 //                        if (s.getTotalGrade() == null) {
@@ -866,15 +909,15 @@ public class MainController implements Initializable {
 
                 medianLabel.textProperty().bind(
                         Bindings.when(selectedGroup.assessmentMedianProperty(assessment).asString().isEqualTo("null"))
-                        .then("N/A")
-                        .otherwise(selectedGroup.assessmentMedianProperty(assessment).asString())
+                                .then("N/A")
+                                .otherwise(selectedGroup.assessmentMedianProperty(assessment).asString())
                 );
                 averageLabel.textProperty().bind(
                         Bindings.when(selectedGroup.assessmentAverageProperty(assessment).asString().isEqualTo("null"))
                                 .then("N/A")
                                 .otherwise(selectedGroup.assessmentAverageProperty(assessment).asString())
                 );
-               highestLabel.textProperty().bind(
+                highestLabel.textProperty().bind(
                         Bindings.when(selectedGroup.assessmentHighestProperty(assessment).asString().isEqualTo("null"))
                                 .then("N/A")
                                 .otherwise(selectedGroup.assessmentHighestProperty(assessment).asString())
@@ -977,6 +1020,7 @@ public class MainController implements Initializable {
     }
 
     public void clearTable() {
+        table.getItems().clear();
         blankStudent = new Student();
         removeAssessmentColumns();
     }
@@ -1007,10 +1051,12 @@ public class MainController implements Initializable {
 
         //TODO: warning about unsaved file before loading
 
-        fileManager.load(file, this);
+        if (file != null) {
+            fileManager.load(file, this);
 
-        //TODO: allow save (rather than just saveas) after loading
-        saveMenuItem.setDisable(false);
+            //TODO: allow save (rather than just saveas) after loading
+            saveMenuItem.setDisable(false);
+        }
     }
 
     public void saveGradebook() {
@@ -1061,7 +1107,7 @@ public class MainController implements Initializable {
     public void cutStudents() {
         clipBoardStudents.clear();
         ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
-        clipBoardStudents.addAll(StudentCloner.run(toCut));
+        clipBoardStudents.addAll(toCut);
 
         for (Student s : toCut) {
             courseManager.removeStudent(s);
@@ -1074,7 +1120,6 @@ public class MainController implements Initializable {
         int index = table.getSelectionModel().getSelectedIndex();
         courseManager.reAddAllStudentsAt(index, clipBoardStudents);
         table.getItems().addAll(index, clipBoardStudents);
-
     }
 
     @FXML
@@ -1120,7 +1165,6 @@ public class MainController implements Initializable {
 
     @FXML
     public void displayAssessmentEditWindow() throws IOException {
-
         stage.setTitle("Modify Assessments");
         stage.showAndWait();
     }
@@ -1144,6 +1188,7 @@ public class MainController implements Initializable {
 
         createTotalColumn();
         addAssessmentsButton.setDisable(true);
+        modifyAssessmentsButton.setDisable(false);
     }
 
     public void setupStdAssessment(StdAssessment stdAssessment) {
@@ -1332,8 +1377,10 @@ public class MainController implements Initializable {
                 setupCloseButton(statisticsPane.getCloseButton());
 
                 mainPane.setRight(statisticsPane);
+
                 statisticsPane.fillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
                 statisticsPane.fillPieChart(courseManager);
+
             } else {
 //                statisticsPane = new StatisticsPane();
 //
@@ -1467,7 +1514,6 @@ public class MainController implements Initializable {
             System.out.println();
         }
     }
-
 
 
 }

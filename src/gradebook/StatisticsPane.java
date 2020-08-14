@@ -78,7 +78,7 @@ public class StatisticsPane extends HBox {
         statsPanel.setPrefWidth(370);
         statsPanel.setAlignment(Pos.TOP_CENTER);
         statsPanel.setSpacing(30);
-        statsPanel.setPadding(new Insets(0, -5, 10, -5));
+        statsPanel.setPadding(new Insets(0, -5, 12, -5));
     }
 
     public void fillBarChart(CourseManager courseManager, AssessmentColumn<Student, ?> totalColumn, ComboBox<StudentGroup> classComboBox, ComboBox<AssessmentColumn<Student, ?>> columnComboBox) {

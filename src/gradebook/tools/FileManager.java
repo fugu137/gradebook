@@ -104,11 +104,13 @@ public class FileManager {
 
         this.file = fileFromFileChooser;
 
-        CourseManager courseManager = new CourseManager(null);
+        CourseManager courseManager = mainController.getCourseManager();
         Map<String, Class> classMap = new HashMap<>();
-
-        mainController.setCourseManager(courseManager);
+//
+//        mainController.setCourseManager(courseManager);
+//        mainController.refreshCourseManagerBindings();
         mainController.clearTable();
+        courseManager.clear();
 
         try {
             Scanner reader = new Scanner(fileFromFileChooser);
