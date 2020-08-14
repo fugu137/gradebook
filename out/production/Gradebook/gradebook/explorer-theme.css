@@ -26,8 +26,8 @@
     -fx-padding: 1 12 1 12; /* 1 6 1 6 */
 /*    -fx-text-fill: -fx-text-base-color;*/
     -fx-border-color: transparent;
-    -fx-border-insets: 0 1 0 0;
-    -fx-background-insets: 0 1 0 1;
+    -fx-border-insets: 0 1 1 1;
+    -fx-background-insets: 0 1 1 1;
     -fx-pref-height: 24;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab: selected {
@@ -42,9 +42,17 @@
     -fx-padding: 1 12 1 12; /* 1 6 1 6 */
 /*    -fx-text-fill: -fx-text-base-color;*/
     -fx-border-color: -fx-border -fx-border transparent -fx-border;
-    -fx-border-insets: 0 1 0 0;
-    -fx-background-insets: 0 1 0 1;
+    -fx-border-insets: 0 1 0 1;
+    -fx-background-insets: 0 1 -1 1;
     -fx-pref-height: 24;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab: hover {
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: -fx-faint-border -fx-faint-border transparent -fx-faint-border;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab: selected: hover {
+    -fx-background-color: -fx-background;
+    -fx-border-color: -fx-border -fx-border -fx-background -fx-border;
 }
 .tab-pane *.tab-header-background {
     -fx-background-color: white;
@@ -57,45 +65,20 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
-.tab-pane > .tab-header-area > .headers-region > .tab: hover {
-    -fx-background-color: -fx-faint-background;
-    -fx-border-color: -fx-faint-border -fx-faint-border -fx-border -fx-faint-border;
-}
-.tab-pane > .tab-header-area > .headers-region > .tab: selected: hover {
-    -fx-background-color: -fx-background;
-    -fx-border-color: -fx-border -fx-border -fx-background -fx-border;
-}
 .special-tab-pane *.tab-header-background {
     -fx-background-color: white;
     -fx-border-color: white white red red;
 }
 .special-tab-pane > .tab-header-area > .headers-region > .tab: selected {
-    /* This is how it is done in Button, but the -1 inset caused a white line  */
-    /* to appear beneath the tab, which looks bad, so it's taken out below.    */
     -fx-background-color: -fx-background;
-    /*-fx-background-radius: 5 5 0 0, 5 5 0 0, 4 4 0 0, 3 3 0 0;
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;*/
-    /*-fx-background-insets: 0, 1, 2;*/
-    /*-fx-background-insets: 0 1 -1 0, 1 2 -1 1, 2 3 -1 2;*/
-    -fx-background-radius: 0;
-    -fx-padding: 1 12 1 12; /* 1 6 1 6 */
-/*    -fx-text-fill: -fx-text-base-color;*/
     -fx-border-color: red red transparent red;
-    -fx-border-insets: 0 1 0 1;
-    -fx-background-insets: 0 1 0 1;
-    -fx-pref-height: 24;
 }
 .special-tab-pane > .tab-header-area > .headers-region > .tab: hover {
     -fx-background-color: -fx-faint-background;
     -fx-border-color: -fx-faint-border -fx-faint-border red -fx-faint-border;
-    -fx-border-insets: 0 1 0 1;
-         -fx-background-insets: 0 1 0 1;
 }
 .special-tab-pane > .tab-header-area > .headers-region > .tab: selected: hover {
-     -fx-background-color: -fx-background;
-     -fx-border-color: red red -fx-background red;
-     -fx-border-insets: 0 1 0 1;
-     -fx-background-insets: 0 1 0 1;
+    -fx-border-color: red red -fx-background red;
 }
 #left-tab {
     -fx-background-insets: 0 0 1 0;
@@ -109,8 +92,12 @@
     -fx-border-insets: 0 0 1 0;
 }
 #second-from-left-tab {
+    -fx-border-insets: 0 1 1 0;
+    -fx-background-insets: 0 1 1 0;
+}
+#second-from-left-tab: selected {
     -fx-border-insets: 0 1 0 0;
-    -fx-background-insets: 0 1 0 0;
+    -fx-background-insets: 0 1 -1 0;
 }
 #left-tab: disabled {
     -fx-background-color: #1765ad;

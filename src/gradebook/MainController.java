@@ -11,8 +11,6 @@ import gradebook.tools.StudentCloner;
 import gradebook.tools.StudentImporter;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -410,11 +408,12 @@ public class MainController implements Initializable {
         copyButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
         cutButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
 
-        IntegerBinding clipBoardSize = Bindings.size(clipBoardStudents);
-        BooleanBinding studentsInClipBoard = clipBoardSize.greaterThan(0);
-        pasteButton.disableProperty().bind(studentsInClipBoard.not());
+//        IntegerBinding clipBoardSize = Bindings.size(clipBoardStudents);
+//        BooleanBinding studentsInClipBoard = clipBoardSize.greaterThan(0);
+        pasteButton.disableProperty().bind(Bindings.size(clipBoardStudents).lessThan(1));
 
-        deleteButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
+        deleteButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull()
+                .or(table.getSelectionModel().selectedItemProperty().isEqualTo(blankStudent)));
 
         selectAllButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
         selectNoneButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
@@ -1119,7 +1118,7 @@ public class MainController implements Initializable {
     public void pasteStudents() {
         int index = table.getSelectionModel().getSelectedIndex();
         courseManager.reAddAllStudentsAt(index, clipBoardStudents);
-        table.getItems().addAll(index, clipBoardStudents);
+        table.getItems().addAll(index + 1, clipBoardStudents);
     }
 
     @FXML
