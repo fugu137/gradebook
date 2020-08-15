@@ -159,13 +159,15 @@ public class StatisticsPane extends HBox {
     }
 
     private void addTooltips() {
-        System.out.println("Adding tooltips...");
+
         for (XYChart.Series<String, Number> s : barChart.getData()) {
             for (XYChart.Data<String, Number> data : s.getData()) {
                 StringProperty textProperty = new SimpleStringProperty();
                 textProperty.bind(data.YValueProperty().asString());
+
                 Tooltip tooltip = new Tooltip();
                 tooltip.textProperty().bind(textProperty);
+
                 Tooltip.install(data.getNode(), tooltip);
             }
         }

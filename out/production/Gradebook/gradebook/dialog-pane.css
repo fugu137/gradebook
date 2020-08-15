@@ -1,0 +1,55 @@
+* {
+    -fx-dark-border: derive(#f5f5f7, -20%);
+    -fx-grey-background: #f5f5f7;
+}
+
+.dialog-pane {
+    -fx-graphic: null;
+    -fx-background-color: -fx-grey-background;
+}
+
+.dialog-pane .label {
+
+}
+
+.dialog-pane:header .header-panel {
+
+}
+
+.dialog-pane:header .header-panel .label {
+
+}
+
+.dialog-pane * .text-field {
+   -fx-background-radius: 0;
+   -fx-background-color: white;
+   -fx-border-color: -fx-dark-border;
+   -fx-padding: 2 2 2 2;
+}
+
+.dialog-pane * .button {
+    -fx-background-radius: 0;
+    -fx-text-fill: derive(black, 60%);
+    -fx-background-color: transparent;
+    -fx-border-insets: 0 0 0 0;
+    -fx-background-insets: 0 0 1 0;
+    -fx-border-color: -fx-dark-border;
+    -fx-padding: 1 2 2 2;
+    -fx-opacity: 1;
+}
+
+.dialog-pane * .button: hover {
+    -fx-background-color: derive(-fx-grey-background, 30%);
+    -fx-background-insets: 0 0 1 0;
+    -fx-padding: 1 2 2 2;
+    -fx-background-radius: 0;
+}
+
+.dialog-pane * .button: armed {
+    -fx-background-color: derive(-fx-grey-background, -2%);
+    -fx-border-color: derive(-fx-dark-border, -5%);
+    -fx-background-insets: 0 0 1 0;
+    -fx-padding: 1 2 2 2;
+    -fx-background-radius: 0;
+}
+
