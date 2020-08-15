@@ -51,6 +51,9 @@
                                              <padding>
                                                 <Insets bottom="1.0" left="1.0" />
                                              </padding>
+                                             <tooltip>
+                                                <Tooltip text="Import students from class roll" />
+                                             </tooltip>
                                           </SplitMenuButton>
                                        </children>
                                        <padding>
@@ -74,7 +77,7 @@
                                        <graphic>
                                           <ImageView pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../resources/icons/256239-3.png" />
+                                                <Image url="@../resources/icons/256239-4.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
@@ -244,6 +247,9 @@
                                                                </image>
                                                             </ImageView>
                                                          </graphic>
+                                                         <tooltip>
+                                                            <Tooltip text="Assign a mark of 0 for all incomplete assessments" wrapText="true" />
+                                                         </tooltip>
                                                       </Button>
                                                    </children>
                                                 </HBox>

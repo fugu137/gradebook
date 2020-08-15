@@ -32,6 +32,7 @@ public class AssessmentSet implements Assessment {
         }
     }
 
+    @Override
     public String getName() {
         return name.getValue();
     }
@@ -40,6 +41,7 @@ public class AssessmentSet implements Assessment {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name.set(name);
     }
@@ -48,6 +50,7 @@ public class AssessmentSet implements Assessment {
         return stdAssessments;
     }
 
+    @Override
     public Double getWeighting() {
         return weighting.getValue();
     }
@@ -72,10 +75,12 @@ public class AssessmentSet implements Assessment {
         this.bestOf.set(bestOf);
     }
 
+    @Override
     public AssessmentType getType() {
         return type;
     }
 
+    @Override
     public void setType(AssessmentType type) {
         this.type = type;
     }
@@ -86,6 +91,7 @@ public class AssessmentSet implements Assessment {
         }
     }
 
+    @Override
     public String columnName() {
         return name.getValue() + " Total";
     }

@@ -345,6 +345,20 @@ public class MainController implements Initializable {
                     }
                 }
             });
+            ContextMenu classContextMenu = new ContextMenu();
+            MenuItem renameClass = new MenuItem("Rename Class...");
+            MenuItem removeClass = new MenuItem("Remove Class");
+
+            renameClass.disableProperty().bind(comboBoxCell.itemProperty().isNull());
+            removeClass.disableProperty().bind(comboBoxCell.itemProperty().isNull());
+
+            renameClass.setOnAction(e -> renameClass(comboBoxCell));
+            removeClass.setOnAction(e -> removeClass(comboBoxCell));
+
+            classContextMenu.getItems().add(renameClass);
+            classContextMenu.getItems().add(removeClass);
+            comboBoxCell.setContextMenu(classContextMenu);
+
             return comboBoxCell;
         });
 
@@ -355,6 +369,31 @@ public class MainController implements Initializable {
 //        degreeColumn.setVisible(false);
 //        emailColumn.setVisible(false);
 //        genderColumn.setVisible(false);
+    }
+
+    private void renameClass(ComboBoxTableCell<Student, Class> comboBoxCell) {
+        Class classGroup = comboBoxCell.getItem();
+
+        TextInputDialog popup = new TextInputDialog(classGroup.getName());
+        popup.setTitle("Rename Class");
+        popup.setHeaderText("");
+        popup.setContentText("Name:");
+
+        DialogPane dialogPane = popup.getDialogPane();
+        dialogPane.getStylesheets().add(
+                getClass().getResource("dialog-pane.css").toExternalForm());
+
+        if (popup.showAndWait().isPresent()) {
+            String newName = popup.getResult();
+            classGroup.setName(newName);
+            table.refresh();
+        }
+    }
+
+    private void removeClass(ComboBoxTableCell<Student, Class> comboBoxCell) {
+        Class selectedClass = comboBoxCell.getItem();
+        //TODO: create confirmation popup (deleting will remove students from course)
+        removeClass(selectedClass);
     }
 
     private void populateColumns() {
@@ -1240,6 +1279,18 @@ public class MainController implements Initializable {
         addToColumnsList(column);
 
         this.columnComboBox.getItems().add(column);
+
+        ContextMenu menu = new ContextMenu();
+        MenuItem rename = new MenuItem("Rename Assessment...");
+        menu.getItems().add(rename);
+        rename.setOnAction(e -> {
+            String result = renameAssessment(column);
+            if (result != null) {
+                column.getAssessment().setName(result);
+            }
+        });
+
+        column.setContextMenu(menu);
     }
 
     private void createAssessmentSetColumns(AssessmentSet assessmentSet) {
@@ -1253,7 +1304,20 @@ public class MainController implements Initializable {
 
             table.getColumns().add(column);
             addToColumnsList(column);
+
+            ContextMenu menu = new ContextMenu();
+            MenuItem rename = new MenuItem("Rename Assessment...");
+            menu.getItems().add(rename);
+            rename.setOnAction(e -> {
+                String result = renameAssessment(column);
+                if (result != null) {
+                    column.getAssessment().setName(result);
+                }
+            });
+
+            column.setContextMenu(menu);
         }
+
         AssessmentColumn<Student, Double> setColumn = new AssessmentColumn<>(assessmentSet.getName() + " Total", assessmentSet);
         setColumn.textProperty().bind(assessmentSet.nameProperty().concat(" Total"));
         setColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(assessmentSet));
@@ -1263,6 +1327,23 @@ public class MainController implements Initializable {
         addToColumnsList(setColumn);
 
         this.columnComboBox.getItems().add(setColumn);
+    }
+
+    private String renameAssessment(AssessmentColumn<Student, ?> column) {
+        TextInputDialog popup = new TextInputDialog(column.getText());
+        popup.setTitle("Rename Assessment");
+        popup.setHeaderText("");
+        popup.setContentText("Name:");
+
+        DialogPane dialogPane = popup.getDialogPane();
+        dialogPane.getStylesheets().add(
+                getClass().getResource("dialog-pane.css").toExternalForm());
+
+        if (popup.showAndWait().isPresent()) {
+            return popup.getResult();
+        } else {
+            return null;
+        }
     }
 
     public void createTotalColumn() {
@@ -1362,12 +1443,16 @@ public class MainController implements Initializable {
         }
     }
 
+    public void removeClass(Class classGroup) {
+        table.getItems().removeAll(classGroup.getStudents());
+        courseManager.removeClass(classGroup);
+    }
+
     @FXML
     public void showStatisticsPane() {
 
         if (courseManager.getAssessments().size() < 1) {
             System.out.println("No assessments statistics found!");
-            //TODO: popup message
 
         } else {
             if (statisticsPane == null) {

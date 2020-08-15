@@ -24,6 +24,7 @@ public class StdAssessment implements Assessment {
 
     }
 
+    @Override
     public String getName() {
         return name.getValue();
     }
@@ -32,10 +33,12 @@ public class StdAssessment implements Assessment {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name.set(name);
     }
 
+    @Override
     public Double getWeighting() {
         return weighting.getValue();
     }
@@ -44,10 +47,12 @@ public class StdAssessment implements Assessment {
         this.weighting.set(weighting);
     }
 
+    @Override
     public AssessmentType getType() {
         return type;
     }
 
+    @Override
     public String columnName() {
         return name.getValue();
     }

@@ -8,5 +8,7 @@ public interface Assessment {
     public AssessmentType getType();
     public void setType(AssessmentType type);
     public String getName();
+    public void setName(String newName);
     public String columnName();
+
 }

@@ -75,7 +75,7 @@
 }
 .special-tab-pane > .tab-header-area > .headers-region > .tab: hover {
     -fx-background-color: -fx-faint-background;
-    -fx-border-color: -fx-faint-border -fx-faint-border red -fx-faint-border;
+    -fx-border-color: -fx-faint-border -fx-faint-border transparent -fx-faint-border;
 }
 .special-tab-pane > .tab-header-area > .headers-region > .tab: selected: hover {
     -fx-border-color: red red -fx-background red;
@@ -119,6 +119,9 @@
 }
 .left-tab-button .menu-item .label {
     -fx-text-fill: black;
+}
+.left-tab-button .menu-item: focused .label{
+    -fx-text-fill: white;
 }
 .left-tab-button > .arrow-button {
     -fx-padding: 0;
@@ -768,7 +771,26 @@
     -fx-background-color: white;
     -fx-border-color: -fx-border;
 }
+.chart * .tooltip {
+    -fx-show-delay: 0s;
+}
 
+/*Context-Menu*/
+.context-menu * .menu-item .label {
+    -fx-font-size: 12px;
+}
+.context-menu * .menu-item: focused .label {
+    -fx-text-fill: white;
+}
+
+/*Tooltips*/
+.tooltip {
+    -fx-background-color: derive(black, 20%);
+    -fx-opacity: 0.8;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-show-delay: 0.4s ;
+}
 
 
 

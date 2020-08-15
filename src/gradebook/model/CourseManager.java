@@ -87,8 +87,12 @@ public class CourseManager {
 
     private void addClassListener(Student student) {
         student.classGroupProperty().addListener((obs, oldValue, newValue) -> {
-            oldValue.removeStudent(student);
-            newValue.addStudent(student);
+            if (oldValue != null) {
+                oldValue.removeStudent(student);
+            }
+            if (newValue != null) {
+                newValue.addStudent(student);
+            }
         });
     }
 
@@ -483,6 +487,10 @@ public class CourseManager {
         });
     }
 
-
+    public void removeClass(Class classGroup) {
+        courseCohort.getStudents().removeAll(classGroup.getStudents());
+        studentGroups.remove(classGroup);
+        classes.remove(classGroup);
+    }
 
 }

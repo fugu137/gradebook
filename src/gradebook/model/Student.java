@@ -208,8 +208,11 @@ public class Student {
         if (data != null) {
             return data.gradeProperty();
 
-        } else {
+        } else if (surname.getValue() != null || givenNames.getValue() != null) {
             System.out.println("Assessment not found! [Student: " + this.getSurname() + ", Assessment: " + stdAssessment.getName() + "]");
+            return null;
+
+        } else {
             return null;
         }
     }
@@ -220,8 +223,11 @@ public class Student {
         if (data != null) {
             return data.gradeProperty();
 
-        } else {
+        } else if (surname.getValue() != null || givenNames.getValue() != null) {
             System.out.println("AssessmentSet not found! [Student: " + this.getSurname() + ", Assessment: " + assessmentSet.getName() + "]");
+            return null;
+
+        } else {
             return null;
         }
     }
@@ -233,8 +239,11 @@ public class Student {
         if (data != null) {
             return data.assessmentGradeProperty(stdAssessment);
 
-        } else {
+        } else if (surname.getValue() != null || givenNames.getValue() != null) {
             System.out.println("AssessmentSet not found! [Student: " + this.getSurname() + ", Assessment: " + assessmentSet.getName() + "]");
+            return null;
+
+        } else {
             return null;
         }
     }

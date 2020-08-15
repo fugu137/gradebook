@@ -37,6 +37,10 @@ public class Class implements StudentGroup {
         return name.getValue();
     }
 
+    public void setName(String newName) {
+        name.set(newName);
+    }
+
     public void addStudent(Student student) {
         students.add(student);
     }

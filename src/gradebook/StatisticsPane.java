@@ -4,14 +4,14 @@ import gradebook.model.AssessmentColumn;
 import gradebook.model.CourseManager;
 import gradebook.model.Student;
 import gradebook.model.StudentGroup;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -85,6 +85,7 @@ public class StatisticsPane extends HBox {
         StudentGroup selectedGroup = classComboBox.getSelectionModel().getSelectedItem();
         AssessmentColumn<Student, ?> selectedColumn = columnComboBox.getSelectionModel().getSelectedItem();
 
+        System.out.println("Filling bar chart...");
         if (selectedGroup != null && selectedColumn != null) {
 
             if (selectedGroup == courseManager.getCourseCohort()) {
@@ -110,6 +111,9 @@ public class StatisticsPane extends HBox {
                     }
                 }
             }
+
+
+            addTooltips();
 
         } else {
             System.out.println("Class or column not selected [statistics tab]");
@@ -152,6 +156,19 @@ public class StatisticsPane extends HBox {
 //            }
 //        }
 
+    }
+
+    private void addTooltips() {
+        System.out.println("Adding tooltips...");
+        for (XYChart.Series<String, Number> s : barChart.getData()) {
+            for (XYChart.Data<String, Number> data : s.getData()) {
+                StringProperty textProperty = new SimpleStringProperty();
+                textProperty.bind(data.YValueProperty().asString());
+                Tooltip tooltip = new Tooltip();
+                tooltip.textProperty().bind(textProperty);
+                Tooltip.install(data.getNode(), tooltip);
+            }
+        }
     }
 
     public void fillPieChart(CourseManager courseManager) {
