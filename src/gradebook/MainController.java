@@ -384,8 +384,8 @@ public class MainController implements Initializable {
         popup.setContentText("Name:");
 
         DialogPane dialogPane = popup.getDialogPane();
-        dialogPane.getStylesheets().add(
-                getClass().getResource("dialog-pane.css").toExternalForm());
+        dialogPane.getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+        popup.getDialogPane().getStyleClass().add("rename-pane");
 
         if (popup.showAndWait().isPresent()) {
             String newName = popup.getResult();
@@ -1371,8 +1371,8 @@ public class MainController implements Initializable {
         popup.setContentText("Name:");
 
         DialogPane dialogPane = popup.getDialogPane();
-        dialogPane.getStylesheets().add(
-                getClass().getResource("dialog-pane.css").toExternalForm());
+        dialogPane.getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+        popup.getDialogPane().getStyleClass().add("rename-pane");
 
         if (popup.showAndWait().isPresent()) {
             return popup.getResult();
@@ -1479,8 +1479,18 @@ public class MainController implements Initializable {
     }
 
     public void removeClass(Class classGroup) {
-        table.getItems().removeAll(classGroup.getStudents());
-        courseManager.removeClass(classGroup);
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        Alert popup = new Alert(Alert.AlertType.WARNING, "Remove " + classGroup + " from the gradebook?", ButtonType.OK, cancel);
+        popup.setTitle("Remove Class");
+        popup.setHeaderText("WARNING:\nRemoving a class will also remove any students in the class.");
+//        popup.setContentText("Remove " + classGroup + " from the gradebook?");
+        popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+
+        if (popup.showAndWait().isPresent() && popup.getResult().equals(ButtonType.OK)) {
+            table.getItems().removeAll(classGroup.getStudents());
+            courseManager.removeClass(classGroup);
+        }
     }
 
     @FXML
@@ -1516,6 +1526,13 @@ public class MainController implements Initializable {
         closeButton.setOnAction(e -> {
             mainPane.setRight(null);
         });
+    }
+
+    @FXML
+    public void finaliseGrades() {
+        for (Student s: courseManager.getAllStudents()) {
+            s.finaliseGrades();
+        }
     }
 
 

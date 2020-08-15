@@ -21,10 +21,12 @@ public class StdAssessmentData implements AssessmentData {
         return stdAssessment;
     }
 
+    @Override
     public ObjectProperty<Integer> gradeProperty() {
         return grade;
     }
 
+    @Override
     public Integer getGrade() {
         return grade.getValue();
     }
@@ -33,6 +35,12 @@ public class StdAssessmentData implements AssessmentData {
         this.grade.set(grade);
     }
 
+    @Override
+    public void setGradeToZero() {
+        this.grade.set(0);
+    }
+
+    @Override
     public StdAssessment getAssessment() {
         return stdAssessment;
     }

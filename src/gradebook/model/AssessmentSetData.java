@@ -85,20 +85,28 @@ public class AssessmentSetData implements AssessmentData {
         return stdAssessmentDataList;
     }
 
+    @Override
     public Double getGrade() {
         return assessmentSetTotalGrade.getValue();
+    }
+
+    @Override
+    public void setGradeToZero() {
+        for (StdAssessmentData data: stdAssessmentDataList) {
+            data.setGrade(0);
+        }
     }
 
     public void setSubAssessmentGrades(Integer[] grades) {
 
         for (int i = 0; i < grades.length; i++) {
-
             for (StdAssessmentData data: stdAssessmentDataList) {
                 data.setGrade(grades[i]);
             }
         }
     }
 
+    @Override
     public ObjectProperty<Double> gradeProperty() {
         return assessmentSetTotalGrade;
     }

@@ -269,6 +269,10 @@ public class Student {
         stdAssessmentData.setGrade(grade);
     }
 
+    public void finaliseGrades() {
+        grades.setIncompleteGradesToZero();
+    }
+
 
     //Overridden Methods//
     @Override

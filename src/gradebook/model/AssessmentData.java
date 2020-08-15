@@ -4,10 +4,9 @@ import javafx.beans.property.ObjectProperty;
 
 public interface AssessmentData {
 
-    public Number getGrade();
-
-    public ObjectProperty<?> gradeProperty();
-
-    public Assessment getAssessment();
+    Number getGrade();
+    void setGradeToZero();
+    ObjectProperty<?> gradeProperty();
+    Assessment getAssessment();
 
 }

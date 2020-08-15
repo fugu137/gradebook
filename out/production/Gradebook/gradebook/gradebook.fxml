@@ -259,7 +259,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="finaliseButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" styleClass="toolbar-button" text="Finalise" wrapText="true">
+                                                      <Button fx:id="finaliseButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#finaliseGrades" styleClass="toolbar-button" text="Finalise" wrapText="true">
                                                          <graphic>
                                                             <ImageView pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -651,7 +651,7 @@
    <center>
       <VBox styleClass="white-pane">
          <children>
-            <TableView fx:id="table" editable="true" prefHeight="446.0" prefWidth="1278.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+            <TableView fx:id="table" editable="true" onKeyPressed="#deleteStudentsByKeyPress" onKeyReleased="#handleKeyboardShortcuts" prefHeight="446.0" prefWidth="1278.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
                 <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />

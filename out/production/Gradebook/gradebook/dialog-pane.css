@@ -1,11 +1,12 @@
 * {
+    -fx-faint-border: derive(-fx-border, 50%);
+    -fx-border: derive(#f5f5f7, -12%);
     -fx-dark-border: derive(#f5f5f7, -20%);
     -fx-grey-background: #f5f5f7;
 }
 
 .dialog-pane {
-    -fx-graphic: null;
-    -fx-background-color: -fx-grey-background;
+    -fx-background-color: white;
 }
 
 .dialog-pane .label {
@@ -13,7 +14,8 @@
 }
 
 .dialog-pane:header .header-panel {
-
+    -fx-background-color: -fx-grey-background;
+    -fx-border-color: -fx-faint-border;
 }
 
 .dialog-pane:header .header-panel .label {
@@ -34,14 +36,14 @@
     -fx-border-insets: 0 0 0 0;
     -fx-background-insets: 0 0 1 0;
     -fx-border-color: -fx-dark-border;
-    -fx-padding: 1 2 2 2;
+    -fx-padding: 1 0 2 0;
     -fx-opacity: 1;
 }
 
 .dialog-pane * .button: hover {
     -fx-background-color: derive(-fx-grey-background, 30%);
     -fx-background-insets: 0 0 1 0;
-    -fx-padding: 1 2 2 2;
+    -fx-padding: 1 0 2 0;
     -fx-background-radius: 0;
 }
 
@@ -49,7 +51,13 @@
     -fx-background-color: derive(-fx-grey-background, -2%);
     -fx-border-color: derive(-fx-dark-border, -5%);
     -fx-background-insets: 0 0 1 0;
-    -fx-padding: 1 2 2 2;
+    -fx-padding: 1 0 2 0;
     -fx-background-radius: 0;
 }
+
+.rename-pane {
+    -fx-graphic: null;
+    -fx-background-color: -fx-grey-background;
+}
+
 
