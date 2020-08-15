@@ -24,6 +24,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -1155,9 +1159,9 @@ public class MainController implements Initializable {
 
     @FXML
     public void pasteStudents() {
-        int index = table.getSelectionModel().getSelectedIndex();
+        int index = table.getSelectionModel().getSelectedIndices().get(0);
         courseManager.reAddAllStudentsAt(index, clipBoardStudents);
-        table.getItems().addAll(index + 1, clipBoardStudents);
+        table.getItems().addAll(index, clipBoardStudents);
     }
 
     @FXML
@@ -1172,6 +1176,20 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    public void deleteStudentsByKeyPress(KeyEvent e) {
+
+        if (e.getCode() == KeyCode.DELETE) {
+            List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
+            selected.remove(blankStudent);
+
+            for (Student s : selected) {
+                courseManager.removeStudent(s);
+            }
+            table.getItems().removeAll(selected);
+        }
+    }
+
+    @FXML
     public void selectAll() {
         table.requestFocus();
         table.getSelectionModel().selectAll();
@@ -1181,6 +1199,23 @@ public class MainController implements Initializable {
     @FXML
     public void selectNone() {
         table.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    public void handleKeyboardShortcuts(KeyEvent e) {
+        KeyCombination copyKeys = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+        KeyCombination cutKeys = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+        KeyCombination pasteKeys = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
+
+        if (copyKeys.match(e)) {
+            copyStudents();
+        }
+        if (cutKeys.match(e)) {
+            cutStudents();
+        }
+        if (pasteKeys.match(e)) {
+            pasteStudents();
+        }
     }
 
     @FXML
