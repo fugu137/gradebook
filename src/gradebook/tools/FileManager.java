@@ -28,6 +28,10 @@ public class FileManager {
 
     public void save(String courseName, ObservableList<Class> classes) {
 
+        if (file == null) {
+            System.out.println("No file found!");
+        }
+
         try {
             writer = new PrintWriter(new FileWriter(file, false));
 
@@ -94,9 +98,13 @@ public class FileManager {
             writer.close();
             System.out.println("Save successful!");
 
+            //TODO: save successful message
+
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+
+            //TODO: error message
         }
     }
 
@@ -237,7 +245,6 @@ public class FileManager {
                 }
             }
         }
-
     }
 
     private Student makeStudent(Map<String, Class> classMap, String[] courseAndClass, String[] studentInfo) {

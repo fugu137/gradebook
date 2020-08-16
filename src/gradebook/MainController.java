@@ -197,6 +197,7 @@ public class MainController implements Initializable {
         return courseManager;
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTabPaneSettings();
@@ -287,6 +288,7 @@ public class MainController implements Initializable {
                 updateNumberOfStudentsLabel();
             }
         });
+        //TODO: add success/failure messages in footer bar
     }
 
     private void updateNumberSelectedLabel() {
@@ -1109,6 +1111,7 @@ public class MainController implements Initializable {
         } else {
             fileManager.save(courseManager.getCourseName(), courseManager.getClasses());
         }
+
     }
 
     public void saveGradebookAs() {
@@ -1315,9 +1318,46 @@ public class MainController implements Initializable {
 
         this.columnComboBox.getItems().add(column);
 
+        addAssessmentColumnContextMenu(column);
+    }
+
+    private void createAssessmentSetColumns(AssessmentSet assessmentSet) {
+        for (StdAssessment std : assessmentSet.getStdAssessments()) {
+
+            SubAssessmentColumn<Student, Integer> column = new SubAssessmentColumn<>(std.getName(), std, assessmentSet);
+            column.textProperty().bind(std.nameProperty());
+            column.setCellValueFactory(c -> c.getValue().assessmentSetGradeProperty(assessmentSet, std));
+            column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            column.setPrefWidth(62);
+
+            addAssessmentColumnContextMenu(column);
+
+            table.getColumns().add(column);
+            addToColumnsList(column);
+        }
+
+        AssessmentColumn<Student, Double> setColumn = new AssessmentColumn<>(assessmentSet.getName() + " Total", assessmentSet);
+        setColumn.textProperty().bind(assessmentSet.nameProperty().concat(" Total"));
+        setColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(assessmentSet));
+        setColumn.setPrefWidth(86);
+
+        addAssessmentColumnContextMenu(setColumn);
+
+        table.getColumns().add(setColumn);
+        addToColumnsList(setColumn);
+
+        this.columnComboBox.getItems().add(setColumn);
+    }
+
+    private void addAssessmentColumnContextMenu(AssessmentColumn<Student, ?> column) {
         ContextMenu menu = new ContextMenu();
+        MenuItem info = new MenuItem("Assessment Info...");
         MenuItem rename = new MenuItem("Rename Assessment...");
+        menu.getItems().add(info);
         menu.getItems().add(rename);
+
+        info.setOnAction(e -> displayAssessmentInfo(column));
+
         rename.setOnAction(e -> {
             String result = renameAssessment(column);
             if (result != null) {
@@ -1328,40 +1368,14 @@ public class MainController implements Initializable {
         column.setContextMenu(menu);
     }
 
-    private void createAssessmentSetColumns(AssessmentSet assessmentSet) {
-        for (StdAssessment std : assessmentSet.getStdAssessments()) {
-
-            AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
-            column.textProperty().bind(std.nameProperty());
-            column.setCellValueFactory(c -> c.getValue().assessmentSetGradeProperty(assessmentSet, std));
-            column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-            column.setPrefWidth(62);
-
-            table.getColumns().add(column);
-            addToColumnsList(column);
-
-            ContextMenu menu = new ContextMenu();
-            MenuItem rename = new MenuItem("Rename Assessment...");
-            menu.getItems().add(rename);
-            rename.setOnAction(e -> {
-                String result = renameAssessment(column);
-                if (result != null) {
-                    column.getAssessment().setName(result);
-                }
-            });
-
-            column.setContextMenu(menu);
-        }
-
-        AssessmentColumn<Student, Double> setColumn = new AssessmentColumn<>(assessmentSet.getName() + " Total", assessmentSet);
-        setColumn.textProperty().bind(assessmentSet.nameProperty().concat(" Total"));
-        setColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(assessmentSet));
-        setColumn.setPrefWidth(86);
-
-        table.getColumns().add(setColumn);
-        addToColumnsList(setColumn);
-
-        this.columnComboBox.getItems().add(setColumn);
+    private void displayAssessmentInfo(AssessmentColumn<Student, ?> column) {
+        Alert popup = new Alert(Alert.AlertType.INFORMATION);
+        popup.setTitle("Assessment Info");
+        popup.setHeaderText(column.getAssessment().getName());
+        popup.getDialogPane().setContent(column.assessmentInfoBox());
+        popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+        popup.getDialogPane().getStyleClass().add("info-pane");
+        popup.showAndWait();
     }
 
     private String renameAssessment(AssessmentColumn<Student, ?> column) {

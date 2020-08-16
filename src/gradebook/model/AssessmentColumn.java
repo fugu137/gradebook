@@ -1,6 +1,7 @@
 package gradebook.model;
 
 import javafx.scene.control.TableColumn;
+import javafx.scene.layout.VBox;
 
 public class AssessmentColumn<Student, Number> extends TableColumn<Student, Number> {
 
@@ -22,6 +23,10 @@ public class AssessmentColumn<Student, Number> extends TableColumn<Student, Numb
     @Override
     public String toString() {
         return getText();
+    }
+
+    public VBox assessmentInfoBox() {
+        return assessment.infoBox();
     }
 }
 

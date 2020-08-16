@@ -1,6 +1,7 @@
 package gradebook.model;
 
 import gradebook.enums.AssessmentType;
+import javafx.scene.layout.VBox;
 
 public interface Assessment {
 
@@ -10,5 +11,6 @@ public interface Assessment {
     public String getName();
     public void setName(String newName);
     public String columnName();
+    public VBox infoBox();
 
 }

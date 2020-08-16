@@ -5,7 +5,7 @@ import javafx.beans.property.ObjectProperty;
 public interface AssessmentData {
 
     Number getGrade();
-    void setGradeToZero();
+    void setIncompleteToZero();
     ObjectProperty<?> gradeProperty();
     Assessment getAssessment();
 

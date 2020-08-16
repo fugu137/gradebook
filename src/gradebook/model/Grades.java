@@ -55,12 +55,9 @@ public class Grades {
     }
 
     public void setIncompleteGradesToZero() {
-        for (Assessment a: grades.keySet()) {
+        for (Assessment a : grades.keySet()) {
             AssessmentData data = grades.get(a);
-
-            if (data.getGrade() == null) {
-                data.setGradeToZero();
-            }
+            data.setIncompleteToZero();
         }
     }
 

@@ -1,9 +1,14 @@
 package gradebook.model;
 
 import gradebook.enums.AssessmentType;
+import gradebook.tools.NumberRounder;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 public class AssessmentSet implements Assessment {
 
@@ -94,5 +99,21 @@ public class AssessmentSet implements Assessment {
     @Override
     public String columnName() {
         return name.getValue() + " Total";
+    }
+
+    @Override
+    public VBox infoBox() {
+        VBox box = new VBox();
+        GridPane grid = new GridPane();
+        grid.setVgap(2);
+        grid.setPadding(new Insets(0, 0, 8, 0));
+
+        grid.addRow(0, new Label("Type: "), new Label(getType().toString()));
+        grid.addRow(1, new Label("Weighting:   "), new Label(NumberRounder.roundToInt(getWeighting() * 100) + "%"));
+        grid.addRow(2, new Label("Quantity: "), new Label(getQuantity().toString()));
+        grid.addRow(3, new Label("Best of: "), new Label(getBestOf().toString()));
+
+        box.getChildren().add(grid);
+        return box;
     }
 }

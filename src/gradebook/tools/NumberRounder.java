@@ -14,5 +14,10 @@ public class NumberRounder {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public static int roundToInt(double value) {
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        return bd.intValue();
+    }
 }
 

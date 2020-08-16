@@ -163,7 +163,7 @@ public class StatisticsPane extends HBox {
         for (XYChart.Series<String, Number> s : barChart.getData()) {
             for (XYChart.Data<String, Number> data : s.getData()) {
                 StringProperty textProperty = new SimpleStringProperty();
-                textProperty.bind(data.YValueProperty().asString());
+                textProperty.bind(data.YValueProperty().asString().concat("%"));
 
                 Tooltip tooltip = new Tooltip();
                 tooltip.textProperty().bind(textProperty);

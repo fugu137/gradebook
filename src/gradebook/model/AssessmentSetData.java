@@ -91,18 +91,19 @@ public class AssessmentSetData implements AssessmentData {
     }
 
     @Override
-    public void setGradeToZero() {
-        for (StdAssessmentData data: stdAssessmentDataList) {
-            data.setGrade(0);
+    public void setIncompleteToZero() {
+        for (StdAssessmentData data : stdAssessmentDataList) {
+            if (data.getGrade() == null) {
+                data.setGrade(0);
+            }
         }
     }
 
     public void setSubAssessmentGrades(Integer[] grades) {
 
         for (int i = 0; i < grades.length; i++) {
-            for (StdAssessmentData data: stdAssessmentDataList) {
-                data.setGrade(grades[i]);
-            }
+            StdAssessmentData data = stdAssessmentDataList.get(i);
+            data.setGrade(grades[i]);
         }
     }
 

@@ -1,10 +1,15 @@
 package gradebook.model;
 
 import gradebook.enums.AssessmentType;
+import gradebook.tools.NumberRounder;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 public class StdAssessment implements Assessment {
 
@@ -60,6 +65,25 @@ public class StdAssessment implements Assessment {
     @Override
     public void setType(AssessmentType type) {
         this.type = type;
+    }
+
+    @Override
+    public VBox infoBox() {
+        VBox box = new VBox();
+        GridPane grid = new GridPane();
+        grid.setVgap(2);
+        grid.setPadding(new Insets(0, 0, 8, 0));
+
+        if (weighting != null) {
+            grid.addRow(0, new Label("Type: "), new Label(getType().toString()));
+            grid.addRow(1, new Label("Weighting:   "), new Label(NumberRounder.roundToInt(getWeighting() * 100) + "%"));
+
+            box.getChildren().add(grid);
+            return box;
+
+        } else {
+            return null;
+        }
     }
 
 }
