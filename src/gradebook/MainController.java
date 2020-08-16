@@ -9,6 +9,9 @@ import gradebook.tools.FileChooserWindow;
 import gradebook.tools.FileManager;
 import gradebook.tools.StudentCloner;
 import gradebook.tools.StudentImporter;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -33,6 +36,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -153,6 +157,8 @@ public class MainController implements Initializable {
     private Label highestLabel;
     @FXML
     private Label lowestLabel;
+    @FXML
+    private Label numberLabel;
 
     @FXML
     private Button statisticsButton;
@@ -165,6 +171,8 @@ public class MainController implements Initializable {
     private Label numberOfStudentsLabel;
     @FXML
     private Label numberSelectedLabel;
+    @FXML
+    private Label statusLabel;
 
 
     //Control//
@@ -197,7 +205,6 @@ public class MainController implements Initializable {
         return courseManager;
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTabPaneSettings();
@@ -215,7 +222,6 @@ public class MainController implements Initializable {
 
         loadFooterSettings();
 
-//        showStatisticsPane();
     }
 
     //Initialize Methods//
@@ -288,7 +294,8 @@ public class MainController implements Initializable {
                 updateNumberOfStudentsLabel();
             }
         });
-        //TODO: add success/failure messages in footer bar
+
+        statusLabel.setText("");
     }
 
     private void updateNumberSelectedLabel() {
@@ -947,6 +954,11 @@ public class MainController implements Initializable {
                                 .then("N/A")
                                 .otherwise(selectedGroup.totalGradeLowestProperty().asString())
                 );
+                numberLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.numberAttemptedProperty().asString().isEqualTo("null"))
+                                .then("N/A")
+                                .otherwise(selectedGroup.numberAttemptedProperty().asString())
+                );
 
             } else {
                 Assessment assessment = selectedColumn.getAssessment();
@@ -970,6 +982,11 @@ public class MainController implements Initializable {
                         Bindings.when(selectedGroup.assessmentLowestProperty(assessment).asString().isEqualTo("null"))
                                 .then("N/A")
                                 .otherwise(selectedGroup.assessmentLowestProperty(assessment).asString())
+                );
+                numberLabel.textProperty().bind(
+                        Bindings.when(selectedGroup.numberAttemptedProperty(assessment).asString().isEqualTo("null"))
+                        .then("N/A")
+                        .otherwise(selectedGroup.numberAttemptedProperty(assessment).asString())
                 );
             }
         }
@@ -1020,9 +1037,13 @@ public class MainController implements Initializable {
     //Table Methods//
     public void addAllStudentsToTable(ObservableList<Student> students) {
         table.getItems().clear();
-        table.getItems().add(blankStudent);
+        addBlankStudent();
         table.getItems().addAll(students);
         table.sort();
+    }
+
+    public void addBlankStudent() {
+        table.getItems().add(blankStudent);
     }
 
     @FXML
@@ -1035,6 +1056,7 @@ public class MainController implements Initializable {
             newBlankStudent();
         }
         selectedStudent.setSurname(surname);
+
     }
 
     @FXML
@@ -1047,6 +1069,7 @@ public class MainController implements Initializable {
             newBlankStudent();
         }
         selectedStudent.setGivenNames(givenNames);
+
     }
 
     @FXML
@@ -1054,6 +1077,7 @@ public class MainController implements Initializable {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
         Class classGroup = editedCell.getNewValue();
         selectedStudent.setClassGroup(classGroup);
+
     }
 
     @FXML
@@ -1097,10 +1121,9 @@ public class MainController implements Initializable {
 
         if (file != null) {
             fileManager.load(file, this);
-
-            //TODO: allow save (rather than just saveas) after loading
             saveMenuItem.setDisable(false);
         }
+
     }
 
     public void saveGradebook() {
@@ -1109,9 +1132,9 @@ public class MainController implements Initializable {
             System.out.println("No file to save!");
 
         } else {
-            fileManager.save(courseManager.getCourseName(), courseManager.getClasses());
+            fileManager.save(this);
         }
-
+        //TODO: only allow save after a change has been made
     }
 
     public void saveGradebookAs() {
@@ -1121,7 +1144,7 @@ public class MainController implements Initializable {
 
         fileManager = new FileManager();
 
-        fileManager.saveAs(file, courseManager.getCourseName(), courseManager.getClasses());
+        fileManager.saveAs(file, this);
         saveMenuItem.setDisable(false);
     }
 
@@ -1547,6 +1570,20 @@ public class MainController implements Initializable {
         for (Student s: courseManager.getAllStudents()) {
             s.finaliseGrades();
         }
+    }
+
+    public void setStatusLabelText(String text) {
+        statusLabel.setText(text);
+
+        FadeTransition ft = new FadeTransition(Duration.seconds(1), statusLabel);
+        ft.setToValue(0);
+        ft.setOnFinished(e -> {
+            statusLabel.setText("");
+            statusLabel.setOpacity(1);
+        });
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), e -> ft.play()));
+        timeline.play();
     }
 
 

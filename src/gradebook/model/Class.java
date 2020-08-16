@@ -93,11 +93,19 @@ public class Class implements StudentGroup {
     }
 
     public int getNumberAttempted() {
-        return totalGradeStatistics.numberOfStudentsWithGrades();
+        return totalGradeStatistics.getNumberOfStudentsWithGrades();
     }
 
     public int getNumberAttempted(Assessment assessment) {
-        return assessmentStatistics.get(assessment).numberOfStudentsWithGrades();
+        return assessmentStatistics.get(assessment).getNumberOfStudentsWithGrades();
+    }
+
+    public ObjectProperty<Integer> numberAttemptedProperty() {
+        return totalGradeStatistics.numberOfStudentsWithGradesProperty();
+    }
+
+    public ObjectProperty<Integer> numberAttemptedProperty(Assessment assessment) {
+        return assessmentStatistics.get(assessment).numberOfStudentsWithGradesProperty();
     }
 
     public int getNumberOfStudents() {

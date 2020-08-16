@@ -25,6 +25,10 @@ public interface StudentGroup {
     ObjectProperty<Double> assessmentLowestProperty(Assessment assessment);
     void fillBarChartWithOverallGrades(BarChart<String, Number> barChart);
     void fillBarChartWithAssessmentGrades(BarChart<String, Number> barChart, Assessment assessment);
+    ObjectProperty<Integer> numberAttemptedProperty();
+    ObjectProperty<Integer> numberAttemptedProperty(Assessment assessment);
+
+
 
 
 }

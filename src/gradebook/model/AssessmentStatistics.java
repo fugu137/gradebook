@@ -43,6 +43,7 @@ public class AssessmentStatistics extends Statistics {
         } else {
             System.out.println("Invalid assessment type!");
         }
+        numberOfStudentsWithGradesProperty().set(grades.size());
 
         Collections.sort(grades);
 

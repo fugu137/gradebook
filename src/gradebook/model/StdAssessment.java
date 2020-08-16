@@ -71,8 +71,8 @@ public class StdAssessment implements Assessment {
     public VBox infoBox() {
         VBox box = new VBox();
         GridPane grid = new GridPane();
-        grid.setVgap(2);
-        grid.setPadding(new Insets(0, 0, 8, 0));
+        grid.setVgap(4);
+        box.setPadding(new Insets(16, 16, 20, 16));
 
         if (weighting != null) {
             grid.addRow(0, new Label("Type: "), new Label(getType().toString()));

@@ -86,8 +86,8 @@
     -fx-padding: 0;
 }
 #left-tab: hover: disabled {
-    -fx-background-color: derive(#1765ad, 25%);
-    -fx-border-color: derive(#1765ad, 25%);
+    -fx-background-color: derive(#1765ad, 20%);
+    -fx-border-color: derive(#1765ad, 20%);
     -fx-background-insets: 1 1 2 1;
     -fx-border-insets: 0 0 1 0;
 }

@@ -28,6 +28,8 @@ public class Statistics {
     private ObjectProperty<Double> highestGrade;
     private ObjectProperty<Double> lowestGrade;
 
+    private ObjectProperty<Integer> numberOfStudentsWithGrades;
+
 
     public Statistics(ObservableList<Student> classStudents) {
         this.classStudents = classStudents;
@@ -42,6 +44,8 @@ public class Statistics {
         this.average = new SimpleObjectProperty<>(null);
         this.highestGrade = new SimpleObjectProperty<>(null);
         this.lowestGrade = new SimpleObjectProperty<>(null);
+
+        this.numberOfStudentsWithGrades = new SimpleObjectProperty<>(null);
     }
 
     public void update(Student student, ObjectProperty<?> gradeProperty) {
@@ -92,6 +96,8 @@ public class Statistics {
                 grades.add(s.getTotalGrade());
             }
         }
+        this.numberOfStudentsWithGrades.set(grades.size());
+
         Collections.sort(grades);
 
         if (grades.size() > 0) {
@@ -101,6 +107,7 @@ public class Statistics {
             setMedian(grades);
             setAverage(grades);
         }
+
     }
 
     void setMedian(List<Double> grades) {
@@ -150,8 +157,13 @@ public class Statistics {
         return fStudents.size();
     }
 
-    public int numberOfStudentsWithGrades() {
-        return hdStudents.size() + dStudents.size() + crStudents.size() + pStudents.size() + fStudents.size();
+    public int getNumberOfStudentsWithGrades() {
+//        return hdStudents.size() + dStudents.size() + crStudents.size() + pStudents.size() + fStudents.size();
+        return numberOfStudentsWithGrades.getValue();
+    }
+
+    public ObjectProperty<Integer> numberOfStudentsWithGradesProperty() {
+        return numberOfStudentsWithGrades;
     }
 
     public ObservableList<Student> getHDStudents() {
@@ -176,7 +188,7 @@ public class Statistics {
 
     public Double getPercentageOfHDs() {
         if (numberOfHDs() > 0) {
-            return NumberRounder.round((double) numberOfHDs() * 100 / numberOfStudentsWithGrades(), 1);
+            return NumberRounder.round((double) numberOfHDs() * 100 / getNumberOfStudentsWithGrades(), 1);
         } else {
             return 0.0;
         }
@@ -184,7 +196,7 @@ public class Statistics {
 
     public Double getPercentageOfDs() {
         if (numberOfDs() > 0) {
-            return NumberRounder.round((double) numberOfDs() * 100 / numberOfStudentsWithGrades(), 1);
+            return NumberRounder.round((double) numberOfDs() * 100 / getNumberOfStudentsWithGrades(), 1);
         } else {
             return 0.0;
         }
@@ -192,7 +204,7 @@ public class Statistics {
 
     public Double getPercentageOfCRs() {
         if (numberOfCRs() > 0) {
-            return NumberRounder.round((double) numberOfCRs() * 100 / numberOfStudentsWithGrades(), 1);
+            return NumberRounder.round((double) numberOfCRs() * 100 / getNumberOfStudentsWithGrades(), 1);
         } else {
             return 0.0;
         }
@@ -200,7 +212,7 @@ public class Statistics {
 
     public Double getPercentageOfPs() {
         if (numberOfPs() > 0) {
-            return NumberRounder.round((double) numberOfPs() * 100 / numberOfStudentsWithGrades(), 1);
+            return NumberRounder.round((double) numberOfPs() * 100 / getNumberOfStudentsWithGrades(), 1);
         } else {
             return 0.0;
         }
@@ -208,7 +220,7 @@ public class Statistics {
 
     public Double getPercentageOfFs() {
         if (numberOfFs() > 0) {
-            return NumberRounder.round((double) numberOfFs() * 100 / numberOfStudentsWithGrades(), 1);
+            return NumberRounder.round((double) numberOfFs() * 100 / getNumberOfStudentsWithGrades(), 1);
         } else {
             return 0.0;
         }

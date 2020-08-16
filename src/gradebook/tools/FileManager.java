@@ -19,14 +19,15 @@ public class FileManager {
     private PrintWriter writer;
     private File file;
 
-    public void saveAs(File fileFromFileChooser, String courseName, ObservableList<Class> classes) {
-
+    public void saveAs(File fileFromFileChooser, MainController mainController) {
         this.file = fileFromFileChooser;
-        save(courseName, classes);
-
+        save(mainController);
     }
 
-    public void save(String courseName, ObservableList<Class> classes) {
+    public void save(MainController mainController) {
+        CourseManager courseManager = mainController.getCourseManager();
+        String courseName = courseManager.getCourseName();
+        ObservableList<Class> classes = courseManager.getClasses();
 
         if (file == null) {
             System.out.println("No file found!");
@@ -98,7 +99,7 @@ public class FileManager {
             writer.close();
             System.out.println("Save successful!");
 
-            //TODO: save successful message
+            mainController.setStatusLabelText("Save successful!");
 
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -114,6 +115,7 @@ public class FileManager {
 
         CourseManager courseManager = mainController.getCourseManager();
         Map<String, Class> classMap = new HashMap<>();
+        classMap.put("None", courseManager.getUnassigned());
 //
 //        mainController.setCourseManager(courseManager);
 //        mainController.refreshCourseManagerBindings();
@@ -258,13 +260,13 @@ public class FileManager {
             classGroup = classMap.get(courseAndClass[1]);
         }
 
-        Integer sid = Integer.parseInt(studentInfo[0]);
-        String surname = studentInfo[1];
-        String givenNames = studentInfo[2];
-        String preferredName = studentInfo[3];
-        Gender gender = Gender.valueOf(studentInfo[4]);
-        String degree = studentInfo[5];
-        String email = studentInfo[6];
+        Integer sid = studentInfo[0].equals("null") ? null : Integer.parseInt(studentInfo[0]);
+        String surname = studentInfo[1].equals("null") ? null : studentInfo[1];
+        String givenNames = studentInfo[2].equals("null") ? null : studentInfo[2];
+        String preferredName = studentInfo[3].equals("null") ? null : studentInfo[3];
+        Gender gender = studentInfo[4].equals("null") ? null : Gender.valueOf(studentInfo[4]);
+        String degree = studentInfo[5].equals("null") ? null : studentInfo[5];
+        String email = studentInfo[6].equals("null") ? null : studentInfo[6];
 
         return new Student(surname, givenNames, preferredName, classGroup, gender, sid, degree, email);
     }
