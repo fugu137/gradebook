@@ -5,6 +5,8 @@ import gradebook.enums.AssessmentType;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -22,6 +24,8 @@ public class AssessmentCreationBar {
     private BooleanProperty isActive;
     private Assessment assessment;
 
+    private ObservableList<String> errorMessages;
+
     public AssessmentCreationBar(ComboBox<AssessmentForm> formComboBox, ComboBox<AssessmentType> typeComboBox, Button clearButton, TextField nameField, TextField quantityField, TextField bestOfField, TextField weightingField) {
         this.formComboBox = formComboBox;
         this.typeComboBox = typeComboBox;
@@ -32,6 +36,7 @@ public class AssessmentCreationBar {
         this.weightingField = weightingField;
 
         this.isActive = new SimpleBooleanProperty(false);
+        this.errorMessages = FXCollections.observableArrayList();
 
         initialSettings();
     }
@@ -50,6 +55,37 @@ public class AssessmentCreationBar {
         weightingField.disableProperty().bind(noFormSelected);
 
         isActive.bind(noFormSelected.not());
+
+        setDefaultFieldStyles();
+    }
+
+    private void setDefaultFieldStyles() {
+        typeComboBox.setOnAction(e -> {
+            if (typeComboBox.getValue() != null) {
+                typeComboBox.getStyleClass().remove("error-combo-box");
+                typeComboBox.getStyleClass().add("toolbar-combo-box");
+            }
+        });
+
+        nameField.setOnKeyTyped(e -> {
+            nameField.getStyleClass().remove("error-name-field");
+            nameField.getStyleClass().add("name-field");
+        });
+
+        quantityField.setOnKeyTyped(e -> {
+            quantityField.getStyleClass().remove("error-number-field");
+            quantityField.getStyleClass().add("number-field");
+        });
+
+        bestOfField.setOnKeyTyped(e -> {
+            bestOfField.getStyleClass().remove("error-number-field");
+            bestOfField.getStyleClass().add("number-field");
+        });
+
+        weightingField.setOnKeyTyped(e -> {
+            weightingField.getStyleClass().clear();
+            weightingField.getStyleClass().add("number-field");
+        });
     }
 
     public ComboBox<AssessmentForm> getFormComboBox() {
@@ -95,6 +131,10 @@ public class AssessmentCreationBar {
         }
     }
 
+    public TextField getWeightingField() {
+        return weightingField;
+    }
+
     public Assessment getAssessment() {
         return assessment;
     }
@@ -105,16 +145,56 @@ public class AssessmentCreationBar {
 
     public boolean hasInvalidEntries() {
 
-        return false; //TODO: complete
-//        if (!quantityField.getText().matches("\\d|\\d\\d") && !bestOfField.getText().matches("\\d|\\d\\d") && !weightingField.getText().matches("100|\\d\\d|\\d")) {
-//            return true;
-//
-//        } else if (Integer.parseInt(bestOfField.getText()) > Integer.parseInt(quantityField.getText())) {
-//            return true;
-//
-//        } else {
-//            return false;
-//        }
+        errorMessages.clear();
+
+        boolean invalid = false;
+
+        if (isActive.getValue()) {
+
+            if (typeComboBox.getValue() == null) {
+                typeComboBox.getStyleClass().add("error-combo-box");
+                this.errorMessages.add("- Assessment types cannot be blank.");
+                invalid = true;
+            }
+
+            if (nameField.getText().isBlank()) {
+                nameField.getStyleClass().add("error-name-field");
+                this.errorMessages.add("- Assessment names cannot be blank.");
+                invalid = true;
+            }
+
+            if (!quantityField.isDisabled()) {
+                if (!quantityField.getText().matches("\\d|\\d\\d")) {
+                    quantityField.getStyleClass().add("error-number-field");
+                    this.errorMessages.add("- Quantities must be numbers between 0 and 99.");
+                    invalid = true;
+                }
+            }
+
+            if (!bestOfField.isDisabled()) {
+                if (!bestOfField.getText().matches("\\d|\\d\\d")) {
+                    bestOfField.getStyleClass().add("error-number-field");
+                    this.errorMessages.add("- Best of values must be numbers between 0 and 99.");
+                    invalid = true;
+                }
+
+                if (bestOfField.getText().matches("\\d|\\d\\d") && !(Integer.parseInt(bestOfField.getText()) <= Integer.parseInt(quantityField.getText()))) {
+                    bestOfField.getStyleClass().add("error-number-field");
+                    this.errorMessages.add("- Best-of values must be less than or equal to the corresponding number of assessments.");
+                    invalid = true;
+                }
+            }
+
+            if (weightingField.getText() != null) {
+                if (!weightingField.getText().matches("100|\\d\\d|\\d")) {
+                    weightingField.getStyleClass().add("error-number-field");
+                    this.errorMessages.add("- Weightings must be numbers between 0 and 100.");
+                    invalid = true;
+                }
+            }
+
+        }
+        return invalid;
     }
 
     public Assessment clear() {
@@ -130,6 +210,10 @@ public class AssessmentCreationBar {
         weightingField.clear();
 
         return toReturn;
+    }
+
+    public ObservableList<String> getErrorMessages() {
+        return errorMessages;
     }
 
     public void createAssessment() {

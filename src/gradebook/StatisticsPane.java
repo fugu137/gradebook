@@ -13,12 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 
-public class StatisticsPane extends HBox {
+public class StatisticsPane extends VBox {
 
-    VBox statsPanel;
     VBox chartBox;
     Button closeButton;
 
@@ -29,21 +29,24 @@ public class StatisticsPane extends HBox {
     PieChart pieChart;
 
     public StatisticsPane() {
-        addStatsPanel();
         setStyles();
         addCharts();
         addFooter();
+
+        setVgrow(chartBox, Priority.ALWAYS);
     }
 
-    private void addStatsPanel() {
-        this.setPadding(new Insets(10, 8, 0, 0));
-        this.statsPanel = new VBox();
-        this.getChildren().add(statsPanel);
+    private void setStyles() {
+        this.getStyleClass().add("bordered-white-pane");
+        this.setAlignment(Pos.TOP_CENTER);
+        this.setSpacing(30);
+        this.setPadding(new Insets(0, -5, 12, -5));
     }
 
     public void addCharts() {
         chartBox = new VBox();
-        chartBox.setAlignment(Pos.TOP_RIGHT);
+        chartBox.setAlignment(Pos.TOP_CENTER);
+        chartBox.setSpacing(20);
 
         this.xAxis = new CategoryAxis();
         this.yAxis = new NumberAxis();
@@ -57,7 +60,7 @@ public class StatisticsPane extends HBox {
         chartBox.getChildren().add(barChart);
         chartBox.getChildren().add(pieChart);
 
-        statsPanel.getChildren().add(chartBox);
+        this.getChildren().add(chartBox);
     }
 
     private void addFooter() {
@@ -69,17 +72,10 @@ public class StatisticsPane extends HBox {
         closeButton.getStyleClass().add("chart-button");
         footer.getChildren().add(closeButton);
 
-        statsPanel.getChildren().add(footer);
+        this.getChildren().add(footer);
     }
 
-    private void setStyles() {
-        this.getStyleClass().add("white-pane");
-        statsPanel.getStyleClass().add("bordered-white-pane");
-        statsPanel.setPrefWidth(370);
-        statsPanel.setAlignment(Pos.TOP_CENTER);
-        statsPanel.setSpacing(30);
-        statsPanel.setPadding(new Insets(0, -5, 12, -5));
-    }
+
 
     public void fillBarChart(CourseManager courseManager, AssessmentColumn<Student, ?> totalColumn, ComboBox<StudentGroup> classComboBox, ComboBox<AssessmentColumn<Student, ?>> columnComboBox) {
         StudentGroup selectedGroup = classComboBox.getSelectionModel().getSelectedItem();

@@ -99,7 +99,7 @@ public class FileManager {
             writer.close();
             System.out.println("Save successful!");
 
-            mainController.setStatusLabelText("Save successful!");
+            mainController.setStatusText("Save successful!");
 
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -111,6 +111,7 @@ public class FileManager {
 
     public void load(File fileFromFileChooser, MainController mainController) {
 
+        //todo: setup assessment creation window / load assessments via (unshown) window.
         this.file = fileFromFileChooser;
 
         CourseManager courseManager = mainController.getCourseManager();
@@ -158,8 +159,8 @@ public class FileManager {
             if (stdAssessmentMap.size() > 0 || assessmentSetMap.size() > 0) {
                 mainController.createTotalColumn();
             }
-            mainController.addAllStudentsToTable(courseManager.getAllStudents());
 
+            mainController.addAllStudentsToTable(courseManager.getAllStudents());
 
         } catch (Exception e) {
             System.out.println("Error reading from file! " + e.getMessage());

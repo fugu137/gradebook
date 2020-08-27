@@ -164,7 +164,6 @@ public class Class implements StudentGroup {
         barChart.setCategoryGap(35);
     }
 
-
     @Override
     public String toString() {
         return name.getValue();

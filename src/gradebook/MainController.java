@@ -23,6 +23,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -31,7 +34,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -40,9 +43,11 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,7 +55,7 @@ public class MainController implements Initializable {
 
     //Main Layout//
     @FXML
-    BorderPane mainPane;
+    HBox mainPane;
 
     //Table//
     @FXML
@@ -175,7 +180,7 @@ public class MainController implements Initializable {
     private Label statusLabel;
 
 
-    //Control//
+    //Controller Variables//
     private ObservableList<AssessmentColumn<Student, ?>> essayColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private ObservableList<AssessmentColumn<Student, ?>> examColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private ObservableList<AssessmentColumn<Student, ?>> essayPlanColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
@@ -221,7 +226,6 @@ public class MainController implements Initializable {
         setupToolbarBindings();
 
         loadFooterSettings();
-
     }
 
     //Initialize Methods//
@@ -247,7 +251,7 @@ public class MainController implements Initializable {
 //                newBlankStudent();
 //            }
 //        });
-//    }
+
 
     private void loadTabPaneSettings() {
         statisticsTab.selectedProperty().addListener(obs -> {
@@ -405,7 +409,6 @@ public class MainController implements Initializable {
 
     private void removeClass(ComboBoxTableCell<Student, Class> comboBoxCell) {
         Class selectedClass = comboBoxCell.getItem();
-        //TODO: create confirmation popup (deleting will remove students from course)
         removeClass(selectedClass);
     }
 
@@ -985,8 +988,8 @@ public class MainController implements Initializable {
                 );
                 numberLabel.textProperty().bind(
                         Bindings.when(selectedGroup.numberAttemptedProperty(assessment).asString().isEqualTo("null"))
-                        .then("N/A")
-                        .otherwise(selectedGroup.numberAttemptedProperty(assessment).asString())
+                                .then("N/A")
+                                .otherwise(selectedGroup.numberAttemptedProperty(assessment).asString())
                 );
             }
         }
@@ -1034,7 +1037,25 @@ public class MainController implements Initializable {
     }
 
 
-    //Table Methods//
+    ////Controller Methods////
+
+    public void handleKeyboardShortcuts(KeyEvent e) {
+        KeyCombination copyKeys = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+        KeyCombination cutKeys = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+        KeyCombination pasteKeys = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
+
+        if (copyKeys.match(e)) {
+            copyStudents();
+        }
+        if (cutKeys.match(e)) {
+            cutStudents();
+        }
+        if (pasteKeys.match(e)) {
+            pasteStudents();
+        }
+    }
+
+    //Table Control Methods//
     public void addAllStudentsToTable(ObservableList<Student> students) {
         table.getItems().clear();
         addBlankStudent();
@@ -1108,12 +1129,13 @@ public class MainController implements Initializable {
     }
 
 
-    //Toolbar Methods//
+    //Toolbar Control Methods//
+
     public void loadGradebook() {
 //        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
         Stage stage = (Stage) table.getParent().getScene().getWindow();
 
-        File file = FileChooserWindow.displayLoadWindow(stage, "Load...");
+        File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
 
         fileManager = new FileManager();
 
@@ -1227,20 +1249,34 @@ public class MainController implements Initializable {
         table.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    public void handleKeyboardShortcuts(KeyEvent e) {
-        KeyCombination copyKeys = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-        KeyCombination cutKeys = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
-        KeyCombination pasteKeys = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
+    public void showHideAssessmentColumns(CheckBox checkBox, boolean selected) {
 
-        if (copyKeys.match(e)) {
-            copyStudents();
-        }
-        if (cutKeys.match(e)) {
-            cutStudents();
-        }
-        if (pasteKeys.match(e)) {
-            pasteStudents();
+        if (checkBox == essaysCheckBox) {
+            essayColumns.forEach(c -> c.setVisible(selected));
+
+        } else if (checkBox == essayPlansCheckBox) {
+            essayPlanColumns.forEach(c -> c.setVisible(selected));
+
+        } else if (checkBox == examsCheckBox) {
+            examColumns.forEach(c -> c.setVisible(selected));
+
+        } else if (checkBox == argAnalysesCheckBox) {
+            argAnalysisColumns.forEach(c -> c.setVisible(selected));
+
+        } else if (checkBox == quizzesCheckBox) {
+            quizColumns.forEach(c -> c.setVisible(selected));
+
+        } else if (checkBox == participationCheckBox) {
+            participationColumns.forEach(c -> c.setVisible(selected));
+
+        } else if (checkBox == presentationsCheckBox) {
+            presentationColumns.forEach(c -> c.setVisible(selected));
+
+        } else if (checkBox == otherCheckBox) {
+            otherColumns.forEach(c -> c.setVisible(selected));
+
+        } else {
+            throw new IllegalArgumentException("Assessment type does not exit!");
         }
     }
 
@@ -1288,6 +1324,8 @@ public class MainController implements Initializable {
         createTotalColumn();
         addAssessmentsButton.setDisable(true);
         modifyAssessmentsButton.setDisable(false);
+
+        setStatusText("Assessments successfully created...");
     }
 
     public void setupStdAssessment(StdAssessment stdAssessment) {
@@ -1333,8 +1371,37 @@ public class MainController implements Initializable {
         AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
         column.textProperty().bind(std.nameProperty());
         column.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(std));
-        column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer integer) {
+                return integer == null ? "" : integer.toString();
+            }
+            @Override
+            public Integer fromString(String string) {
+                if (!string.matches("\\d+")) {
+                    Toolkit.getDefaultToolkit().beep();
+                    throw new NumberFormatException();
+
+                } else {
+                    int intValue = Integer.parseInt(string);
+
+                    if (intValue < 0 || intValue > 100) {
+                        Toolkit.getDefaultToolkit().beep();
+                        throw new NumberFormatException();
+                    } else {
+                        return intValue;
+                    }
+                }
+            }
+        }));
         column.setPrefWidth(62);
+
+//        column.setOnEditCommit(e -> {
+//            if (e.getNewValue() < 0 || e.getNewValue() > 100) {
+//                Toolkit.getDefaultToolkit().beep();
+//                table.refresh();
+//            }
+//        });
 
         table.getColumns().add(column);
         addToColumnsList(column);
@@ -1537,12 +1604,19 @@ public class MainController implements Initializable {
             System.out.println("No assessments statistics found!");
 
         } else {
+            Stage stage = (Stage) statisticsButton.getParent().getScene().getWindow();
+//
+//            stage.setWidth(stage.getWidth() + 370);
+//            stage.sizeToScene();
+
             if (statisticsPane == null) {
                 statisticsPane = new StatisticsPane();
+                statisticsPane.setMinWidth(stage.getWidth()/4.35);
 
+                statisticsPaneSizeSettings();
                 setupCloseButton(statisticsPane.getCloseButton());
 
-                mainPane.setRight(statisticsPane);
+                mainPane.getChildren().add(statisticsPane);
 
                 statisticsPane.fillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
                 statisticsPane.fillPieChart(courseManager);
@@ -1552,7 +1626,7 @@ public class MainController implements Initializable {
 //
 //                setupCloseButton(statisticsPane.getCloseButton());
 //
-                mainPane.setRight(statisticsPane);
+                mainPane.getChildren().add(statisticsPane);
 //                statisticsPane.fillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
 //                statisticsPane.fillPieChart(courseManager);
             }
@@ -1561,18 +1635,22 @@ public class MainController implements Initializable {
 
     private void setupCloseButton(Button closeButton) {
         closeButton.setOnAction(e -> {
-            mainPane.setRight(null);
+            mainPane.getChildren().remove(statisticsPane);
         });
+    }
+
+    private void statisticsPaneSizeSettings() {
+        statisticsPane.prefHeightProperty().bind(table.heightProperty());
     }
 
     @FXML
     public void finaliseGrades() {
-        for (Student s: courseManager.getAllStudents()) {
+        for (Student s : courseManager.getAllStudents()) {
             s.finaliseGrades();
         }
     }
 
-    public void setStatusLabelText(String text) {
+    public void setStatusText(String text) {
         statusLabel.setText(text);
 
         FadeTransition ft = new FadeTransition(Duration.seconds(1), statusLabel);
@@ -1585,6 +1663,15 @@ public class MainController implements Initializable {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), e -> ft.play()));
         timeline.play();
     }
+
+
+
+    ////User Commands////
+
+    //Table Commands//
+
+    //Toolbar Commands//
+
 
 
     //Test Methods//

@@ -86,8 +86,8 @@
     -fx-padding: 0;
 }
 #left-tab: hover: disabled {
-    -fx-background-color: derive(#1765ad, 25%);
-    -fx-border-color: derive(#1765ad, 25%);
+    -fx-background-color: derive(#1765ad, 20%);
+    -fx-border-color: derive(#1765ad, 20%);
     -fx-background-insets: 1 1 2 1;
     -fx-border-insets: 0 0 1 0;
 }
@@ -266,6 +266,11 @@
     -fx-border-color: white;
     -fx-effect: null;
 }
+.grey-pane {
+    -fx-background-color: -fx-grey-background;
+    -fx-border-color: white;
+    -fx-effect: null;
+}
 .bordered-white-pane {
     -fx-background-color: white;
     -fx-border-color: -fx-faint-border;
@@ -401,6 +406,13 @@
     -fx-border-color: derive(-fx-box-border, -10%);
     -fx-padding: 0 3 0 3;
 }
+.error-name-field {
+    -fx-background-radius: 0;
+    -fx-effect: null;
+    -fx-background-color: white;
+    -fx-border-color: red;
+    -fx-padding: 0 3 0 3;
+}
 .toolbar-combo-box {
     -fx-background-color: white;
     -fx-background-radius: 0;
@@ -495,6 +507,103 @@
     -fx-shape: " ";
     -fx-padding: 0.0 0.15em;
 }
+
+.error-combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-effect: null;
+    -fx-border-color: red;
+    -fx-border-radius: 0;
+    -fx-padding: 0 0 0 1;
+    -fx-background-insets: 0 1 1 0;
+}
+.error-combo-box .text-input {
+    -fx-background-color: transparent;
+    -fx-effect: null;
+    -fx-padding: 0 0 0 1;
+}
+.error-combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-effect: null;
+    -fx-padding: 0 0 0 1;
+}
+.error-combo-box .list-view {
+    -fx-border-color: -fx-border;
+}
+.error-combo-box .list-view .list-cell: hover {
+    -fx-background-color: -fx-focus-color;
+    -fx-effect: null;
+    -fx-padding: 0 0 0 2;
+}
+.error-combo-box .list-view .list-cell: selected {
+    -fx-background-color: -fx-focus-color;
+    -fx-effect: null;
+    -fx-padding: 0 0 0 2;
+}
+.error-combo-box .arrow-button {
+    -fx-border-color: red red red derive(-fx-box-border, -10%);
+    -fx-border-insets: -1 -1 -1 -1;
+    -fx-background-insets: -1 -1 -1 -1;
+    -fx-padding: 1 4.3 1 4.3;
+    -fx-background-color: -fx-grey-background;
+}
+.error-combo-box .arrow-button: hover {
+    -fx-border-color: red red red derive(-fx-box-border, -10%);
+    -fx-border-insets: -1 -1 -1 -1;
+    -fx-background-insets: -1 -1 -1 -1;
+    -fx-padding: 1 4.3 1 4.3;
+    -fx-background-color: derive(-fx-background, 25%);
+}
+.error-combo-box .scroll-bar: horizontal .track {
+    -fx-background-color: white;
+    -fx-border-color: -fx-faint-border transparent transparent transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+ }
+.error-combo-box .scroll-bar:vertical .track{
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent transparent -fx-faint-border;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+.error-combo-box .scroll-bar:horizontal .thumb,
+.error-combo-box .scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-faint-background;
+    -fx-border-color: -fx-faint-border;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+.error-combo-box .scroll-bar:horizontal .thumb:hover,
+.error-combo-box .scroll-bar:vertical .thumb: hover {
+    -fx-background-color: derive(-fx-faint-background, -1.5%);
+    -fx-border-color: derive(-fx-faint-border, -4%);
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+.error-combo-box .scroll-bar:horizontal .increment-button ,
+.error-combo-box .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 0.0 10.0 0.0;
+}
+.error-combo-box .scroll-bar:vertical .increment-button ,
+.error-combo-box .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 10.0 0.0 0.0;
+}
+.error-combo-box .scroll-bar .increment-arrow,
+.error-combo-box .scroll-bar .decrement-arrow{
+    -fx-shape: " ";
+    -fx-padding: 0.15em 0.0;
+}
+.error-combo-box .scroll-bar: vertical .increment-arrow,
+.error-combo-box .scroll-bar: vertical .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.0 0.15em;
+}
+
+
 .combo-box-table-cell .list-cell {
     -fx-background-color: white;
     -fx-background-radius: 0;
@@ -702,6 +811,13 @@
     -fx-effect: null;
     -fx-background-color: white;
     -fx-border-color: derive(-fx-box-border, -10%);
+    -fx-padding: 0 3 0 1;
+}
+.error-number-field {
+    -fx-background-radius: 0;
+    -fx-effect: null;
+    -fx-background-color: white;
+    -fx-border-color: red;
     -fx-padding: 0 3 0 1;
 }
 

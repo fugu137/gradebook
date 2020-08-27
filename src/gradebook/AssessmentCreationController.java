@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -151,7 +152,7 @@ public class AssessmentCreationController implements Initializable {
     private TextField totalWeightField;
 
     @FXML
-    private Button finaliseButton;
+    private Button submitButton;
     @FXML
     private Button cancelButton;
 
@@ -170,6 +171,8 @@ public class AssessmentCreationController implements Initializable {
     IntegerProperty weight7AsInt = new SimpleIntegerProperty();
     IntegerProperty weight8AsInt = new SimpleIntegerProperty();
     IntegerProperty totalWeightAsInt = new SimpleIntegerProperty();
+
+    ObservableList<String> errorMessages = FXCollections.observableArrayList();
 
 
     public void setMainController(MainController mainController) {
@@ -275,22 +278,57 @@ public class AssessmentCreationController implements Initializable {
 
     //Assessment Creation Window Methods//
     @FXML
-    public void finaliseAssessments() {
-        boolean unableToFinalise = false;
+    public void submitAssessments() {
+        errorMessages.clear();
+
+        boolean unableToSubmit = false;
+        int totalWeighting = 0;
 
         for (AssessmentCreationBar bar: assessmentCreationBars) {
+            Integer barWeighting = bar.getWeighting();
+            if (barWeighting == null) {
+                barWeighting = 0;
+            }
+            totalWeighting = totalWeighting + barWeighting;
+
             if (bar.hasInvalidEntries()) {
-                unableToFinalise = true;
-                break;
+                unableToSubmit = true;
+                bar.getErrorMessages().forEach(s -> {
+                    if (!errorMessages.contains(s)) {
+                        errorMessages.add(s);
+                    }
+                });
+            }
+        }
+        if (totalWeighting != 100) {
+            unableToSubmit = true;
+            errorMessages.add("- Weightings must sum to 100.");
+            for (AssessmentCreationBar bar : assessmentCreationBars) {
+                if (!bar.getWeightingField().isDisabled()) {
+                    bar.getWeightingField().getStyleClass().add("error-number-field");
+                }
             }
         }
 
-        if (unableToFinalise) {
-            System.out.println("Some fields are invalid!"); //TODO: make error message with specific details
+        if (unableToSubmit) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+            alert.setTitle("Invalid Entries");
+            alert.setHeaderText("Some entries are invalid! Please try again.");
+
+            StringBuilder content = new StringBuilder();
+            String filler = "";
+            for (String s: errorMessages) {
+                content.append(filler).append(s);
+                filler = "\n";
+            }
+            alert.setContentText(content.toString());
+            alert.showAndWait();
+
         } else {
-            System.out.println("Finalising assessments...");
+            System.out.println("Creating assessments...");
             createAssessments();
-            Stage stage = (Stage) finaliseButton.getScene().getWindow();
+            Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.close();
         }
     }
