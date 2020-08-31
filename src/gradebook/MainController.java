@@ -196,7 +196,7 @@ public class MainController implements Initializable {
     private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
 
     private Scene assessmentCreationWindow;
-    private AssessmentCreationController assessmentSetupController;
+    private AssessmentCreationController assessmentCreationController;
     private Stage stage;
     private FileManager fileManager;
 
@@ -213,12 +213,12 @@ public class MainController implements Initializable {
 
     public AssessmentCreationController getAssessmentCreationController() throws IOException {
 
-        if (this.assessmentSetupController == null) {
+        if (this.assessmentCreationController == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("assessment-creation-window.fxml"));
             Parent root = loader.load();
 
-            assessmentSetupController = loader.getController();
-            assessmentSetupController.setMainController(this);
+            assessmentCreationController = loader.getController();
+            assessmentCreationController.setMainController(this);
 
             assessmentCreationWindow = new Scene(root);
 
@@ -229,7 +229,7 @@ public class MainController implements Initializable {
             stage.resizableProperty().setValue(false);
         }
 
-        return assessmentSetupController;
+        return assessmentCreationController;
     }
 
     @Override
@@ -1163,14 +1163,29 @@ public class MainController implements Initializable {
         selectedStudent.setGender(gender);
     }
 
-    public void clearTable() {
+    public void reset() {
+        clearTable();
+        removeAssessmentColumns();
+        courseManager.clear();
+        assessmentCreationController = null;
+    }
+
+    private void clearTable() {
         table.getItems().clear();
         blankStudent = new Student();
-        removeAssessmentColumns();
     }
 
     private void removeAssessmentColumns() {
         table.getColumns().removeIf(column -> column instanceof AssessmentColumn);
+//
+//        essayColumns.clear();
+//        essayPlanColumns.clear();
+//        examColumns.clear();
+//        quizColumns.clear();
+//        argAnalysisColumns.clear();
+//        participationColumns.clear();
+//        presentationColumns.clear();
+//        otherColumns.clear();
     }
 
     public void removeTotalColumn() {

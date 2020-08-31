@@ -119,8 +119,7 @@ public class FileManager {
 //
 //        mainController.setCourseManager(courseManager);
 //        mainController.refreshCourseManagerBindings();
-        mainController.clearTable();
-        courseManager.clear();
+        mainController.reset();
 
         try {
             Scanner reader = new Scanner(fileFromFileChooser);
@@ -142,7 +141,6 @@ public class FileManager {
 
                     String courseName = courseAndClass[0];
                     courseManager.setCourseName(courseName);
-
 //
 //                    if (lineNumber == 1 && !(stdAssessments[0].isBlank() && assessmentSets[0].isBlank())) {
 //                        assessments = getAssessments(stdAssessments, assessmentSets);
