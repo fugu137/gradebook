@@ -107,6 +107,32 @@ public class AssessmentSetData implements AssessmentData {
         }
     }
 
+    public void addSubAssessmentData(StdAssessmentData stdData) {
+        stdAssessmentDataList.add(stdData);
+    }
+
+//    public void addSubAssessments(int oldQuantity, int newQuantity) {
+//        int number = newQuantity - oldQuantity;
+//
+//        for (int i = 0; i < number; i++) {
+//            String name = assessmentSet.getName() + " " + (oldQuantity + 1 + i);
+//            AssessmentType type = assessmentSet.getType();
+//
+//            StdAssessment std = new StdAssessment(name, type, null);
+//
+//            stdAssessmentDataList.add(new StdAssessmentData(std));
+//        }
+//    }
+//
+//    public void removeSubAssessmentGrades(int oldQuantity, int newQuantity) {
+//        List<StdAssessmentData> toRemove = new ArrayList<>();
+//
+//        for (int i = oldQuantity - 1; i > newQuantity - 1; i--) {
+//            toRemove.add(stdAssessmentDataList.get(i));
+//        }
+////        stdAssessmentDataList.removeAll(toRemove);
+//    }
+
     @Override
     public ObjectProperty<Double> gradeProperty() {
         return assessmentSetTotalGrade;

@@ -69,11 +69,11 @@ public class CourseCohort implements StudentGroup {
         return totalGradeStatistics;
     }
 
-    public int getNumberAttempted() {
+    public Integer getNumberAttempted() {
         return totalGradeStatistics.getNumberOfStudentsWithGrades();
     }
 
-    public int getNumberAttempted(Assessment assessment) {
+    public Integer getNumberAttempted(Assessment assessment) {
         return assessmentStatistics.get(assessment).getNumberOfStudentsWithGrades();
     }
 
@@ -101,6 +101,24 @@ public class CourseCohort implements StudentGroup {
         assessments.add(assessment);
         assessmentStatistics.put(assessment, new AssessmentStatistics(students, assessment));
     }
+
+    public void addSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment) {
+        for (Student s : students) {
+            s.addSubAssessmentData(assessmentSet, subAssessment);
+        }
+    }
+
+//    public void removeSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
+//        for (Student s: students) {
+//            s.removeSubAssessmentSetData(set, oldQuantity, newQuantity);
+//        }
+//    }
+//
+//    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
+//        for (Student s: students) {
+//            s.addSubAssessments(set, oldQuantity, newQuantity);
+//        }
+//    }
 
     public ObjectProperty<Double> totalGradeMedianProperty() {
         return totalGradeStatistics.medianProperty();

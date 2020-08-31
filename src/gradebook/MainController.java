@@ -196,6 +196,7 @@ public class MainController implements Initializable {
     private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
 
     private Scene assessmentCreationWindow;
+    private AssessmentCreationController assessmentSetupController;
     private Stage stage;
     private FileManager fileManager;
 
@@ -208,6 +209,27 @@ public class MainController implements Initializable {
 
     public CourseManager getCourseManager() {
         return courseManager;
+    }
+
+    public AssessmentCreationController getAssessmentCreationController() throws IOException {
+
+        if (this.assessmentSetupController == null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("assessment-creation-window.fxml"));
+            Parent root = loader.load();
+
+            assessmentSetupController = loader.getController();
+            assessmentSetupController.setMainController(this);
+
+            assessmentCreationWindow = new Scene(root);
+
+            stage = new Stage();
+            stage.setScene(assessmentCreationWindow);
+            stage.setTitle("Create Assessments");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.resizableProperty().setValue(false);
+        }
+
+        return assessmentSetupController;
     }
 
     @Override
@@ -1055,6 +1077,40 @@ public class MainController implements Initializable {
         }
     }
 
+    public ObservableList<AssessmentColumn<Student, ?>> getAssessmentColumnsByType(AssessmentType type) {
+        ObservableList<AssessmentColumn<Student, ?>> assessmentColumns = FXCollections.observableArrayList();
+
+        switch (type) {
+            case ESSAY:
+                assessmentColumns.addAll(essayColumns);
+                return assessmentColumns;
+            case ESSAY_PLAN:
+                assessmentColumns.addAll(essayPlanColumns);
+                return assessmentColumns;
+            case EXAM:
+                assessmentColumns.addAll(examColumns);
+                return assessmentColumns;
+            case QUIZ:
+                assessmentColumns.addAll(quizColumns);
+                return assessmentColumns;
+            case ARG_ANALYSIS:
+                assessmentColumns.addAll(argAnalysisColumns);
+                return assessmentColumns;
+            case PARTICIPATION:
+                assessmentColumns.addAll(participationColumns);
+                return assessmentColumns;
+            case PRESENTATION:
+                assessmentColumns.addAll(presentationColumns);
+                return assessmentColumns;
+            case OTHER:
+                assessmentColumns.addAll(otherColumns);
+                return assessmentColumns;
+            default:
+                return assessmentColumns;
+        }
+
+    }
+
     //Table Control Methods//
     public void addAllStudentsToTable(ObservableList<Student> students) {
         table.getItems().clear();
@@ -1133,6 +1189,10 @@ public class MainController implements Initializable {
 
     public void loadGradebook() {
 //        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
+        if (statisticsPane != null) {
+            closeStatisticsPane();
+        }
+
         Stage stage = (Stage) table.getParent().getScene().getWindow();
 
         File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
@@ -1326,6 +1386,8 @@ public class MainController implements Initializable {
         modifyAssessmentsButton.setDisable(false);
 
         setStatusText("Assessments successfully created...");
+
+        //TODO: update assessment set if quantity changed.
     }
 
     public void setupStdAssessment(StdAssessment stdAssessment) {
@@ -1345,6 +1407,55 @@ public class MainController implements Initializable {
         blankStudent.removeAssessmentData(assessment);
         removeAssessmentColumn(assessment);
         removeTotalColumn();
+    }
+
+    public void changeAssessmentSetQuantity(AssessmentSet assessmentSet, int newQuantity) {
+        int oldQuantity = assessmentSet.getQuantity();
+
+        if (newQuantity > oldQuantity) {
+
+            int number = newQuantity - oldQuantity;
+
+            for (int i = 0; i < number; i++) {
+                String name = assessmentSet.getName() + " " + (assessmentSet.getQuantity() + 1);
+                AssessmentType type = assessmentSet.getType();
+                StdAssessment subAssessment = new StdAssessment(name, type, null);
+
+                courseManager.assignNewSubAssessment(assessmentSet, subAssessment);
+                createSubAssessmentColumn(assessmentSet, subAssessment);
+            }
+        }
+
+//        if (newQuantity < oldQuantity) {
+//            courseManager.unassignSubAssessments(assessmentSet, oldQuantity, newQuantity);
+//        }
+
+    }
+
+    private void createSubAssessmentColumn(AssessmentSet assessmentSet, StdAssessment subAssessment) {
+        SubAssessmentColumn<Student, Integer> column = new SubAssessmentColumn<>(subAssessment.getName(), subAssessment, assessmentSet);
+        column.textProperty().bind(subAssessment.nameProperty());
+        column.setCellValueFactory(c -> c.getValue().assessmentSetGradeProperty(assessmentSet, subAssessment));
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        column.setPrefWidth(62);
+
+        addAssessmentColumnContextMenu(column);
+
+        ObservableList<AssessmentColumn<Student, ?>> columnsOfType = getAssessmentColumnsByType(assessmentSet.getType());
+
+        @SuppressWarnings("unchecked")
+        List<SubAssessmentColumn<Student, ?>> subAssessmentColumns = columnsOfType.stream()
+                .filter(c -> c instanceof SubAssessmentColumn)
+                .map(c -> (SubAssessmentColumn<Student, ?>) c)
+                .filter(c -> c.getParent() == assessmentSet)
+                .sorted()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        SubAssessmentColumn<Student, ?> lastColumn = subAssessmentColumns.get(subAssessmentColumns.size() - 1);
+        int lastColumnIndex = table.getColumns().indexOf(lastColumn);
+        table.getColumns().add(lastColumnIndex + 1, column);
+
+        addToColumnsList(column);
     }
 
 //    public void setupStdAssessments(ObservableList<StdAssessment> stdAssessments) {
@@ -1633,9 +1744,13 @@ public class MainController implements Initializable {
         }
     }
 
+    public void closeStatisticsPane() {
+        mainPane.getChildren().remove(statisticsPane);
+    }
+
     private void setupCloseButton(Button closeButton) {
         closeButton.setOnAction(e -> {
-            mainPane.getChildren().remove(statisticsPane);
+            closeStatisticsPane();
         });
     }
 

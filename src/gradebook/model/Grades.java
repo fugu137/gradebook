@@ -69,6 +69,16 @@ public class Grades {
         grades.remove(assessment);
     }
 
+//    public void removeSubAssessmentGrades(AssessmentSet set, int oldQuantity, int newQuantity) {
+//        AssessmentSetData data = (AssessmentSetData) grades.get(set);
+//        data.removeSubAssessmentGrades(oldQuantity, newQuantity);
+//    }
+//
+//    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
+//        AssessmentSetData data = (AssessmentSetData) grades.get(set);
+//        data.addSubAssessments(oldQuantity, newQuantity);
+//    }
+
     public AssessmentData get(Assessment assessment) {
         return grades.get(assessment);
     }

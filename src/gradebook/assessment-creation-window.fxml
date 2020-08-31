@@ -820,8 +820,8 @@
       </GridPane>
       <HBox alignment="BOTTOM_LEFT" prefHeight="55.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="finaliseButton" defaultButton="true" mnemonicParsing="false" onAction="#submitAssessments" prefWidth="54.0" styleClass="confirm-button" text="Create" />
-            <Button fx:id="cancelButton" cancelButton="true" layoutX="322.0" layoutY="37.0" mnemonicParsing="false" styleClass="cancel-button" text="Cancel" />
+            <Button fx:id="submitButton" defaultButton="true" mnemonicParsing="false" onAction="#submitAssessments" prefWidth="60.0" styleClass="confirm-button" text="Submit" />
+            <Button fx:id="cancelButton" cancelButton="true" layoutX="322.0" layoutY="37.0" mnemonicParsing="false" prefWidth="60.0" styleClass="cancel-button" text="Cancel" />
          </children>
          <padding>
             <Insets bottom="20.0" left="14.0" top="10.0" />

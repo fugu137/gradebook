@@ -157,7 +157,7 @@ public class Statistics {
         return fStudents.size();
     }
 
-    public int getNumberOfStudentsWithGrades() {
+    public Integer getNumberOfStudentsWithGrades() {
 //        return hdStudents.size() + dStudents.size() + crStudents.size() + pStudents.size() + fStudents.size();
         return numberOfStudentsWithGrades.getValue();
     }

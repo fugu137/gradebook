@@ -4,6 +4,7 @@ import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
 import gradebook.model.Assessment;
 import gradebook.model.AssessmentCreationBar;
+import gradebook.model.AssessmentSet;
 import gradebook.tools.Formatter;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -277,6 +278,15 @@ public class AssessmentCreationController implements Initializable {
     }
 
     //Assessment Creation Window Methods//
+    public void addAssessment(Assessment assessment) {
+        for (AssessmentCreationBar bar : assessmentCreationBars) {
+            if (!bar.isActive()) {
+                bar.addAssessment(assessment);
+                break;
+            }
+        }
+    }
+
     @FXML
     public void submitAssessments() {
         errorMessages.clear();
@@ -284,7 +294,7 @@ public class AssessmentCreationController implements Initializable {
         boolean unableToSubmit = false;
         int totalWeighting = 0;
 
-        for (AssessmentCreationBar bar: assessmentCreationBars) {
+        for (AssessmentCreationBar bar : assessmentCreationBars) {
             Integer barWeighting = bar.getWeighting();
             if (barWeighting == null) {
                 barWeighting = 0;
@@ -318,7 +328,7 @@ public class AssessmentCreationController implements Initializable {
 
             StringBuilder content = new StringBuilder();
             String filler = "";
-            for (String s: errorMessages) {
+            for (String s : errorMessages) {
                 content.append(filler).append(s);
                 filler = "\n";
             }
@@ -328,15 +338,22 @@ public class AssessmentCreationController implements Initializable {
         } else {
             System.out.println("Creating assessments...");
             createAssessments();
+
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.close();
+
+
+//            for (AssessmentCreationBar bar: assessmentCreationBars) {
+//                bar.disableQuantityAndBestOfFields();
+//            }
         }
     }
+
 
     private void createAssessments() {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList();
 
-        for (AssessmentCreationBar bar: assessmentCreationBars) {
+        for (AssessmentCreationBar bar : assessmentCreationBars) {
             if (bar.isActive()) {
 
                 if (bar.getAssessment() == null) {
@@ -344,12 +361,32 @@ public class AssessmentCreationController implements Initializable {
                     assessments.add(bar.getAssessment());
 
                 } else {
-                    bar.modifyAssessment();
+                    if (bar.modifyAssessment()) {
+                        int quantity = bar.getQuantity();
+                        mainController.changeAssessmentSetQuantity((AssessmentSet) bar.getAssessment(), quantity);
+                    }
                 }
             }
         }
         mainController.setupAllAssessments(assessments);
+
+//        for (AssessmentCreationBar bar: assessmentCreationBars) {
+//            bar.disableQuantityAndBestOfFields();
+//        }
     }
+
+    public void submitAssessmentsWithoutClick() {
+        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
+
+        for (AssessmentCreationBar bar : assessmentCreationBars) {
+            if (bar.getAssessment() != null) {
+                assessments.add(bar.getAssessment());
+            }
+        }
+
+        mainController.setupAllAssessments(assessments);
+    }
+
 
     @FXML
     public void clearButtonPressed(ActionEvent event) {

@@ -2,6 +2,7 @@ package gradebook.model;
 
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
+import gradebook.tools.NumberRounder;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -86,6 +87,55 @@ public class AssessmentCreationBar {
             weightingField.getStyleClass().clear();
             weightingField.getStyleClass().add("number-field");
         });
+    }
+
+//    public void load(AssessmentForm form, AssessmentType type, String name, Integer quantity, Integer bestOf, Integer weighting) {
+//        formComboBox.getSelectionModel().select(form);
+//        typeComboBox.getSelectionModel().select(type);
+//        nameField.setText(name);
+//
+//        if (quantity != null) {
+//            quantityField.setText(String.valueOf(quantity));
+//        }
+//        if (bestOfField != null) {
+//            bestOfField.setText(String.valueOf(bestOf));
+//        }
+//        if (weighting != null) {
+//            weightingField.setText(String.valueOf(1.0 * weighting / 100));
+//        }
+//    }
+
+    public void addAssessment(Assessment assessment) {
+        if (this.assessment != null) {
+            System.out.println("Assessment already present on this bar!");
+        } else {
+            this.assessment = assessment;
+
+            AssessmentForm form = null;
+            if (assessment instanceof StdAssessment) {
+                form = AssessmentForm.SINGLE;
+            }
+            if (assessment instanceof AssessmentSet) {
+                form = AssessmentForm.SET;
+
+                Integer quantity = ((AssessmentSet) assessment).getQuantity();
+                quantityField.setText(String.valueOf(quantity));
+
+                Integer bestOf = ((AssessmentSet) assessment).getBestOf();
+                bestOfField.setText(String.valueOf(bestOf));
+            }
+            formComboBox.getSelectionModel().select(form);
+
+            AssessmentType type = assessment.getType();
+            typeComboBox.getSelectionModel().select(type);
+
+            String name = assessment.getName();
+            nameField.setText(name);
+
+            Double weighting = assessment.getWeighting();
+            Integer w = NumberRounder.roundToInt(weighting * 100);
+            weightingField.setText(String.valueOf(w));
+        }
     }
 
     public ComboBox<AssessmentForm> getFormComboBox() {
@@ -216,6 +266,11 @@ public class AssessmentCreationBar {
         return errorMessages;
     }
 
+    public void disableQuantityAndBestOfFields() {
+        quantityField.setDisable(true);
+        bestOfField.setDisable(true);
+    }
+
     public void createAssessment() {
 
         if (isActive.getValue() && !this.hasInvalidEntries()) {
@@ -241,10 +296,10 @@ public class AssessmentCreationBar {
         }
     }
 
-    public void modifyAssessment() {
+    public boolean modifyAssessment() {
 
         if (isActive.getValue() && !this.hasInvalidEntries()) {
-            AssessmentForm assessmentForm = getForm();
+//            AssessmentForm assessmentForm = getForm();
             AssessmentType type = getType();
             String name = getName();
             Integer quantity = getQuantity();
@@ -256,6 +311,7 @@ public class AssessmentCreationBar {
                 stdAssessment.setType(type);
                 stdAssessment.setName(name);
                 stdAssessment.setWeighting(weighting);
+                return false;
             }
 
             if (assessment instanceof AssessmentSet) {
@@ -263,10 +319,15 @@ public class AssessmentCreationBar {
                 set.setType(type);
                 set.setName(name);
                 set.setWeighting(weighting);
-                set.setQuantity(quantity);
+//                set.setQuantity(quantity);
                 set.setBestOf(bestOf);
+
+                if (!quantity.equals(set.getQuantity())) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
 

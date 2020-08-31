@@ -198,6 +198,37 @@ public class CourseManager {
         }
     }
 
+    public void assignNewSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment) {
+        for (StudentGroup g : studentGroups) {
+            g.addSubAssessment(assessmentSet, subAssessment);
+        }
+        assessmentSet.setQuantity(assessmentSet.getQuantity() + 1);
+    }
+
+//    public void assignNewSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
+//        int number = newQuantity - oldQuantity;
+//        ObservableList<StdAssessment> subAssessments = FXCollections.observableArrayList();
+//
+//        for (int i = 0; i < number; i++) {
+//            String name = set.getName() + " " + (oldQuantity + 1 + i);
+//            AssessmentType type = set.getType();
+//
+//            StdAssessment std = new StdAssessment(name, type, null);
+//            subAssessments.add(std);
+//        }
+//
+//        for (StudentGroup g: studentGroups) {
+//            g.addSubAssessments(set, subAssessments);
+//        }
+//        //TODO: add listeners somewhere
+//    }
+//
+//    public void unassignSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
+//        for (StudentGroup g: studentGroups) {
+//            g.removeSubAssessments(set, oldQuantity, newQuantity);
+//        }
+//    }
+
     public ObservableList<Assessment> getAssessments() {
         return assessments;
     }
@@ -213,7 +244,6 @@ public class CourseManager {
     public void fillBarChartWithOverallGrades(BarChart<String, Number> barChart) {
         barChart.setTitle("Total Grade");
         addOverallGradeChartData(barChart);
-
     }
 
 

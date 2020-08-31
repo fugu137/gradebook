@@ -198,6 +198,22 @@ public class Student {
         }
     }
 
+    public void addSubAssessmentData(AssessmentSet assessmentSet, StdAssessment subAssessment) {
+        AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
+        StdAssessmentData stdData = new StdAssessmentData(subAssessment);
+        data.addSubAssessmentData(stdData);
+
+        stdData.gradeProperty().addListener(obs -> data.updateAssessmentSetTotalGrade());
+    }
+
+//    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
+//            grades.addSubAssessments(set, oldQuantity, newQuantity);
+//    }
+//
+//    public void removeSubAssessmentSetData(AssessmentSet set, int oldQuantity, int newQuantity) {
+//        grades.removeSubAssessmentGrades(set, oldQuantity, newQuantity);
+//    }
+
     public void removeAssessmentData(Assessment assessment) {
         grades.remove(assessment);
     }

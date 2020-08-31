@@ -148,9 +148,15 @@ public class FileManager {
 //                    if (lineNumber == 1 && !(stdAssessments[0].isBlank() && assessmentSets[0].isBlank())) {
 //                        assessments = getAssessments(stdAssessments, assessmentSets);
 //                    }
+                    if (lineNumber == 1 && !(stdAssessments[0].isBlank() && assessmentSets[0].isBlank())) {
+                        addAssessments(mainController, stdAssessmentMap, assessmentSetMap, stdAssessments, assessmentSets);
+                    }
+
                     Student student = makeStudent(classMap, courseAndClass, studentInfo);
                     courseManager.newStudent(student);
-                    addAssessmentsAndGrades(mainController, stdAssessmentMap, assessmentSetMap, lineNumber, student, stdAssessments, assessmentSets);
+
+                    addGrades(stdAssessmentMap, assessmentSetMap, student, stdAssessments, assessmentSets);
+//                    addAssessmentsAndGrades(mainController, stdAssessmentMap, assessmentSetMap, lineNumber, student, stdAssessments, assessmentSets);
 
                     lineNumber++;
                 }
@@ -168,8 +174,7 @@ public class FileManager {
         }
     }
 
-    private void addAssessmentsAndGrades(MainController mainController, Map<String, StdAssessment> stdAssessmentMap, Map<String, AssessmentSet> assessmentSetMap, int lineNumber, Student student, String[] stdAssessments, String[] assessmentSets) {
-
+    private void addAssessments(MainController mainController, Map<String, StdAssessment> stdAssessmentMap, Map<String, AssessmentSet> assessmentSetMap, String[] stdAssessments, String[] assessmentSets) throws IOException {
         for (String s : stdAssessments) {
             String[] assessmentInfo = s.trim().split(", ");
             StdAssessment stdAssessment = null;
@@ -178,27 +183,11 @@ public class FileManager {
                 AssessmentType type = AssessmentType.valueOf(assessmentInfo[0]);
                 String name = assessmentInfo[1];
                 Double weighting = Double.parseDouble(assessmentInfo[2]);
-                Integer grade = null;
 
-                if (!assessmentInfo[3].equals("null")) {
-                    grade = Integer.parseInt(assessmentInfo[3]);
-                }
+                stdAssessment = new StdAssessment(name, type, weighting);
+                stdAssessmentMap.put(name, stdAssessment);
 
-                if (lineNumber == 1) {
-                    stdAssessment = new StdAssessment(name, type, weighting);
-                    stdAssessmentMap.put(name, stdAssessment);
-                    mainController.setupStdAssessment(stdAssessment);
-
-                } else {
-                    stdAssessment = stdAssessmentMap.get(name);
-                }
-
-                if (stdAssessment != null) {
-                    student.setStdAssessmentGrade(stdAssessment, grade);
-
-                } else {
-                    System.out.println("No StdAssessment found for student " + student.getSurname());
-                }
+                mainController.getAssessmentCreationController().addAssessment(stdAssessment);
             }
         }
 
@@ -214,14 +203,62 @@ public class FileManager {
                 Integer quantity = Integer.parseInt(assessmentSetInfo[3]);
                 Integer bestOf = Integer.parseInt(assessmentSetInfo[4]);
 
-                if (lineNumber == 1) {
-                    set = new AssessmentSet(name, type, weighting, quantity, bestOf);
-                    assessmentSetMap.put(name, set);
-                    mainController.setupAssessmentSet(set);
+                set = new AssessmentSet(name, type, weighting, quantity, bestOf);
+                assessmentSetMap.put(name, set);
+
+                mainController.getAssessmentCreationController().addAssessment(set);
+
+
+                String[] parts = s.trim().split(": ");
+                String[] subAssessmentInfo = parts[1].trim().split(", ");
+                String[] subAssessmentNames = new String[subAssessmentInfo.length / 2];
+//                Integer[] subAssessmentGrades = new Integer[subAssessmentInfo.length / 2];
+
+                int index = 0;
+
+                for (int i = 0; i < subAssessmentNames.length; i++) {
+                    subAssessmentNames[i] = subAssessmentInfo[index];
+                    index = index + 2;
+                }
+
+                set.renameStdAssessments(subAssessmentNames);
+            }
+        }
+
+        mainController.getAssessmentCreationController().submitAssessmentsWithoutClick();
+    }
+
+    private void addGrades(Map<String, StdAssessment> stdAssessmentMap, Map<String, AssessmentSet> assessmentSetMap, Student student, String[] stdAssessments, String[] assessmentSets) {
+        for (String s : stdAssessments) {
+            String[] assessmentInfo = s.trim().split(", ");
+            StdAssessment stdAssessment = null;
+
+            if (!assessmentInfo[0].isBlank()) {
+                String name = assessmentInfo[1];
+                Integer grade = null;
+
+                if (!assessmentInfo[3].equals("null")) {
+                    grade = Integer.parseInt(assessmentInfo[3]);
+                }
+                stdAssessment = stdAssessmentMap.get(name);
+
+                if (stdAssessment != null) {
+                    student.setStdAssessmentGrade(stdAssessment, grade);
 
                 } else {
-                    set = assessmentSetMap.get(name);
+                    System.out.println("No StdAssessment found for student " + student.getSurname());
                 }
+            }
+        }
+
+        for (String s : assessmentSets) {
+            String[] assessmentSetInfo = s.trim().split(", ");
+            AssessmentSet set = null;
+
+            if (!assessmentSetInfo[0].isBlank()) {
+                String name = assessmentSetInfo[1];
+
+                    set = assessmentSetMap.get(name);
 
                 if (set != null) {
                     String[] parts = s.trim().split(": ");
@@ -242,13 +279,95 @@ public class FileManager {
                         index = index + 2;
                     }
 
-                    set.renameStdAssessments(subAssessmentNames);
                     AssessmentSetData setData = (AssessmentSetData) student.getAssessmentData(set);
                     setData.setSubAssessmentGrades(subAssessmentGrades);
                 }
             }
         }
     }
+
+//    private void addAssessmentsAndGrades(MainController mainController, Map<String, StdAssessment> stdAssessmentMap, Map<String, AssessmentSet> assessmentSetMap, int lineNumber, Student student, String[] stdAssessments, String[] assessmentSets) {
+//
+//        for (String s : stdAssessments) {
+//            String[] assessmentInfo = s.trim().split(", ");
+//            StdAssessment stdAssessment = null;
+//
+//            if (!assessmentInfo[0].isBlank()) {
+//                AssessmentType type = AssessmentType.valueOf(assessmentInfo[0]);
+//                String name = assessmentInfo[1];
+//                Double weighting = Double.parseDouble(assessmentInfo[2]);
+//                Integer grade = null;
+//
+//                if (!assessmentInfo[3].equals("null")) {
+//                    grade = Integer.parseInt(assessmentInfo[3]);
+//                }
+//
+//                if (lineNumber == 1) {
+//                    stdAssessment = new StdAssessment(name, type, weighting);
+//                    stdAssessmentMap.put(name, stdAssessment);
+//                    mainController.setupStdAssessment(stdAssessment);
+//
+//
+//                } else {
+//                    stdAssessment = stdAssessmentMap.get(name);
+//                }
+//
+//                if (stdAssessment != null) {
+//                    student.setStdAssessmentGrade(stdAssessment, grade);
+//
+//                } else {
+//                    System.out.println("No StdAssessment found for student " + student.getSurname());
+//                }
+//            }
+//        }
+//
+//        for (String s : assessmentSets) {
+//            String[] assessmentSetInfo = s.trim().split(", ");
+//            AssessmentSet set = null;
+//
+//            if (!assessmentSetInfo[0].isBlank()) {
+//
+//                AssessmentType type = AssessmentType.valueOf(assessmentSetInfo[0]);
+//                String name = assessmentSetInfo[1];
+//                Double weighting = Double.parseDouble(assessmentSetInfo[2]);
+//                Integer quantity = Integer.parseInt(assessmentSetInfo[3]);
+//                Integer bestOf = Integer.parseInt(assessmentSetInfo[4]);
+//
+//                if (lineNumber == 1) {
+//                    set = new AssessmentSet(name, type, weighting, quantity, bestOf);
+//                    assessmentSetMap.put(name, set);
+//                    mainController.setupAssessmentSet(set);
+//
+//                } else {
+//                    set = assessmentSetMap.get(name);
+//                }
+//
+//                if (set != null) {
+//                    String[] parts = s.trim().split(": ");
+//                    String[] subAssessmentInfo = parts[1].trim().split(", ");
+//                    String[] subAssessmentNames = new String[subAssessmentInfo.length / 2];
+//                    Integer[] subAssessmentGrades = new Integer[subAssessmentInfo.length / 2];
+//
+//                    int index = 0;
+//
+//                    for (int i = 0; i < subAssessmentNames.length; i++) {
+//                        subAssessmentNames[i] = subAssessmentInfo[index];
+//
+//                        if (subAssessmentInfo[index + 1].equals("null")) {
+//                            subAssessmentGrades[i] = null;
+//                        } else {
+//                            subAssessmentGrades[i] = Integer.parseInt(subAssessmentInfo[index + 1]);
+//                        }
+//                        index = index + 2;
+//                    }
+//
+//                    set.renameStdAssessments(subAssessmentNames);
+//                    AssessmentSetData setData = (AssessmentSetData) student.getAssessmentData(set);
+//                    setData.setSubAssessmentGrades(subAssessmentGrades);
+//                }
+//            }
+//        }
+//    }
 
     private Student makeStudent(Map<String, Class> classMap, String[] courseAndClass, String[] studentInfo) {
         Class classGroup;

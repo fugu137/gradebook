@@ -11,10 +11,13 @@ public interface StudentGroup {
     Statistics getStatistics(Assessment assessment);
     Statistics getTotalStatistics();
     ObservableList<Assessment> getAssessments();
-    int getNumberAttempted();
-    int getNumberAttempted(Assessment assessment);
+    Integer getNumberAttempted();
+    Integer getNumberAttempted(Assessment assessment);
     int getNumberOfStudents();
     void addAssessment(Assessment assessment);
+    void addSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment);
+//    void removeSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity);
+//    void addSubAssessments(AssessmentSet set, ObservableList<StdAssessment> subAssessments);
     ObjectProperty<Double> totalGradeMedianProperty();
     ObjectProperty<Double> totalGradeAverageProperty();
     ObjectProperty<Double> totalGradeHighestProperty();
@@ -27,6 +30,7 @@ public interface StudentGroup {
     void fillBarChartWithAssessmentGrades(BarChart<String, Number> barChart, Assessment assessment);
     ObjectProperty<Integer> numberAttemptedProperty();
     ObjectProperty<Integer> numberAttemptedProperty(Assessment assessment);
+
 
 
 
