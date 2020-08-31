@@ -4,6 +4,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
 
+import java.util.List;
+
 public interface StudentGroup {
 
     String getName();
@@ -16,8 +18,7 @@ public interface StudentGroup {
     int getNumberOfStudents();
     void addAssessment(Assessment assessment);
     void addSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment);
-//    void removeSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity);
-//    void addSubAssessments(AssessmentSet set, ObservableList<StdAssessment> subAssessments);
+    void removeSubAssessments(AssessmentSet set, List<StdAssessment> toRemove);
     ObjectProperty<Double> totalGradeMedianProperty();
     ObjectProperty<Double> totalGradeAverageProperty();
     ObjectProperty<Double> totalGradeHighestProperty();

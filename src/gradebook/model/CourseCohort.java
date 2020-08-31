@@ -9,6 +9,7 @@ import javafx.collections.ObservableMap;
 import javafx.scene.chart.BarChart;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class CourseCohort implements StudentGroup {
 
@@ -105,6 +106,12 @@ public class CourseCohort implements StudentGroup {
     public void addSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment) {
         for (Student s : students) {
             s.addSubAssessmentData(assessmentSet, subAssessment);
+        }
+    }
+
+    public void removeSubAssessments(AssessmentSet assessmentSet, List<StdAssessment> toRemove) {
+        for (Student s : students) {
+            s.removeSubAssessmentData(assessmentSet, toRemove);
         }
     }
 

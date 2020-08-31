@@ -111,7 +111,6 @@ public class FileManager {
 
     public void load(File fileFromFileChooser, MainController mainController) {
 
-        //todo: setup assessment creation window / load assessments via (unshown) window.
         this.file = fileFromFileChooser;
 
         CourseManager courseManager = mainController.getCourseManager();

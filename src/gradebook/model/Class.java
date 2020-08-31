@@ -9,6 +9,7 @@ import javafx.collections.ObservableMap;
 import javafx.scene.chart.BarChart;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Class implements StudentGroup {
 
@@ -61,7 +62,7 @@ public class Class implements StudentGroup {
         assessments.add(assessment);
         assessmentStatistics.put(assessment, new AssessmentStatistics(students, assessment));
 
-        for (Student s: students) {
+        for (Student s : students) {
             if (assessment instanceof StdAssessment) {
                 s.addStdAssessmentData((StdAssessment) assessment);
             }
@@ -75,7 +76,7 @@ public class Class implements StudentGroup {
         assessments.remove(assessment);
         assessmentStatistics.remove(assessment);
 
-        for (Student s: students) {
+        for (Student s : students) {
             s.removeAssessmentData(assessment);
         }
     }
@@ -83,6 +84,12 @@ public class Class implements StudentGroup {
     public void addSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment) {
         for (Student s : students) {
             s.addSubAssessmentData(assessmentSet, subAssessment);
+        }
+    }
+
+    public void removeSubAssessments(AssessmentSet assessmentSet, List<StdAssessment> toRemove) {
+        for (Student s : students) {
+            s.removeSubAssessmentData(assessmentSet, toRemove);
         }
     }
 
@@ -171,13 +178,13 @@ public class Class implements StudentGroup {
     }
 
     public void fillBarChartWithOverallGrades(BarChart<String, Number> barChart) {
-        totalGradeStatistics.fillBarChart(barChart,this);
+        totalGradeStatistics.fillBarChart(barChart, this);
         barChart.setBarGap(0.0);
         barChart.setCategoryGap(35);
     }
 
     public void fillBarChartWithAssessmentGrades(BarChart<String, Number> barChart, Assessment assessment) {
-        assessmentStatistics.get(assessment).fillBarChart(barChart,this);
+        assessmentStatistics.get(assessment).fillBarChart(barChart, this);
         barChart.setBarGap(0.0);
         barChart.setCategoryGap(35);
     }

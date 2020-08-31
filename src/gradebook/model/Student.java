@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -204,6 +205,11 @@ public class Student {
         data.addSubAssessmentData(stdData);
 
         stdData.gradeProperty().addListener(obs -> data.updateAssessmentSetTotalGrade());
+    }
+
+    public void removeSubAssessmentData(AssessmentSet assessmentSet, List<StdAssessment> toRemove) {
+        AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
+        data.removeSubAssessmentData(toRemove);
     }
 
 //    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {

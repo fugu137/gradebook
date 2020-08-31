@@ -1077,7 +1077,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public ObservableList<AssessmentColumn<Student, ?>> getAssessmentColumnsByType(AssessmentType type) {
+    private ObservableList<AssessmentColumn<Student, ?>> getAssessmentColumnsByType(AssessmentType type) {
         ObservableList<AssessmentColumn<Student, ?>> assessmentColumns = FXCollections.observableArrayList();
 
         switch (type) {
@@ -1108,7 +1108,6 @@ public class MainController implements Initializable {
             default:
                 return assessmentColumns;
         }
-
     }
 
     //Table Control Methods//
@@ -1192,6 +1191,7 @@ public class MainController implements Initializable {
         if (statisticsPane != null) {
             closeStatisticsPane();
         }
+        //TODO: fix issue with old assessment columns (and assessments?) not being removed)
 
         Stage stage = (Stage) table.getParent().getScene().getWindow();
 
@@ -1387,7 +1387,6 @@ public class MainController implements Initializable {
 
         setStatusText("Assessments successfully created...");
 
-        //TODO: update assessment set if quantity changed.
     }
 
     public void setupStdAssessment(StdAssessment stdAssessment) {
@@ -1411,6 +1410,8 @@ public class MainController implements Initializable {
 
     public void changeAssessmentSetQuantity(AssessmentSet assessmentSet, int newQuantity) {
         int oldQuantity = assessmentSet.getQuantity();
+        System.out.println("Old Quantity: " + oldQuantity);
+        System.out.println("New Quantity: " + newQuantity);
 
         if (newQuantity > oldQuantity) {
 
@@ -1426,9 +1427,29 @@ public class MainController implements Initializable {
             }
         }
 
-//        if (newQuantity < oldQuantity) {
-//            courseManager.unassignSubAssessments(assessmentSet, oldQuantity, newQuantity);
-//        }
+        if (newQuantity < oldQuantity) {
+            //TODO: warning message
+            int number = oldQuantity - newQuantity;
+
+            List<SubAssessmentColumn<Student, ?>> subAssessmentColumns = getSubAssessmentColumns(assessmentSet);
+            List<SubAssessmentColumn<Student, ?>> columnsToRemove = FXCollections.observableArrayList();
+
+            List<StdAssessment> subAssessments = new ArrayList<>();
+
+            for (int i = subAssessmentColumns.size() - number; i <= subAssessmentColumns.size() - 1; i++) {
+
+                SubAssessmentColumn<Student, ?> columnToRemove = subAssessmentColumns.get(i);
+                columnsToRemove.add(columnToRemove);
+
+                StdAssessment stdAssessment = (StdAssessment) columnToRemove.getAssessment();
+                subAssessments.add(stdAssessment);
+            }
+
+            table.getColumns().removeAll(columnsToRemove);
+            subAssessments.forEach(this::removeAssessmentColumn);
+
+            courseManager.unassignSubAssessments(assessmentSet, subAssessments);
+        }
 
     }
 
@@ -1441,6 +1462,15 @@ public class MainController implements Initializable {
 
         addAssessmentColumnContextMenu(column);
 
+        List<SubAssessmentColumn<Student, ?>> subAssessmentColumns = getSubAssessmentColumns(assessmentSet);
+        SubAssessmentColumn<Student, ?> lastColumn = subAssessmentColumns.get(subAssessmentColumns.size() - 1);
+        int lastColumnIndex = table.getColumns().indexOf(lastColumn);
+
+        table.getColumns().add(lastColumnIndex + 1, column);
+        addToColumnsList(column);
+    }
+
+    private List<SubAssessmentColumn<Student, ?>> getSubAssessmentColumns(AssessmentSet assessmentSet) {
         ObservableList<AssessmentColumn<Student, ?>> columnsOfType = getAssessmentColumnsByType(assessmentSet.getType());
 
         @SuppressWarnings("unchecked")
@@ -1451,11 +1481,7 @@ public class MainController implements Initializable {
                 .sorted()
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        SubAssessmentColumn<Student, ?> lastColumn = subAssessmentColumns.get(subAssessmentColumns.size() - 1);
-        int lastColumnIndex = table.getColumns().indexOf(lastColumn);
-        table.getColumns().add(lastColumnIndex + 1, column);
-
-        addToColumnsList(column);
+        return subAssessmentColumns;
     }
 
 //    public void setupStdAssessments(ObservableList<StdAssessment> stdAssessments) {

@@ -100,7 +100,6 @@ public class AssessmentSetData implements AssessmentData {
     }
 
     public void setSubAssessmentGrades(Integer[] grades) {
-
         for (int i = 0; i < grades.length; i++) {
             StdAssessmentData data = stdAssessmentDataList.get(i);
             data.setGrade(grades[i]);
@@ -109,6 +108,13 @@ public class AssessmentSetData implements AssessmentData {
 
     public void addSubAssessmentData(StdAssessmentData stdData) {
         stdAssessmentDataList.add(stdData);
+    }
+
+    public void removeSubAssessmentData(List<StdAssessment> subAssessments) {
+        for (StdAssessment stdAssessment : subAssessments) {
+            stdAssessmentDataList.removeIf(data -> stdAssessment == data.getStdAssessment());
+        }
+        updateAssessmentSetTotalGrade();
     }
 
 //    public void addSubAssessments(int oldQuantity, int newQuantity) {
