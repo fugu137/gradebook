@@ -8,6 +8,7 @@
 
 .dialog-pane {
     -fx-background-color: white;
+    -fx-max-width: 450;
 }
 
 .dialog-pane .label {

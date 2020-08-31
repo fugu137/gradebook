@@ -266,10 +266,10 @@ public class AssessmentCreationBar {
         return errorMessages;
     }
 
-    public void disableQuantityAndBestOfFields() {
-        quantityField.setDisable(true);
-        bestOfField.setDisable(true);
-    }
+//    public void disableQuantityAndBestOfFields() {
+//        quantityField.setDisable(true);
+//        bestOfField.setDisable(true);
+//    }
 
     public void createAssessment() {
 

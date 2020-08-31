@@ -16,10 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
@@ -172,6 +169,8 @@ public class AssessmentCreationController implements Initializable {
     IntegerProperty weight7AsInt = new SimpleIntegerProperty();
     IntegerProperty weight8AsInt = new SimpleIntegerProperty();
     IntegerProperty totalWeightAsInt = new SimpleIntegerProperty();
+
+    ObservableList<Assessment> assessmentsToRemove = FXCollections.observableArrayList();
 
     ObservableList<String> errorMessages = FXCollections.observableArrayList();
 
@@ -337,7 +336,7 @@ public class AssessmentCreationController implements Initializable {
 
         } else {
             System.out.println("Creating assessments...");
-            createAssessments();
+            SubmitAssessments();
 
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.close();
@@ -350,7 +349,7 @@ public class AssessmentCreationController implements Initializable {
     }
 
 
-    private void createAssessments() {
+    private void SubmitAssessments() {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList();
 
         for (AssessmentCreationBar bar : assessmentCreationBars) {
@@ -359,6 +358,7 @@ public class AssessmentCreationController implements Initializable {
                 if (bar.getAssessment() == null) {
                     bar.createAssessment();
                     assessments.add(bar.getAssessment());
+                    bar.getFormComboBox().setDisable(true);
 
                 } else {
                     if (bar.modifyAssessment()) {
@@ -368,6 +368,7 @@ public class AssessmentCreationController implements Initializable {
                 }
             }
         }
+        assessmentsToRemove.forEach(a -> mainController.removeAssessment(a));
         mainController.setupAllAssessments(assessments);
 
 //        for (AssessmentCreationBar bar: assessmentCreationBars) {
@@ -381,9 +382,9 @@ public class AssessmentCreationController implements Initializable {
         for (AssessmentCreationBar bar : assessmentCreationBars) {
             if (bar.getAssessment() != null) {
                 assessments.add(bar.getAssessment());
+                bar.getFormComboBox().setDisable(true);
             }
         }
-
         mainController.setupAllAssessments(assessments);
     }
 
@@ -392,8 +393,19 @@ public class AssessmentCreationController implements Initializable {
     public void clearButtonPressed(ActionEvent event) {
         Button button = (Button) event.getSource();
         AssessmentCreationBar bar = (AssessmentCreationBar) button.getUserData();
-        Assessment assessment = bar.clear();
 
-        mainController.removeAssessment(assessment);
+        Alert popup = new Alert(Alert.AlertType.CONFIRMATION);
+        popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+        popup.setHeaderText("Are you sure you want to remove this assessment?");
+        popup.setContentText("Clicking 'OK' will remove the assessment from the assessment creation/modification window. When the 'Submit' button is pressed, the assessment will be deleted from the gradebook, and any grades for the assessment will be lost.");
+
+        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {
+            Assessment assessment = bar.clear();
+            assessmentsToRemove.add(assessment);
+        }
+
+//        if (assessment != null) {
+//            mainController.removeAssessment(assessment);
+//        }
     }
 }

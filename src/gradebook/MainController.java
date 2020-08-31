@@ -1404,17 +1404,17 @@ public class MainController implements Initializable {
 
     }
 
-    public void setupStdAssessment(StdAssessment stdAssessment) {
-        courseManager.assignAssessment(stdAssessment);
-        blankStudent.addStdAssessmentData(stdAssessment);
-        createStdAssessmentColumn(stdAssessment);
-    }
-
-    public void setupAssessmentSet(AssessmentSet assessmentSet) {
-        courseManager.assignAssessment(assessmentSet);
-        blankStudent.addAssessmentSetData(assessmentSet);
-        createAssessmentSetColumns(assessmentSet);
-    }
+//    public void setupStdAssessment(StdAssessment stdAssessment) {
+//        courseManager.assignAssessment(stdAssessment);
+//        blankStudent.addStdAssessmentData(stdAssessment);
+//        createStdAssessmentColumn(stdAssessment);
+//    }
+//
+//    public void setupAssessmentSet(AssessmentSet assessmentSet) {
+//        courseManager.assignAssessment(assessmentSet);
+//        blankStudent.addAssessmentSetData(assessmentSet);
+//        createAssessmentSetColumns(assessmentSet);
+//    }
 
     public void removeAssessment(Assessment assessment) {
         courseManager.unassignAssessment(assessment);
@@ -1443,27 +1443,42 @@ public class MainController implements Initializable {
         }
 
         if (newQuantity < oldQuantity) {
-            //TODO: warning message
             int number = oldQuantity - newQuantity;
 
-            List<SubAssessmentColumn<Student, ?>> subAssessmentColumns = getSubAssessmentColumns(assessmentSet);
-            List<SubAssessmentColumn<Student, ?>> columnsToRemove = FXCollections.observableArrayList();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reduce Assessment Set Quantity?");
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
 
-            List<StdAssessment> subAssessments = new ArrayList<>();
+            alert.setHeaderText("Are you sure you want to reduce the number of assessments for assessment set \"" + assessmentSet.getName() + "\" by " + number + "?");
 
-            for (int i = subAssessmentColumns.size() - number; i <= subAssessmentColumns.size() - 1; i++) {
-
-                SubAssessmentColumn<Student, ?> columnToRemove = subAssessmentColumns.get(i);
-                columnsToRemove.add(columnToRemove);
-
-                StdAssessment stdAssessment = (StdAssessment) columnToRemove.getAssessment();
-                subAssessments.add(stdAssessment);
+            if (number > 1) {
+                alert.setContentText("Reducing the number of assessments in a set by " + number + " will permanently remove the last "
+                        + number + " assessments from the set. Any existing grades will be lost.");
+            } else {
+                alert.setContentText("Reducing the number of assessments in a set by " + number +
+                        " will permanently remove the last assessment from the set. Any existing grades will be lost.");
             }
 
-            table.getColumns().removeAll(columnsToRemove);
-            subAssessments.forEach(this::removeAssessmentColumn);
+            if (alert.showAndWait().isPresent() && alert.getResult().equals(ButtonType.OK)) {
+                List<SubAssessmentColumn<Student, ?>> subAssessmentColumns = getSubAssessmentColumns(assessmentSet);
+                List<SubAssessmentColumn<Student, ?>> columnsToRemove = FXCollections.observableArrayList();
 
-            courseManager.unassignSubAssessments(assessmentSet, subAssessments);
+                List<StdAssessment> subAssessments = new ArrayList<>();
+
+                for (int i = subAssessmentColumns.size() - number; i <= subAssessmentColumns.size() - 1; i++) {
+
+                    SubAssessmentColumn<Student, ?> columnToRemove = subAssessmentColumns.get(i);
+                    columnsToRemove.add(columnToRemove);
+
+                    StdAssessment stdAssessment = (StdAssessment) columnToRemove.getAssessment();
+                    subAssessments.add(stdAssessment);
+                }
+
+                table.getColumns().removeAll(columnsToRemove);
+                subAssessments.forEach(this::removeAssessmentColumn);
+
+                courseManager.unassignSubAssessments(assessmentSet, subAssessments);
+            }
+
         }
 
     }
@@ -1528,6 +1543,7 @@ public class MainController implements Initializable {
             public String toString(Integer integer) {
                 return integer == null ? "" : integer.toString();
             }
+
             @Override
             public Integer fromString(String string) {
                 if (!string.matches("\\d+")) {
@@ -1763,7 +1779,7 @@ public class MainController implements Initializable {
 
             if (statisticsPane == null) {
                 statisticsPane = new StatisticsPane();
-                statisticsPane.setMinWidth(stage.getWidth()/4.35);
+                statisticsPane.setMinWidth(stage.getWidth() / 4.35);
 
                 statisticsPaneSizeSettings();
                 setupCloseButton(statisticsPane.getCloseButton());
@@ -1821,13 +1837,11 @@ public class MainController implements Initializable {
     }
 
 
-
     ////User Commands////
 
     //Table Commands//
 
     //Toolbar Commands//
-
 
 
     //Test Methods//
