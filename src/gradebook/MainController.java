@@ -1202,25 +1202,29 @@ public class MainController implements Initializable {
     //Toolbar Control Methods//
 
     public void loadGradebook() {
+        Alert popup = new Alert(Alert.AlertType.CONFIRMATION);
+        popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+        popup.setTitle("Load Gradebook?");
+        popup.setHeaderText("Are you sure you want to load a gradebook from file?");
+        popup.setContentText("Any unsaved student data in the current gradebook will be lost.");
+
+        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {
 //        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
-        if (statisticsPane != null) {
-            closeStatisticsPane();
+            if (statisticsPane != null) {
+                closeStatisticsPane();
+            }
+
+            Stage stage = (Stage) table.getParent().getScene().getWindow();
+
+            File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
+
+            fileManager = new FileManager();
+
+            if (file != null) {
+                fileManager.load(file, this);
+                saveMenuItem.setDisable(false);
+            }
         }
-        //TODO: fix issue with old assessment columns (and assessments?) not being removed)
-
-        Stage stage = (Stage) table.getParent().getScene().getWindow();
-
-        File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
-
-        fileManager = new FileManager();
-
-        //TODO: warning about unsaved file before loading
-
-        if (file != null) {
-            fileManager.load(file, this);
-            saveMenuItem.setDisable(false);
-        }
-
     }
 
     public void saveGradebook() {
