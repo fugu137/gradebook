@@ -292,7 +292,7 @@ public class Statistics {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasRemoved() || change.wasAdded()) {
-                        hdData.setYValue(getPercentageOfDs());
+                        dData.setYValue(getPercentageOfDs());
                     }
                 }
             }
@@ -305,7 +305,7 @@ public class Statistics {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasRemoved() || change.wasAdded()) {
-                        hdData.setYValue(getPercentageOfCRs());
+                        crData.setYValue(getPercentageOfCRs());
                     }
                 }
             }
@@ -318,7 +318,7 @@ public class Statistics {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasRemoved() || change.wasAdded()) {
-                        hdData.setYValue(getPercentageOfPs());
+                        pData.setYValue(getPercentageOfPs());
                     }
                 }
             }
@@ -331,7 +331,7 @@ public class Statistics {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasRemoved() || change.wasAdded()) {
-                        hdData.setYValue(getPercentageOfFs());
+                        fData.setYValue(getPercentageOfFs());
                     }
                 }
             }
