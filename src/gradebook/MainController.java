@@ -1,14 +1,14 @@
 package gradebook;
 
+import gradebook.commands.AddNewStudentCommand;
+import gradebook.commands.RedoCommand;
+import gradebook.commands.UndoCommand;
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
 import gradebook.enums.Grade;
 import gradebook.model.Class;
 import gradebook.model.*;
-import gradebook.tools.FileChooserWindow;
-import gradebook.tools.FileManager;
-import gradebook.tools.StudentCloner;
-import gradebook.tools.StudentImporter;
+import gradebook.tools.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -195,10 +195,14 @@ public class MainController implements Initializable {
     private Student blankStudent;
     private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
 
+    private CommandManager commandManager = new CommandManager();
+
     private Scene assessmentCreationWindow;
     private AssessmentCreationController assessmentCreationController;
     private Stage stage;
+
     private FileManager fileManager;
+
 
 
 //    public void setCourseManager(CourseManager newCourseManager) {
@@ -209,6 +213,10 @@ public class MainController implements Initializable {
 
     public CourseManager getCourseManager() {
         return courseManager;
+    }
+
+    public TableView<Student> getTable() {
+        return table;
     }
 
     public AssessmentCreationController getAssessmentCreationController() throws IOException {
@@ -251,12 +259,13 @@ public class MainController implements Initializable {
     }
 
     //Initialize Methods//
-    private void newBlankStudent() {
+    public void newBlankStudent() {
         blankStudent = new Student();
         table.getItems().add(blankStudent);
 //
 //        addBlankStudentListeners();
     }
+
 //
 //    private void addBlankStudentListeners() {
 //
@@ -463,7 +472,7 @@ public class MainController implements Initializable {
     private void setupToolbarBindings() {
         toggleButtonBindings();
         checkBoxBindings();
-        editBarBindings();
+        homeBarBindings();
         otherButtonBindings();
 
         setupFilterBoxes();
@@ -481,7 +490,7 @@ public class MainController implements Initializable {
         statisticsButton.disableProperty().bind(Bindings.size(courseManager.getAssessments()).lessThan(1));
     }
 
-    private void editBarBindings() {
+    private void homeBarBindings() {
         copyButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
         cutButton.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
 
@@ -494,6 +503,9 @@ public class MainController implements Initializable {
 
         selectAllButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
         selectNoneButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
+
+        undoButton.disableProperty().bind(commandManager.undoStackEmptyProperty());
+        redoButton.disableProperty().bind(commandManager.redoStackEmptyProperty());
     }
 
 //    public void refreshCourseManagerBindings() {
@@ -560,31 +572,38 @@ public class MainController implements Initializable {
     }
 
     private void checkBoxBindings() {
-        //TODO: fix issue with checkboxes not disabling on removal of assessment
 
         essaysCheckBoxBinding();
-        essayColumnBinding();
+//        essayColumnBinding();
+        assessmentColumnBindings(essayColumns, essaysCheckBox);
 
         examsCheckBoxBinding();
-        examColumnsBinding();
+//        examColumnsBinding();
+        assessmentColumnBindings(examColumns, examsCheckBox);
 
         essayPlansCheckBoxBinding();
-        essayPlanColumnBinding();
+//        essayPlanColumnBinding();
+        assessmentColumnBindings(essayPlanColumns, essayPlansCheckBox);
 
         argAnalysesCheckBoxBinding();
-        argAnalysisColumnBinding();
+//        argAnalysisColumnBinding();
+        assessmentColumnBindings(argAnalysisColumns, argAnalysesCheckBox);
 
         participationCheckBoxBinding();
-        participationColumnBinding();
+//        participationColumnBinding();
+        assessmentColumnBindings(participationColumns, participationCheckBox);
 
         quizzesCheckBoxBinding();
-        quizColumnBinding();
+//        quizColumnBinding();
+        assessmentColumnBindings(quizColumns, quizzesCheckBox);
 
         presentationsCheckBoxBinding();
-        presentationColumnBinding();
+//        presentationColumnBinding();
+        assessmentColumnBindings(presentationColumns, presentationsCheckBox);
 
         otherCheckBoxBinding();
-        otherColumnBinding();
+//        otherColumnBinding();
+        assessmentColumnBindings(otherColumns, otherCheckBox);
     }
 
     private void essaysCheckBoxBinding() {
@@ -598,28 +617,79 @@ public class MainController implements Initializable {
         });
     }
 
-    private void essayColumnBinding() {
-
-        essayColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+    private void assessmentColumnBindings(ObservableList<AssessmentColumn<Student, ?>> columns, CheckBox checkBox) {
+        columns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
             @Override
             public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
 
-                essaysCheckBox.setDisable(essayColumns.size() <= 0);
+                if (columns.size() <= 0) {
+                    checkBox.setSelected(false);
+                    checkBox.setDisable(true);
+
+                } else {
+                    checkBox.setDisable(false);
+                }
+
 
                 boolean allVisible = true;
 
-                for (AssessmentColumn<Student, ?> c : essayColumns) {
+                if (columns.size() > 0) {
+                    for (AssessmentColumn<Student, ?> c : columns) {
 
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
+                        if (!c.isVisible()) {
+                            allVisible = false;
+                            break;
+                        }
                     }
+                } else {
+                    allVisible = false;
                 }
 
-                essaysCheckBox.setSelected(allVisible);
+                checkBox.setSelected(allVisible);
             }
         });
     }
+//
+//    private void essayColumnBinding() {
+//
+//        essayColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+////                if (essayColumns.size() <= 0) {
+//////                    essaysCheckBox.setDisable(true);
+////                    essaysCheckBox.setSelected(false);
+////
+////                }
+////                essaysCheckBox.setDisable(essayColumns.size() <= 0);
+//
+//                if (essayColumns.size() <= 0) {
+//                    essaysCheckBox.setSelected(false);
+//                    essaysCheckBox.setDisable(true);
+//
+//                } else {
+//                    essaysCheckBox.setDisable(false);
+//                }
+//
+//
+//                boolean allVisible = true;
+//
+//                if (essayColumns.size() > 0) {
+//                    for (AssessmentColumn<Student, ?> c : essayColumns) {
+//
+//                        if (!c.isVisible()) {
+//                            allVisible = false;
+//                            break;
+//                        }
+//                    }
+//                } else {
+//                    allVisible = false;
+//                }
+//
+//                essaysCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 
     private void examsCheckBoxBinding() {
 
@@ -632,28 +702,28 @@ public class MainController implements Initializable {
         });
     }
 
-    private void examColumnsBinding() {
-
-        examColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-            @Override
-            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-
-                examsCheckBox.setDisable(examColumns.size() <= 0);
-
-                boolean allVisible = true;
-
-                for (AssessmentColumn<Student, ?> c : examColumns) {
-
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
-                    }
-                }
-
-                examsCheckBox.setSelected(allVisible);
-            }
-        });
-    }
+//    private void examColumnsBinding() {
+//
+//        examColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+//                examsCheckBox.setDisable(examColumns.size() <= 0);
+//
+//                boolean allVisible = true;
+//
+//                for (AssessmentColumn<Student, ?> c : examColumns) {
+//
+//                    if (!c.isVisible()) {
+//                        allVisible = false;
+//                        break;
+//                    }
+//                }
+//
+//                examsCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 
     private void essayPlansCheckBoxBinding() {
 
@@ -666,28 +736,28 @@ public class MainController implements Initializable {
         });
     }
 
-    private void essayPlanColumnBinding() {
-
-        essayPlanColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-            @Override
-            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-
-                essayPlansCheckBox.setDisable(essayPlanColumns.size() <= 0);
-
-                boolean allVisible = true;
-
-                for (AssessmentColumn<Student, ?> c : essayPlanColumns) {
-
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
-                    }
-                }
-
-                essayPlansCheckBox.setSelected(allVisible);
-            }
-        });
-    }
+//    private void essayPlanColumnBinding() {
+//
+//        essayPlanColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+//                essayPlansCheckBox.setDisable(essayPlanColumns.size() <= 0);
+//
+//                boolean allVisible = true;
+//
+//                for (AssessmentColumn<Student, ?> c : essayPlanColumns) {
+//
+//                    if (!c.isVisible()) {
+//                        allVisible = false;
+//                        break;
+//                    }
+//                }
+//
+//                essayPlansCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 
     private void argAnalysesCheckBoxBinding() {
 
@@ -700,28 +770,28 @@ public class MainController implements Initializable {
         });
     }
 
-    private void argAnalysisColumnBinding() {
-
-        argAnalysisColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-            @Override
-            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-
-                argAnalysesCheckBox.setDisable(argAnalysisColumns.size() <= 0);
-
-                boolean allVisible = true;
-
-                for (AssessmentColumn<Student, ?> c : argAnalysisColumns) {
-
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
-                    }
-                }
-
-                argAnalysesCheckBox.setSelected(allVisible);
-            }
-        });
-    }
+//    private void argAnalysisColumnBinding() {
+//
+//        argAnalysisColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+//                argAnalysesCheckBox.setDisable(argAnalysisColumns.size() <= 0);
+//
+//                boolean allVisible = true;
+//
+//                for (AssessmentColumn<Student, ?> c : argAnalysisColumns) {
+//
+//                    if (!c.isVisible()) {
+//                        allVisible = false;
+//                        break;
+//                    }
+//                }
+//
+//                argAnalysesCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 
     private void participationCheckBoxBinding() {
 
@@ -734,27 +804,27 @@ public class MainController implements Initializable {
         });
     }
 
-    private void participationColumnBinding() {
-
-        participationColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-            @Override
-            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-
-                participationCheckBox.setDisable(participationColumns.size() <= 0);
-
-                boolean allVisible = true;
-
-                for (AssessmentColumn<Student, ?> c : participationColumns) {
-
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
-                    }
-                }
-                participationCheckBox.setSelected(allVisible);
-            }
-        });
-    }
+//    private void participationColumnBinding() {
+//
+//        participationColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+//                participationCheckBox.setDisable(participationColumns.size() <= 0);
+//
+//                boolean allVisible = true;
+//
+//                for (AssessmentColumn<Student, ?> c : participationColumns) {
+//
+//                    if (!c.isVisible()) {
+//                        allVisible = false;
+//                        break;
+//                    }
+//                }
+//                participationCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 
     private void quizzesCheckBoxBinding() {
 
@@ -768,27 +838,27 @@ public class MainController implements Initializable {
         });
     }
 
-    private void quizColumnBinding() {
-
-        quizColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-            @Override
-            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-
-                quizzesCheckBox.setDisable(quizColumns.size() <= 0);
-
-                boolean allVisible = true;
-
-                for (AssessmentColumn<Student, ?> c : quizColumns) {
-
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
-                    }
-                }
-                quizzesCheckBox.setSelected(allVisible);
-            }
-        });
-    }
+//    private void quizColumnBinding() {
+//
+//        quizColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+//                quizzesCheckBox.setDisable(quizColumns.size() <= 0);
+//
+//                boolean allVisible = true;
+//
+//                for (AssessmentColumn<Student, ?> c : quizColumns) {
+//
+//                    if (!c.isVisible()) {
+//                        allVisible = false;
+//                        break;
+//                    }
+//                }
+//                quizzesCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 
     private void presentationsCheckBoxBinding() {
 
@@ -801,27 +871,27 @@ public class MainController implements Initializable {
         });
     }
 
-    private void presentationColumnBinding() {
-
-        presentationColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-            @Override
-            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-
-                presentationsCheckBox.setDisable(presentationColumns.size() <= 0);
-
-                boolean allVisible = true;
-
-                for (AssessmentColumn<Student, ?> c : presentationColumns) {
-
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
-                    }
-                }
-                presentationsCheckBox.setSelected(allVisible);
-            }
-        });
-    }
+//    private void presentationColumnBinding() {
+//
+//        presentationColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+//                presentationsCheckBox.setDisable(presentationColumns.size() <= 0);
+//
+//                boolean allVisible = true;
+//
+//                for (AssessmentColumn<Student, ?> c : presentationColumns) {
+//
+//                    if (!c.isVisible()) {
+//                        allVisible = false;
+//                        break;
+//                    }
+//                }
+//                presentationsCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 
     private void otherCheckBoxBinding() {
 
@@ -834,27 +904,27 @@ public class MainController implements Initializable {
         });
     }
 
-    private void otherColumnBinding() {
-
-        otherColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-            @Override
-            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-
-                otherCheckBox.setDisable(otherColumns.size() <= 0);
-
-                boolean allVisible = true;
-
-                for (AssessmentColumn<Student, ?> c : otherColumns) {
-
-                    if (!c.isVisible()) {
-                        allVisible = false;
-                        break;
-                    }
-                }
-                otherCheckBox.setSelected(allVisible);
-            }
-        });
-    }
+//    private void otherColumnBinding() {
+//
+//        otherColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
+//
+//                otherCheckBox.setDisable(otherColumns.size() <= 0);
+//
+//                boolean allVisible = true;
+//
+//                for (AssessmentColumn<Student, ?> c : otherColumns) {
+//
+//                    if (!c.isVisible()) {
+//                        allVisible = false;
+//                        break;
+//                    }
+//                }
+//                otherCheckBox.setSelected(allVisible);
+//            }
+//        });
+//    }
 //
 //    private void totalColumnBinding(AssessmentColumn<Student, ?> totalColumn) {
 //        ObservableList<CheckBox> checkBoxes = FXCollections.observableArrayList();
@@ -1128,8 +1198,9 @@ public class MainController implements Initializable {
         String surname = editedCell.getNewValue();
 
         if (selectedStudent == blankStudent) {
-            courseManager.newStudent(blankStudent);
-            newBlankStudent();
+//            courseManager.newStudent(blankStudent);
+//            newBlankStudent();
+            commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
         }
         selectedStudent.setSurname(surname);
 
@@ -1141,8 +1212,9 @@ public class MainController implements Initializable {
         String givenNames = editedCell.getNewValue();
 
         if (selectedStudent == blankStudent) {
-            courseManager.newStudent(blankStudent);
-            newBlankStudent();
+//            courseManager.newStudent(blankStudent);
+//            newBlankStudent();
+            commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
         }
         selectedStudent.setGivenNames(givenNames);
 
@@ -1202,13 +1274,14 @@ public class MainController implements Initializable {
     //Toolbar Control Methods//
 
     public void loadGradebook() {
-        Alert popup = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert popup = new Alert(Alert.AlertType.CONFIRMATION, "Load Gradebook?", ButtonType.YES, ButtonType.NO);
         popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
-        popup.setTitle("Load Gradebook?");
+
+        popup.setTitle("Load Gradebook");
         popup.setHeaderText("Are you sure you want to load a gradebook from file?");
         popup.setContentText("Any unsaved student data in the current gradebook will be lost.");
 
-        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {
+        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.YES) {
 //        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
             if (statisticsPane != null) {
                 closeStatisticsPane();
@@ -1449,9 +1522,10 @@ public class MainController implements Initializable {
         if (newQuantity < oldQuantity) {
             int number = oldQuantity - newQuantity;
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Reduce Assessment Set Quantity?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
 
+            alert.setTitle("Reduce Assessment Set Quantity");
             alert.setHeaderText("Are you sure you want to reduce the number of assessments for assessment set \"" + assessmentSet.getName() + "\" by " + number + "?");
 
             if (number > 1) {
@@ -1707,6 +1781,22 @@ public class MainController implements Initializable {
 
         if (column != null) {
             table.getColumns().remove(column);
+
+            if (column.getAssessment() instanceof AssessmentSet) {
+                ObservableList<StdAssessment> subAssessments = ((AssessmentSet) column.getAssessment()).getStdAssessments();
+                ObservableList<AssessmentColumn<Student, ?>> columnsOfType = getAssessmentColumnsByType(column.getAssessment().getType());
+
+                    for (StdAssessment s : subAssessments) {
+                        for (AssessmentColumn<Student, ?> c : columnsOfType) {
+
+                            if (c.getAssessment() == s) {
+                                table.getColumns().remove(c);
+                                removeAssessmentColumn(s);
+                                break;
+                            }
+                        }
+                    }
+            }
         }
     }
 
@@ -1841,12 +1931,20 @@ public class MainController implements Initializable {
     }
 
 
-    ////User Commands////
+    ////User Actions////
 
-    //Table Commands//
+    //Table Actions//
 
-    //Toolbar Commands//
+    //Toolbar Actions//
+    @FXML
+    public void undoButtonPressed() {
+        commandManager.execute(new UndoCommand(commandManager), false);
+    }
 
+    @FXML
+    public void redoButtonPressed() {
+        commandManager.execute(new RedoCommand(commandManager), false);
+    }
 
     //Test Methods//
     public void addDummyData() {

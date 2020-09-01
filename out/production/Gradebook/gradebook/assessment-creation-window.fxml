@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
 <VBox prefHeight="440.0" prefWidth="700.0" styleClass="grey-pane" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.AssessmentCreationController">
    <children>
       <GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
@@ -609,7 +618,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="clearButton2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -628,7 +637,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
-                  <Button fx:id="clearButton3" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton3" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -647,7 +656,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>
-                  <Button fx:id="clearButton4" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton4" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -666,7 +675,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <children>
-                  <Button fx:id="clearButton5" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton5" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -685,7 +694,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
                <children>
-                  <Button fx:id="clearButton6" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton6" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -704,7 +713,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
                <children>
-                  <Button fx:id="clearButton7" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton7" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -723,7 +732,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
                <children>
-                  <Button fx:id="clearButton8" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton8" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>

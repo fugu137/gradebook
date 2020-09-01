@@ -11,13 +11,14 @@
     -fx-max-width: 500;
 }
 
-.dialog-pane .label {
-
+.dialog-pane .label.content {
+    -fx-padding: 10 20 10 20;
 }
 
 .dialog-pane:header .header-panel {
     -fx-background-color: -fx-grey-background;
     -fx-border-color: -fx-faint-border;
+    -fx-padding: 10 20 10 20;
 }
 
 .dialog-pane:header .header-panel .label {
@@ -29,6 +30,10 @@
    -fx-background-color: white;
    -fx-border-color: -fx-dark-border;
    -fx-padding: 2 2 2 2;
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-padding: 25 15 15 10;
 }
 
 .dialog-pane * .button {

@@ -609,7 +609,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="clearButton2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -628,7 +628,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
-                  <Button fx:id="clearButton3" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton3" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -647,7 +647,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>
-                  <Button fx:id="clearButton4" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton4" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -666,7 +666,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <children>
-                  <Button fx:id="clearButton5" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton5" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -685,7 +685,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
                <children>
-                  <Button fx:id="clearButton6" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton6" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -704,7 +704,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
                <children>
-                  <Button fx:id="clearButton7" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton7" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -723,7 +723,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
                <children>
-                  <Button fx:id="clearButton8" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" styleClass="tiny-button" text="Button">
+                  <Button fx:id="clearButton8" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#clearButtonPressed" styleClass="tiny-button" text="Button">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
