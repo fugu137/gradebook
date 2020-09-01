@@ -223,6 +223,29 @@ public class MainController implements Initializable {
     public ObservableList<Student> getClipBoardStudents() {
         return clipBoardStudents;
     }
+//
+//    public CheckBox getAssessmentCheckBox(AssessmentType type) {
+//        switch (type) {
+//            case ESSAY:
+//                return essaysCheckBox;
+//            case ESSAY_PLAN:
+//                return essayPlansCheckBox;
+//            case EXAM:
+//                return examsCheckBox;
+//            case QUIZ:
+//                return quizzesCheckBox;
+//            case ARG_ANALYSIS:
+//                return argAnalysesCheckBox;
+//            case PRESENTATION:
+//                return presentationsCheckBox;
+//            case PARTICIPATION:
+//                return participationCheckBox;
+//            case OTHER:
+//                return otherCheckBox;
+//            default:
+//                return null;
+//        }
+//    }
 
     public AssessmentCreationController getAssessmentCreationController() throws IOException {
 
@@ -578,35 +601,35 @@ public class MainController implements Initializable {
 
     private void checkBoxBindings() {
 
-        essaysCheckBoxBinding();
+//        essaysCheckBoxBinding();
 //        essayColumnBinding();
         assessmentColumnBindings(essayColumns, essaysCheckBox);
 
-        examsCheckBoxBinding();
+//        examsCheckBoxBinding();
 //        examColumnsBinding();
         assessmentColumnBindings(examColumns, examsCheckBox);
 
-        essayPlansCheckBoxBinding();
+//        essayPlansCheckBoxBinding();
 //        essayPlanColumnBinding();
         assessmentColumnBindings(essayPlanColumns, essayPlansCheckBox);
 
-        argAnalysesCheckBoxBinding();
+//        argAnalysesCheckBoxBinding();
 //        argAnalysisColumnBinding();
         assessmentColumnBindings(argAnalysisColumns, argAnalysesCheckBox);
 
-        participationCheckBoxBinding();
+//        participationCheckBoxBinding();
 //        participationColumnBinding();
         assessmentColumnBindings(participationColumns, participationCheckBox);
 
-        quizzesCheckBoxBinding();
+//        quizzesCheckBoxBinding();
 //        quizColumnBinding();
         assessmentColumnBindings(quizColumns, quizzesCheckBox);
 
-        presentationsCheckBoxBinding();
+//        presentationsCheckBoxBinding();
 //        presentationColumnBinding();
         assessmentColumnBindings(presentationColumns, presentationsCheckBox);
 
-        otherCheckBoxBinding();
+//        otherCheckBoxBinding();
 //        otherColumnBinding();
         assessmentColumnBindings(otherColumns, otherCheckBox);
     }
@@ -615,9 +638,11 @@ public class MainController implements Initializable {
 
         essaysCheckBox.selectedProperty().addListener(obs -> {
             if ((essaysCheckBox.isSelected())) {
-                essayColumns.forEach(c -> c.setVisible(true));
+                commandManager.execute(new ShowAssessmentColumnCommand(essayColumns), true);
+//                essayColumns.forEach(c -> c.setVisible(true));
             } else {
-                essayColumns.forEach(c -> c.setVisible(false));
+                commandManager.execute(new HideAssessmentColumnCommand(essayColumns), true);
+//                essayColumns.forEach(c -> c.setVisible(false));
             }
         });
     }
@@ -700,9 +725,11 @@ public class MainController implements Initializable {
 
         examsCheckBox.selectedProperty().addListener(obs -> {
             if ((examsCheckBox.isSelected())) {
-                examColumns.forEach(c -> c.setVisible(true));
+                commandManager.execute(new ShowAssessmentColumnCommand(examColumns), true);
+//                examColumns.forEach(c -> c.setVisible(true));
             } else {
-                examColumns.forEach(c -> c.setVisible(false));
+                commandManager.execute(new HideAssessmentColumnCommand(examColumns), true);
+//                examColumns.forEach(c -> c.setVisible(false));
             }
         });
     }
@@ -1388,16 +1415,17 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void deleteStudentsByKeyPress(KeyEvent e) {
+    public void deleteKeyPressed(KeyEvent e) {
 
         if (e.getCode() == KeyCode.DELETE) {
             List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
             selected.remove(blankStudent);
 
-            for (Student s : selected) {
-                courseManager.removeStudent(s);
-            }
-            table.getItems().removeAll(selected);
+            commandManager.execute(new DeleteCommand(this, selected), true);
+//            for (Student s : selected) {
+//                courseManager.removeStudent(s);
+//            }
+//            table.getItems().removeAll(selected);
         }
     }
 
@@ -1413,34 +1441,68 @@ public class MainController implements Initializable {
         table.getSelectionModel().clearSelection();
     }
 
-    public void showHideAssessmentColumns(CheckBox checkBox, boolean selected) {
+    @FXML
+    public void assessmentCheckBoxClicked(ActionEvent event) {
+        CheckBox checkBox = (CheckBox) event.getSource();
+        boolean selected = checkBox.isSelected();
 
-        if (checkBox == essaysCheckBox) {
-            essayColumns.forEach(c -> c.setVisible(selected));
+        if (selected) {
+            if (checkBox == essaysCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(essayColumns), true);
 
-        } else if (checkBox == essayPlansCheckBox) {
-            essayPlanColumns.forEach(c -> c.setVisible(selected));
+            } else if (checkBox == essayPlansCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(essayPlanColumns), true);
 
-        } else if (checkBox == examsCheckBox) {
-            examColumns.forEach(c -> c.setVisible(selected));
+            } else if (checkBox == examsCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(examColumns), true);
 
-        } else if (checkBox == argAnalysesCheckBox) {
-            argAnalysisColumns.forEach(c -> c.setVisible(selected));
+            } else if (checkBox == argAnalysesCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(argAnalysisColumns), true);
 
-        } else if (checkBox == quizzesCheckBox) {
-            quizColumns.forEach(c -> c.setVisible(selected));
+            } else if (checkBox == quizzesCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(quizColumns), true);
 
-        } else if (checkBox == participationCheckBox) {
-            participationColumns.forEach(c -> c.setVisible(selected));
+            } else if (checkBox == participationCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(participationColumns), true);
 
-        } else if (checkBox == presentationsCheckBox) {
-            presentationColumns.forEach(c -> c.setVisible(selected));
+            } else if (checkBox == presentationsCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(presentationColumns), true);
 
-        } else if (checkBox == otherCheckBox) {
-            otherColumns.forEach(c -> c.setVisible(selected));
+            } else if (checkBox == otherCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(otherColumns), true);
+
+            } else {
+                throw new IllegalArgumentException("Assessment type does not exit!");
+            }
 
         } else {
-            throw new IllegalArgumentException("Assessment type does not exit!");
+            if (checkBox == essaysCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(essayColumns), true);
+
+            } else if (checkBox == essayPlansCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(essayPlanColumns), true);
+
+            } else if (checkBox == examsCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(examColumns), true);
+
+            } else if (checkBox == argAnalysesCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(argAnalysisColumns), true);
+
+            } else if (checkBox == quizzesCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(quizColumns), true);
+
+            } else if (checkBox == participationCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(participationColumns), true);
+
+            } else if (checkBox == presentationsCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(presentationColumns), true);
+
+            } else if (checkBox == otherCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(otherColumns), true);
+
+            } else {
+                throw new IllegalArgumentException("Assessment type does not exit!");
+            }
         }
     }
 
@@ -2072,8 +2134,6 @@ public class MainController implements Initializable {
             System.out.println();
         }
     }
-
-
 }
 
 

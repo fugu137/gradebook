@@ -73,7 +73,7 @@
                            <children>
                               <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="copyButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#copyStudents" styleClass="toolbar-button" text="Copy">
+                                    <Button fx:id="copyButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#copyButtonPressed" styleClass="toolbar-button" text="Copy">
                                        <graphic>
                                           <ImageView pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -657,7 +657,7 @@
    <center>
       <VBox styleClass="white-pane">
          <children>
-            <TableView fx:id="table" editable="true" onKeyPressed="#deleteStudentsByKeyPress" onKeyReleased="#handleKeyboardShortcuts" prefHeight="446.0" prefWidth="1278.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+            <TableView fx:id="table" editable="true" onKeyPressed="#deleteKeyPressed" onKeyReleased="#handleKeyboardShortcuts" prefHeight="446.0" prefWidth="1278.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
                 <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />

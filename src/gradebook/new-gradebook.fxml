@@ -388,9 +388,9 @@
                                  <children>
                                     <VBox spacing="4.0">
                                        <children>
-                                          <CheckBox fx:id="essaysCheckBox" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Essays" />
-                                          <CheckBox fx:id="essayPlansCheckBox" mnemonicParsing="false" text="Essay Plans" />
-                                          <CheckBox fx:id="examsCheckBox" mnemonicParsing="false" text="Exams" />
+                                          <CheckBox fx:id="essaysCheckBox" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Essays" />
+                                          <CheckBox fx:id="essayPlansCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Essay Plans" />
+                                          <CheckBox fx:id="examsCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Exams" />
                                        </children>
                                        <padding>
                                           <Insets right="10.0" />
@@ -401,9 +401,9 @@
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="10.0" spacing="4.0">
                                        <children>
-                                          <CheckBox fx:id="quizzesCheckBox" mnemonicParsing="false" text="Quizzes" />
-                                          <CheckBox fx:id="argAnalysesCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" text="Arg. Analyses" />
-                                          <CheckBox fx:id="participationCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" text="Participation" />
+                                          <CheckBox fx:id="quizzesCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Quizzes" />
+                                          <CheckBox fx:id="argAnalysesCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Arg. Analyses" />
+                                          <CheckBox fx:id="participationCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Participation" />
                                        </children>
                                        <padding>
                                           <Insets left="10.0" right="10.0" />
@@ -414,8 +414,8 @@
                                     </VBox>
                                     <VBox layoutX="105.0" layoutY="13.0" spacing="4.0">
                                        <children>
-                                          <CheckBox fx:id="presentationsCheckBox" mnemonicParsing="false" text="Presentations" />
-                                          <CheckBox fx:id="otherCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" text="Other" />
+                                          <CheckBox fx:id="presentationsCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Presentations" />
+                                          <CheckBox fx:id="otherCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Other" />
                                        </children>
                                        <HBox.margin>
                                           <Insets top="3.0" />
@@ -656,7 +656,7 @@
       </TabPane>
       <HBox fx:id="mainPane" spacing="8.0" styleClass="white-pane" VBox.vgrow="ALWAYS">
          <children>
-            <TableView fx:id="table" editable="true" onKeyPressed="#deleteStudentsByKeyPress" onKeyReleased="#handleKeyboardShortcuts" prefHeight="743.0" tableMenuButtonVisible="true" HBox.hgrow="ALWAYS">
+            <TableView fx:id="table" editable="true" onKeyPressed="#deleteKeyPressed" onKeyReleased="#handleKeyboardShortcuts" prefHeight="743.0" tableMenuButtonVisible="true" HBox.hgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
                 <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />
