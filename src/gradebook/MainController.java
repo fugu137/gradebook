@@ -1,14 +1,15 @@
 package gradebook;
 
-import gradebook.commands.AddNewStudentCommand;
-import gradebook.commands.RedoCommand;
-import gradebook.commands.UndoCommand;
+import gradebook.commands.*;
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
 import gradebook.enums.Grade;
 import gradebook.model.Class;
 import gradebook.model.*;
-import gradebook.tools.*;
+import gradebook.tools.CommandManager;
+import gradebook.tools.FileChooserWindow;
+import gradebook.tools.FileManager;
+import gradebook.tools.StudentImporter;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -217,6 +218,10 @@ public class MainController implements Initializable {
 
     public TableView<Student> getTable() {
         return table;
+    }
+
+    public ObservableList<Student> getClipBoardStudents() {
+        return clipBoardStudents;
     }
 
     public AssessmentCreationController getAssessmentCreationController() throws IOException {
@@ -1137,13 +1142,13 @@ public class MainController implements Initializable {
         KeyCombination pasteKeys = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
 
         if (copyKeys.match(e)) {
-            copyStudents();
+            copyButtonPressed();
         }
         if (cutKeys.match(e)) {
-            cutStudents();
+            cutButtonPressed();
         }
         if (pasteKeys.match(e)) {
-            pasteStudents();
+            pasteButtonPressed();
         }
     }
 
@@ -1225,7 +1230,6 @@ public class MainController implements Initializable {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
         Class classGroup = editedCell.getNewValue();
         selectedStudent.setClassGroup(classGroup);
-
     }
 
     @FXML
@@ -1339,40 +1343,48 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void copyStudents() {
-        clipBoardStudents.clear();
-        ObservableList<Student> toCopy = table.getSelectionModel().getSelectedItems();
-        clipBoardStudents.addAll(StudentCloner.run(toCopy));
+    public void copyButtonPressed() {
+        commandManager.execute(new CopyCommand(this), false);
+
+//        clipBoardStudents.clear();
+//        ObservableList<Student> toCopy = table.getSelectionModel().getSelectedItems();
+//        clipBoardStudents.addAll(StudentCloner.run(toCopy));
     }
 
     @FXML
-    public void cutStudents() {
-        clipBoardStudents.clear();
-        ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
-        clipBoardStudents.addAll(toCut);
+    public void cutButtonPressed() {
+        commandManager.execute(new CutCommand(this), true);
 
-        for (Student s : toCut) {
-            courseManager.removeStudent(s);
-        }
-        table.getItems().removeAll(toCut);
+//        clipBoardStudents.clear();
+//        ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
+//        clipBoardStudents.addAll(toCut);
+//
+//        for (Student s : toCut) {
+//            courseManager.removeStudent(s);
+//        }
+//        table.getItems().removeAll(toCut);
     }
 
     @FXML
-    public void pasteStudents() {
-        int index = table.getSelectionModel().getSelectedIndices().get(0);
-        courseManager.reAddAllStudentsAt(index, clipBoardStudents);
-        table.getItems().addAll(index, clipBoardStudents);
+    public void pasteButtonPressed() {
+        commandManager.execute(new PasteCommand(this), true);
+
+//        int index = table.getSelectionModel().getSelectedIndices().get(0);
+//        courseManager.reAddAllStudentsAt(index, clipBoardStudents);
+//        table.getItems().addAll(index, clipBoardStudents);
     }
 
     @FXML
-    public void deleteStudents() {
+    public void deleteButtonPressed() {
         List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
         selected.remove(blankStudent);
 
-        for (Student s : selected) {
-            courseManager.removeStudent(s);
-        }
-        table.getItems().removeAll(selected);
+        commandManager.execute(new DeleteCommand(this, selected), true);
+//
+//        for (Student s : selected) {
+//            courseManager.removeStudent(s);
+//        }
+//        table.getItems().removeAll(selected);
     }
 
     @FXML

@@ -82,7 +82,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="cutButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" layoutX="68.0" layoutY="11.0" mnemonicParsing="false" onAction="#cutStudents" styleClass="toolbar-button" text="Cut">
+                                    <Button fx:id="cutButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" layoutX="68.0" layoutY="11.0" mnemonicParsing="false" onAction="#cutButtonPressed" styleClass="toolbar-button" text="Cut">
                                        <graphic>
                                           <ImageView pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -91,7 +91,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="pasteButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#pasteStudents" styleClass="toolbar-button" text="Paste">
+                                    <Button fx:id="pasteButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#pasteButtonPressed" styleClass="toolbar-button" text="Paste">
                                        <graphic>
                                           <ImageView pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -145,7 +145,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <Button fx:id="deleteButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#deleteStudents" prefWidth="92.0" styleClass="toolbar-icon-button" text="Delete">
+                                          <Button fx:id="deleteButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#deleteButtonPressed" prefWidth="92.0" styleClass="toolbar-icon-button" text="Delete">
                                              <graphic>
                                                 <ImageView pickOnBounds="true" preserveRatio="true">
                                                    <image>
