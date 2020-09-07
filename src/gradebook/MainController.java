@@ -1052,69 +1052,69 @@ public class MainController implements Initializable {
         gradeListBox.getSelectionModel().selectFirst();
     }
 
-    private void classListBoxBinding() {
-        classListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
-            filterByGroupSelection();
-            filterByGradeSelection();
-        });
-    }
-
-    private void gradeListBoxBinding() {
-        gradeListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
-            filterByGroupSelection();
-            filterByGradeSelection();
-        });
-    }
-
-    private void filterByGroupSelection() {
-        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
-
-        if (selectedGroup != null) {
-            table.getItems().clear();
-            table.getItems().addAll(selectedGroup.getStudents());
-            table.getItems().add(blankStudent);
-        }
-    }
-
-    private void filterByGradeSelection() {
-        Grade selectedGrade = gradeListBox.getSelectionModel().getSelectedItem();
-        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
-
-        if (selectedGrade != null) {
-            switch (selectedGrade) {
-                case ANY:
-                    break;
-                case HD:
-//                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-//                    table.getItems().forEach(s -> {
-//                        System.out.println(selectedGroup + " contains student " + s.getSurname());
-//                        System.out.println(selectedGroup + " contains HD student " + s.getSurname() + ": " + selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-//                    });
-                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-//                    removeIf(s -> {
-//                        if (s.getTotalGrade() == null) {
-//                            return true;
-//                        } else {
-//                            return !(s.getTotalGrade() <= 100 && s.getTotalGrade() >= 85);
-//                        }
-//                    });
-                    break;
-                case D:
-                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
-                    break;
-                case CR:
-                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
-                    break;
-                case P:
-                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
-                    break;
-                case F:
-                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
-                    break;
-            }
-            table.sort();
-        }
-    }
+//    private void classListBoxBinding() {
+//        classListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
+//            filterByGroupSelection();
+//            filterByGradeSelection();
+//        });
+//    }
+//
+//    private void gradeListBoxBinding() {
+//        gradeListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
+//            filterByGroupSelection();
+//            filterByGradeSelection();
+//        });
+//    }
+//
+//    private void filterByGroupSelection() {
+//        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
+//
+//        if (selectedGroup != null) {
+//            table.getItems().clear();
+//            table.getItems().addAll(selectedGroup.getStudents());
+//            table.getItems().add(blankStudent);
+//        }
+//    }
+//
+//    private void filterByGradeSelection() {
+//        Grade selectedGrade = gradeListBox.getSelectionModel().getSelectedItem();
+//        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
+//
+//        if (selectedGrade != null) {
+//            switch (selectedGrade) {
+//                case ANY:
+//                    break;
+//                case HD:
+////                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+////                    table.getItems().forEach(s -> {
+////                        System.out.println(selectedGroup + " contains student " + s.getSurname());
+////                        System.out.println(selectedGroup + " contains HD student " + s.getSurname() + ": " + selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+////                    });
+//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+////                    removeIf(s -> {
+////                        if (s.getTotalGrade() == null) {
+////                            return true;
+////                        } else {
+////                            return !(s.getTotalGrade() <= 100 && s.getTotalGrade() >= 85);
+////                        }
+////                    });
+//                    break;
+//                case D:
+//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
+//                    break;
+//                case CR:
+//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
+//                    break;
+//                case P:
+//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
+//                    break;
+//                case F:
+//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
+//                    break;
+//            }
+//            table.sort();
+//        }
+//    }
 
     private void setupStatisticsLabels() {
         StudentGroup selectedGroup = statisticsClassComboBox.getSelectionModel().getSelectedItem();
@@ -2138,6 +2138,11 @@ public class MainController implements Initializable {
     @FXML
     public void filterTableAction() {
         commandManager.execute(new FilterByClassAndGradeCommand(this, classListBox, gradeListBox), true);
+    }
+
+    @FXML
+    public void filterStatisticsAction() {
+
     }
 
 
