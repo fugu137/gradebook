@@ -10,8 +10,8 @@ import java.util.List;
 
 public class FinaliseAllAssessmentsCommand implements UserCommand {
 
-    ObservableList<Student> students;
-    List<UserCommand> commands;
+    private ObservableList<Student> students;
+    private List<UserCommand> commands;
 
     public FinaliseAllAssessmentsCommand(ObservableList<Student> students) {
         this.students = students;

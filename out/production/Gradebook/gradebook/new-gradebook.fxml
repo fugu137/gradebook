@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
 <VBox prefHeight="900.0" prefWidth="1440.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.MainController">
    <children>
       <TabPane fx:id="tabPane" maxHeight="117.0" minHeight="117.0" prefHeight="117.0" tabClosingPolicy="UNAVAILABLE">
@@ -36,10 +55,9 @@
                                  <children>
                                     <VBox alignment="TOP_CENTER">
                                        <children>
-                                          <SplitMenuButton fx:id="importButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#importStudents" styleClass="toolbar-split-button" text="Import">
+                                          <SplitMenuButton fx:id="importButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#importButtonPressed" styleClass="toolbar-split-button" text="Import">
                                             <items>
                                               <MenuItem mnemonicParsing="false" text="Import..." />
-                                              <MenuItem mnemonicParsing="false" text="Export..." />
                                             </items>
                                              <graphic>
                                                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -127,7 +145,7 @@
                                     </HBox>
                                     <VBox layoutX="176.0" layoutY="11.0" spacing="2.0">
                                        <children>
-                                          <Button fx:id="selectAllButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#selectAll" prefWidth="92.0" styleClass="toolbar-icon-button" text="Select All">
+                                          <Button fx:id="selectAllButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#selectAllButtonPressed" prefWidth="92.0" styleClass="toolbar-icon-button" text="Select All">
                                              <graphic>
                                                 <ImageView pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -136,7 +154,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <Button fx:id="selectNoneButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#selectNone" styleClass="toolbar-icon-button" text="Select None">
+                                          <Button fx:id="selectNoneButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#selectNoneButtonPressed" styleClass="toolbar-icon-button" text="Select None">
                                              <graphic>
                                                 <ImageView pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -301,7 +319,7 @@
                                              <children>
                                                 <VBox spacing="5.0">
                                                    <children>
-                                                      <ToggleButton fx:id="studentViewToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Student Info View" textAlignment="CENTER">
+                                                      <ToggleButton fx:id="studentViewToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" onAction="#studentInfoButtonPressed" styleClass="toolbar-toggle-button" text="Student Info View" textAlignment="CENTER">
                                                          <VBox.margin>
                                                             <Insets />
                                                          </VBox.margin>
@@ -313,7 +331,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </ToggleButton>
-                                                      <ToggleButton fx:id="anonymiseToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" styleClass="toolbar-toggle-button" text="Anonymize">
+                                                      <ToggleButton fx:id="anonymiseToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" onAction="#anonymiseButtonPressed" styleClass="toolbar-toggle-button" text="Anonymize">
                                                          <graphic>
                                                             <ImageView pickOnBounds="true" preserveRatio="true">
                                                                <image>

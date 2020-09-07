@@ -9,12 +9,13 @@ import gradebook.model.*;
 import gradebook.tools.CommandManager;
 import gradebook.tools.FileChooserWindow;
 import gradebook.tools.FileManager;
-import gradebook.tools.StudentImporter;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -205,7 +206,6 @@ public class MainController implements Initializable {
     private FileManager fileManager;
 
 
-
 //    public void setCourseManager(CourseManager newCourseManager) {
 //        this.courseManager = newCourseManager;
 //        setupClassListBox();
@@ -222,6 +222,10 @@ public class MainController implements Initializable {
 
     public ObservableList<Student> getClipBoardStudents() {
         return clipBoardStudents;
+    }
+
+    public Student getBlankStudent() {
+        return blankStudent;
     }
 //
 //    public CheckBox getAssessmentCheckBox(AssessmentType type) {
@@ -530,7 +534,9 @@ public class MainController implements Initializable {
                 .or(table.getSelectionModel().selectedItemProperty().isEqualTo(blankStudent)));
 
         selectAllButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
-        selectNoneButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
+        selectNoneButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1).
+                or(table.getSelectionModel().selectedItemProperty().isNull()
+                        .or(table.getSelectionModel().selectedItemProperty().isEqualTo(blankStudent))));
 
         undoButton.disableProperty().bind(commandManager.undoStackEmptyProperty());
         redoButton.disableProperty().bind(commandManager.redoStackEmptyProperty());
@@ -544,60 +550,115 @@ public class MainController implements Initializable {
 
     private void toggleButtonBindings() {
 
-        studentViewToggleButton.selectedProperty().addListener(obs -> {
-            ObservableList<TableColumn<Student, ?>> columns = table.getColumns();
+        BooleanProperty allVisible = new SimpleBooleanProperty();
+        allVisible.bind(surnameColumn.visibleProperty()
+                .and(givenNamesColumn.visibleProperty()
+                        .and(preferredNameColumn.visibleProperty()
+                                .and(genderColumn.visibleProperty()
+                                        .and(sidColumn.visibleProperty()
+                                                .and(degreeColumn.visibleProperty()
+                                                        .and(degreeColumn.visibleProperty()
+                                                                .and(emailColumn.visibleProperty()
+                                                                        .and(classColumn.visibleProperty()))))))))
+        );
 
-            if (studentViewToggleButton.isSelected()) {
-                setStudentInfoView(true);
 
-            } else {
-                setStudentInfoView(false);
-            }
-        });
-
-        anonymiseToggleButton.selectedProperty().addListener(obs -> {
-
-            if (anonymiseToggleButton.isSelected()) {
-                studentViewToggleButton.setSelected(false);
-
-                surnameColumn.setVisible(false);
-                givenNamesColumn.setVisible(false);
-
-            } else {
+        allVisible.addListener((obs -> {
+            if (allVisible.getValue() && !studentViewToggleButton.isSelected()) {
                 studentViewToggleButton.setSelected(true);
             }
+
+            if (!allVisible.getValue() && studentViewToggleButton.isSelected()) {
+                studentViewToggleButton.setSelected(false);
+            }
+        }));
+
+        surnameColumn.visibleProperty().addListener(obs -> {
+            allVisible.getValue();                          //Strange bug(?) without this part. allVisible listener does not trigger//
+            if (surnameColumn.isVisible() && anonymiseToggleButton.isSelected()) {
+                anonymiseToggleButton.setSelected(false);
+            }
         });
+
+        givenNamesColumn.visibleProperty().addListener(obs -> {
+            if (givenNamesColumn.isVisible() && anonymiseToggleButton.isSelected()) {
+                anonymiseToggleButton.setSelected(false);
+            }
+        });
+
+        preferredNameColumn.visibleProperty().addListener(obs -> {
+            if (preferredNameColumn.isVisible() && anonymiseToggleButton.isSelected()) {
+                anonymiseToggleButton.setSelected(false);
+            }
+        });
+
+        sidColumn.visibleProperty().addListener(obs -> {
+            if (sidColumn.isVisible() && anonymiseToggleButton.isSelected()) {
+                anonymiseToggleButton.setSelected(false);
+            }
+        });
+
+        emailColumn.visibleProperty().addListener(obs -> {
+            if (emailColumn.isVisible() && anonymiseToggleButton.isSelected()) {
+                anonymiseToggleButton.setSelected(false);
+            }
+        });
+
+
+//        studentViewToggleButton.selectedProperty().addListener(obs -> {
+//            ObservableList<TableColumn<Student, ?>> columns = table.getColumns();
+//
+//            if (studentViewToggleButton.isSelected()) {
+//                setStudentInfoView(true);
+//
+//            } else {
+//                setStudentInfoView(false);
+//            }
+//        });
+//
+//        anonymiseToggleButton.selectedProperty().addListener(obs -> {
+//
+//            if (anonymiseToggleButton.isSelected()) {
+//                studentViewToggleButton.setSelected(false);
+//
+//                surnameColumn.setVisible(false);
+//                givenNamesColumn.setVisible(false);
+//
+//            } else {
+//                studentViewToggleButton.setSelected(true);
+//            }
+//        });
     }
 
-    private void setStudentInfoView(boolean on) {
-        ObservableList<TableColumn<Student, ?>> columns = table.getColumns();
-
-        if (on) {
-            anonymiseToggleButton.setSelected(false);
-
-            for (TableColumn<Student, ?> c : columns) {
-                if (!(c instanceof AssessmentColumn)) {
-                    c.setVisible(true);
-                }
-                ;
-            }
-
-        } else {
-
-            for (TableColumn<Student, ?> c : columns) {
-                c.setVisible(c instanceof AssessmentColumn);
-            }
-
-            surnameColumn.setVisible(true);
-            givenNamesColumn.setVisible(true);
-            classColumn.setVisible(true);
-            preferredNameColumn.setVisible(false);
-            genderColumn.setVisible(false);
-            sidColumn.setVisible(false);
-            degreeColumn.setVisible(false);
-            emailColumn.setVisible(false);
-        }
-    }
+//    private void setStudentInfoView(boolean on) {
+//        ObservableList<TableColumn<Student, ?>> columns = table.getColumns();
+//
+//        if (on) {
+//            anonymiseToggleButton.setSelected(false);
+//
+//            for (TableColumn<Student, ?> c : columns) {
+//                if (!(c instanceof AssessmentColumn)) {
+//                    c.setVisible(true);
+//                }
+//                ;
+//            }
+//
+//        } else {
+//
+//            for (TableColumn<Student, ?> c : columns) {
+//                c.setVisible(c instanceof AssessmentColumn);
+//            }
+//
+//            surnameColumn.setVisible(true);
+//            givenNamesColumn.setVisible(true);
+//            classColumn.setVisible(true);
+//            preferredNameColumn.setVisible(false);
+//            genderColumn.setVisible(false);
+//            sidColumn.setVisible(false);
+//            degreeColumn.setVisible(false);
+//            emailColumn.setVisible(false);
+//        }
+//    }
 
     private void checkBoxBindings() {
 
@@ -1354,101 +1415,6 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void importStudents(ActionEvent event) {
-        Window window = importButton.getScene().getWindow();
-        List<File> files = FileChooserWindow.displayImportWindow(window, "Choose a file to import from", true);
-
-        for (File file : files) {
-            ObservableList<Student> students = StudentImporter.importStudents(file);
-            courseManager.newStudents(students);
-
-//            table.getItems().remove(blankStudent);
-            table.getItems().addAll(students);
-//            table.getItems().add(blankStudent);
-            table.sort();
-        }
-    }
-
-
-
-    @FXML
-    public void selectAll() {
-        table.requestFocus();
-        table.getSelectionModel().selectAll();
-        table.getSelectionModel().clearSelection(table.getItems().size() - 1);
-    }
-
-    @FXML
-    public void selectNone() {
-        table.getSelectionModel().clearSelection();
-    }
-
-    @FXML
-    public void assessmentCheckBoxClicked(ActionEvent event) {
-        CheckBox checkBox = (CheckBox) event.getSource();
-        boolean selected = checkBox.isSelected();
-
-        if (selected) {
-            if (checkBox == essaysCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(essayColumns), true);
-
-            } else if (checkBox == essayPlansCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(essayPlanColumns), true);
-
-            } else if (checkBox == examsCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(examColumns), true);
-
-            } else if (checkBox == argAnalysesCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(argAnalysisColumns), true);
-
-            } else if (checkBox == quizzesCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(quizColumns), true);
-
-            } else if (checkBox == participationCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(participationColumns), true);
-
-            } else if (checkBox == presentationsCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(presentationColumns), true);
-
-            } else if (checkBox == otherCheckBox) {
-                commandManager.execute(new ShowAssessmentColumnCommand(otherColumns), true);
-
-            } else {
-                throw new IllegalArgumentException("Assessment type does not exit!");
-            }
-
-        } else {
-            if (checkBox == essaysCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(essayColumns), true);
-
-            } else if (checkBox == essayPlansCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(essayPlanColumns), true);
-
-            } else if (checkBox == examsCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(examColumns), true);
-
-            } else if (checkBox == argAnalysesCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(argAnalysisColumns), true);
-
-            } else if (checkBox == quizzesCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(quizColumns), true);
-
-            } else if (checkBox == participationCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(participationColumns), true);
-
-            } else if (checkBox == presentationsCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(presentationColumns), true);
-
-            } else if (checkBox == otherCheckBox) {
-                commandManager.execute(new HideAssessmentColumnCommand(otherColumns), true);
-
-            } else {
-                throw new IllegalArgumentException("Assessment type does not exit!");
-            }
-        }
-    }
-
-    @FXML
     public void displayAssessmentCreationWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("assessment-creation-window.fxml"));
         Parent root = loader.load();
@@ -1802,16 +1768,16 @@ public class MainController implements Initializable {
                 ObservableList<StdAssessment> subAssessments = ((AssessmentSet) column.getAssessment()).getStdAssessments();
                 ObservableList<AssessmentColumn<Student, ?>> columnsOfType = getAssessmentColumnsByType(column.getAssessment().getType());
 
-                    for (StdAssessment s : subAssessments) {
-                        for (AssessmentColumn<Student, ?> c : columnsOfType) {
+                for (StdAssessment s : subAssessments) {
+                    for (AssessmentColumn<Student, ?> c : columnsOfType) {
 
-                            if (c.getAssessment() == s) {
-                                table.getColumns().remove(c);
-                                removeAssessmentColumn(s);
-                                break;
-                            }
+                        if (c.getAssessment() == s) {
+                            table.getColumns().remove(c);
+                            removeAssessmentColumn(s);
+                            break;
                         }
                     }
+                }
             }
         }
     }
@@ -1946,6 +1912,26 @@ public class MainController implements Initializable {
 
     //Toolbar Actions//
     @FXML
+    public void importButtonPressed() {
+        Window window = importButton.getScene().getWindow();
+
+        commandManager.execute(new ImportStudentsCommand(this, window), true);
+
+//        Window window = importButton.getScene().getWindow();
+//        List<File> files = FileChooserWindow.displayImportWindow(window, "Choose a file to import from", true);
+//
+//        for (File file : files) {
+//            ObservableList<Student> students = StudentImporter.importStudents(file);
+//            courseManager.newStudents(students);
+//
+////            table.getItems().remove(blankStudent);
+//            table.getItems().addAll(students);
+////            table.getItems().add(blankStudent);
+//            table.sort();
+//        }
+    }
+
+    @FXML
     public void copyButtonPressed() {
         commandManager.execute(new CopyCommand(this), false);
 
@@ -2021,6 +2007,131 @@ public class MainController implements Initializable {
 //        for (Student s : courseManager.getAllStudents()) {
 //            s.finaliseGrades();
 //        }
+    }
+
+    @FXML
+    public void selectAllButtonPressed() {
+        commandManager.execute(new SelectAllCommand(table), false);
+//        table.requestFocus();
+//        table.getSelectionModel().selectAll();
+//        table.getSelectionModel().clearSelection(table.getItems().size() - 1);
+    }
+
+    @FXML
+    public void selectNoneButtonPressed() {
+        commandManager.execute(new SelectNoneCommand(table), false);
+
+//        table.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    public void assessmentCheckBoxClicked(ActionEvent event) {
+        CheckBox checkBox = (CheckBox) event.getSource();
+        boolean selected = checkBox.isSelected();
+
+        if (selected) {
+            if (checkBox == essaysCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(essayColumns), true);
+
+            } else if (checkBox == essayPlansCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(essayPlanColumns), true);
+
+            } else if (checkBox == examsCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(examColumns), true);
+
+            } else if (checkBox == argAnalysesCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(argAnalysisColumns), true);
+
+            } else if (checkBox == quizzesCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(quizColumns), true);
+
+            } else if (checkBox == participationCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(participationColumns), true);
+
+            } else if (checkBox == presentationsCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(presentationColumns), true);
+
+            } else if (checkBox == otherCheckBox) {
+                commandManager.execute(new ShowAssessmentColumnCommand(otherColumns), true);
+
+            } else {
+                throw new IllegalArgumentException("Assessment type does not exit!");
+            }
+
+        } else {
+            if (checkBox == essaysCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(essayColumns), true);
+
+            } else if (checkBox == essayPlansCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(essayPlanColumns), true);
+
+            } else if (checkBox == examsCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(examColumns), true);
+
+            } else if (checkBox == argAnalysesCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(argAnalysisColumns), true);
+
+            } else if (checkBox == quizzesCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(quizColumns), true);
+
+            } else if (checkBox == participationCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(participationColumns), true);
+
+            } else if (checkBox == presentationsCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(presentationColumns), true);
+
+            } else if (checkBox == otherCheckBox) {
+                commandManager.execute(new HideAssessmentColumnCommand(otherColumns), true);
+
+            } else {
+                throw new IllegalArgumentException("Assessment type does not exit!");
+            }
+        }
+    }
+
+    @FXML
+    public void studentInfoButtonPressed() {
+
+        if (studentViewToggleButton.isSelected()) {
+            ObservableList<TableColumn<Student, ?>> infoColumns = FXCollections.observableArrayList();
+
+            infoColumns.add(surnameColumn);
+            infoColumns.add(givenNamesColumn);
+            infoColumns.add(preferredNameColumn);
+            infoColumns.add(genderColumn);
+            infoColumns.add(sidColumn);
+            infoColumns.add(degreeColumn);
+            infoColumns.add(emailColumn);
+            infoColumns.add(classColumn);
+
+            commandManager.execute(new StudentInfoViewOnCommand(infoColumns), true);
+
+        } else {
+            commandManager.execute(new StudentInfoViewOffCommand(emailColumn, sidColumn, degreeColumn), true);
+        }
+    }
+
+    @FXML
+    public void anonymiseButtonPressed() {
+        ObservableList<TableColumn<Student, ?>> infoColumns = FXCollections.observableArrayList();
+
+        infoColumns.add(surnameColumn);
+        infoColumns.add(givenNamesColumn);
+        infoColumns.add(preferredNameColumn);
+        infoColumns.add(genderColumn);
+        infoColumns.add(sidColumn);
+        infoColumns.add(degreeColumn);
+        infoColumns.add(emailColumn);
+
+        if (anonymiseToggleButton.isSelected()) {
+            commandManager.execute(new AnonymiseOnCommand(infoColumns), true);
+
+        } else {
+            infoColumns.remove(sidColumn);
+            infoColumns.remove(degreeColumn);
+            infoColumns.remove(emailColumn);
+            commandManager.execute(new AnonymiseOffCommand(infoColumns), true);
+        }
     }
 
     //Test Methods//

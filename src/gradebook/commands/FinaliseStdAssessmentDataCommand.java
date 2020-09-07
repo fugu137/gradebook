@@ -4,8 +4,8 @@ import gradebook.model.StdAssessmentData;
 
 public class FinaliseStdAssessmentDataCommand implements UserCommand {
 
-    StdAssessmentData data;
-    boolean wasChanged = false;
+    private StdAssessmentData data;
+    private boolean wasChanged = false;
 
     public FinaliseStdAssessmentDataCommand(StdAssessmentData data) {
         this.data = data;
