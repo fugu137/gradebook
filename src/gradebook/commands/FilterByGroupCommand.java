@@ -20,12 +20,12 @@ class FilterByGroupCommand implements UserCommand {
         this.blankStudent = mainController.getBlankStudent();
         this.selectedGroup = comboBox.getSelectionModel().getSelectedItem();
         this.tableStudentsCopy = FXCollections.observableArrayList();
+
+        tableStudentsCopy.addAll(table.getItems());
     }
 
     @Override
     public void execute() {
-        tableStudentsCopy.addAll(table.getItems());
-
         if (selectedGroup != null) {
             table.getItems().clear();
             table.getItems().addAll(selectedGroup.getStudents());
@@ -41,7 +41,6 @@ class FilterByGroupCommand implements UserCommand {
 
     @Override
     public void redo() {
-        tableStudentsCopy.clear();
         execute();
     }
 }

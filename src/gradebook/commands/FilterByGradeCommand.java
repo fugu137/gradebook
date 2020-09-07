@@ -21,13 +21,14 @@ class FilterByGradeCommand implements UserCommand {
         this.selectedGroup = classListBox.getSelectionModel().getSelectedItem();
         this.selectedGrade = gradeListBox.getSelectionModel().getSelectedItem();
         this.tableStudentsCopy = FXCollections.observableArrayList();
+
+        tableStudentsCopy.addAll(table.getItems());
     }
 
     @Override
     public void execute() {
-        tableStudentsCopy.addAll(table.getItems());
 
-        if (selectedGrade != null) {
+        if (selectedGrade != null && selectedGroup != null) {
             switch (selectedGrade) {
                 case ANY:
                     break;
@@ -59,7 +60,6 @@ class FilterByGradeCommand implements UserCommand {
 
     @Override
     public void redo() {
-        tableStudentsCopy.clear();
         execute();
     }
 }

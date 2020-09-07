@@ -1367,6 +1367,8 @@ public class MainController implements Initializable {
     //Toolbar Control Methods//
 
     public void loadGradebook() {
+        //TODO: reset filter comboboxes
+
         Alert popup = new Alert(Alert.AlertType.CONFIRMATION, "Load Gradebook?", ButtonType.YES, ButtonType.NO);
         popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
 
