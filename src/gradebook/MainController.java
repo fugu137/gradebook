@@ -1369,65 +1369,7 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    public void copyButtonPressed() {
-        commandManager.execute(new CopyCommand(this), false);
 
-//        clipBoardStudents.clear();
-//        ObservableList<Student> toCopy = table.getSelectionModel().getSelectedItems();
-//        clipBoardStudents.addAll(StudentCloner.run(toCopy));
-    }
-
-    @FXML
-    public void cutButtonPressed() {
-        commandManager.execute(new CutCommand(this), true);
-
-//        clipBoardStudents.clear();
-//        ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
-//        clipBoardStudents.addAll(toCut);
-//
-//        for (Student s : toCut) {
-//            courseManager.removeStudent(s);
-//        }
-//        table.getItems().removeAll(toCut);
-    }
-
-    @FXML
-    public void pasteButtonPressed() {
-        commandManager.execute(new PasteCommand(this), true);
-
-//        int index = table.getSelectionModel().getSelectedIndices().get(0);
-//        courseManager.reAddAllStudentsAt(index, clipBoardStudents);
-//        table.getItems().addAll(index, clipBoardStudents);
-    }
-
-    @FXML
-    public void deleteButtonPressed() {
-        List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
-        selected.remove(blankStudent);
-
-        commandManager.execute(new DeleteCommand(this, selected), true);
-//
-//        for (Student s : selected) {
-//            courseManager.removeStudent(s);
-//        }
-//        table.getItems().removeAll(selected);
-    }
-
-    @FXML
-    public void deleteKeyPressed(KeyEvent e) {
-
-        if (e.getCode() == KeyCode.DELETE) {
-            List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
-            selected.remove(blankStudent);
-
-            commandManager.execute(new DeleteCommand(this, selected), true);
-//            for (Student s : selected) {
-//                courseManager.removeStudent(s);
-//            }
-//            table.getItems().removeAll(selected);
-        }
-    }
 
     @FXML
     public void selectAll() {
@@ -1983,13 +1925,6 @@ public class MainController implements Initializable {
         statisticsPane.prefHeightProperty().bind(table.heightProperty());
     }
 
-    @FXML
-    public void finaliseGrades() {
-        for (Student s : courseManager.getAllStudents()) {
-            s.finaliseGrades();
-        }
-    }
-
     public void setStatusText(String text) {
         statusLabel.setText(text);
 
@@ -2011,6 +1946,66 @@ public class MainController implements Initializable {
 
     //Toolbar Actions//
     @FXML
+    public void copyButtonPressed() {
+        commandManager.execute(new CopyCommand(this), false);
+
+//        clipBoardStudents.clear();
+//        ObservableList<Student> toCopy = table.getSelectionModel().getSelectedItems();
+//        clipBoardStudents.addAll(StudentCloner.run(toCopy));
+    }
+
+    @FXML
+    public void cutButtonPressed() {
+        commandManager.execute(new CutCommand(this), true);
+
+//        clipBoardStudents.clear();
+//        ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
+//        clipBoardStudents.addAll(toCut);
+//
+//        for (Student s : toCut) {
+//            courseManager.removeStudent(s);
+//        }
+//        table.getItems().removeAll(toCut);
+    }
+
+    @FXML
+    public void pasteButtonPressed() {
+        commandManager.execute(new PasteCommand(this), true);
+
+//        int index = table.getSelectionModel().getSelectedIndices().get(0);
+//        courseManager.reAddAllStudentsAt(index, clipBoardStudents);
+//        table.getItems().addAll(index, clipBoardStudents);
+    }
+
+    @FXML
+    public void deleteButtonPressed() {
+        List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
+        selected.remove(blankStudent);
+
+        commandManager.execute(new DeleteCommand(this, selected), true);
+//
+//        for (Student s : selected) {
+//            courseManager.removeStudent(s);
+//        }
+//        table.getItems().removeAll(selected);
+    }
+
+    @FXML
+    public void deleteKeyPressed(KeyEvent e) {
+
+        if (e.getCode() == KeyCode.DELETE) {
+            List<Student> selected = new ArrayList<>(table.getSelectionModel().getSelectedItems());
+            selected.remove(blankStudent);
+
+            commandManager.execute(new DeleteCommand(this, selected), true);
+//            for (Student s : selected) {
+//                courseManager.removeStudent(s);
+//            }
+//            table.getItems().removeAll(selected);
+        }
+    }
+
+    @FXML
     public void undoButtonPressed() {
         commandManager.execute(new UndoCommand(commandManager), false);
     }
@@ -2018,6 +2013,14 @@ public class MainController implements Initializable {
     @FXML
     public void redoButtonPressed() {
         commandManager.execute(new RedoCommand(commandManager), false);
+    }
+
+    @FXML
+    public void finaliseButtonPressed() {
+        commandManager.execute(new FinaliseAllAssessmentsCommand(courseManager.getAllStudents()), true);
+//        for (Student s : courseManager.getAllStudents()) {
+//            s.finaliseGrades();
+//        }
     }
 
     //Test Methods//

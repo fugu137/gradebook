@@ -36,10 +36,12 @@ public class StdAssessmentData implements AssessmentData {
     }
 
     @Override
-    public void setIncompleteToZero() {
+    public boolean setIncompleteToZero() {
         if (grade.getValue() == null) {
             grade.set(0);
+            return true;
         }
+        return false;
     }
 
     @Override

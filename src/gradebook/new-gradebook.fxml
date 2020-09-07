@@ -239,7 +239,7 @@
                                                             </ImageView>
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="finaliseButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#finaliseGrades" styleClass="toolbar-button" text="Finalise" wrapText="true">
+                                                      <Button fx:id="finaliseButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#finaliseButtonPressed" styleClass="toolbar-button" text="Finalise" wrapText="true">
                                                          <graphic>
                                                             <ImageView pickOnBounds="true" preserveRatio="true">
                                                                <image>
