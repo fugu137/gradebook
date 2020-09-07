@@ -1036,8 +1036,8 @@ public class MainController implements Initializable {
         setupClassListBox();
         setupGradeListBox();
 
-        classListBoxBinding();
-        gradeListBoxBinding();
+//        classListBoxBinding();
+//        gradeListBoxBinding();
     }
 
     private void setupClassListBox() {
@@ -1086,10 +1086,10 @@ public class MainController implements Initializable {
                     break;
                 case HD:
 //                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-                    table.getItems().forEach(s -> {
-                        System.out.println(selectedGroup + " contains student " + s.getSurname());
-                        System.out.println(selectedGroup + " contains HD student " + s.getSurname() + ": " + selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-                    });
+//                    table.getItems().forEach(s -> {
+//                        System.out.println(selectedGroup + " contains student " + s.getSurname());
+//                        System.out.println(selectedGroup + " contains HD student " + s.getSurname() + ": " + selectedGroup.getTotalStatistics().getHDStudents().contains(s));
+//                    });
                     table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
 //                    removeIf(s -> {
 //                        if (s.getTotalGrade() == null) {
@@ -1112,6 +1112,7 @@ public class MainController implements Initializable {
                     table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
                     break;
             }
+            table.sort();
         }
     }
 
@@ -2133,6 +2134,12 @@ public class MainController implements Initializable {
             commandManager.execute(new AnonymiseOffCommand(infoColumns), true);
         }
     }
+
+    @FXML
+    public void filterTableAction() {
+        commandManager.execute(new FilterByClassAndGradeCommand(this, classListBox, gradeListBox), true);
+    }
+
 
     //Test Methods//
     public void addDummyData() {

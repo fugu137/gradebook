@@ -339,13 +339,13 @@
                                                       <HBox spacing="5.0">
                                                          <children>
                                                             <Label prefWidth="35.0" text="Class:" />
-                                                            <ComboBox fx:id="classListBox" prefWidth="60.0" promptText="Class" styleClass="toolbar-combo-box" />
+                                                            <ComboBox fx:id="classListBox" onAction="#filterTableAction" prefWidth="60.0" promptText="Class" styleClass="toolbar-combo-box" />
                                                          </children>
                                                       </HBox>
                                                       <HBox spacing="5.0">
                                                          <children>
                                                             <Label text="Grade:" />
-                                                            <ComboBox fx:id="gradeListBox" prefWidth="60.0" promptText="Grade" styleClass="toolbar-combo-box" />
+                                                            <ComboBox fx:id="gradeListBox" onAction="#filterTableAction" prefWidth="60.0" promptText="Grade" styleClass="toolbar-combo-box" />
                                                          </children>
                                                       </HBox>
                                                    </children>
