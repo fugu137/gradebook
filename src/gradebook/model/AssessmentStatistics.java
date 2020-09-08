@@ -58,8 +58,11 @@ public class AssessmentStatistics extends Statistics {
 
     @Override
     public void fillBarChart(BarChart<String, Number> barChart, StudentGroup group) {
-        barChart.setTitle(assessment.columnName());
-        addChartData(barChart, group);
+        super.barChart = barChart;
+        super.barChart.setTitle(assessment.columnName());
+        addChartData(super.barChart, group);
     }
+
+
 
 }

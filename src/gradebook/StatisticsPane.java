@@ -34,6 +34,7 @@ public class StatisticsPane extends VBox {
         addFooter();
 
         setVgrow(chartBox, Priority.ALWAYS);
+        setPrefWidth(370);
     }
 
     private void setStyles() {
@@ -55,7 +56,10 @@ public class StatisticsPane extends VBox {
         yAxis.setLabel("Percentage of Students");
 
         barChart = new BarChart<String, Number>(xAxis, yAxis);
+        yAxis.setAnimated(false);
+
         pieChart = new PieChart();
+        pieChart.setAnimated(false);
 
         chartBox.getChildren().add(barChart);
         chartBox.getChildren().add(pieChart);
@@ -179,6 +183,8 @@ public class StatisticsPane extends VBox {
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
         barChart = new BarChart<>(xAxis, yAxis);
+        yAxis.setAnimated(false);
+
         chartBox.getChildren().add(0, barChart);
 
         fillBarChart(courseManager, totalColumn, classComboBox, columnComboBox);

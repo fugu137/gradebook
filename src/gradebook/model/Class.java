@@ -138,11 +138,20 @@ public class Class implements StudentGroup {
     }
 
     public void updateAssessmentStatistics(Assessment assessment, Student student, ObjectProperty<?> gradeProperty) {
-        assessmentStatistics.get(assessment).update(student, gradeProperty);
+        AssessmentStatistics stats = assessmentStatistics.get(assessment);
+        stats.update(student, gradeProperty);
+
+        if (stats.getBarChart() != null) {
+            stats.updateBarChartValues();
+        }
     }
 
     public void updateTotalGradeStatistics(Student student, ObjectProperty<Double> gradeProperty) {
         totalGradeStatistics.update(student, gradeProperty);
+
+        if (totalGradeStatistics.getBarChart() != null) {
+            totalGradeStatistics.updateBarChartValues();
+        }
     }
 
     public ObjectProperty<Double> totalGradeMedianProperty() {

@@ -4,7 +4,6 @@ import gradebook.tools.NumberRounder;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
@@ -30,6 +29,13 @@ public class Statistics {
 
     private ObjectProperty<Integer> numberOfStudentsWithGrades;
 
+    BarChart<String, Number> barChart;
+    XYChart.Data<String, Number> hdData;
+    XYChart.Data<String, Number> dData;
+    XYChart.Data<String, Number> crData;
+    XYChart.Data<String, Number> pData;
+    XYChart.Data<String, Number> fData;
+
 
     public Statistics(ObservableList<Student> classStudents) {
         this.classStudents = classStudents;
@@ -46,11 +52,12 @@ public class Statistics {
         this.lowestGrade = new SimpleObjectProperty<>(null);
 
         this.numberOfStudentsWithGrades = new SimpleObjectProperty<>(null);
+
     }
 
     public void update(Student student, ObjectProperty<?> gradeProperty) {
-        updateGradeLists(student, gradeProperty);
         updateStatistics();
+        updateGradeLists(student, gradeProperty);
     }
 
     private void remove(Student student) {
@@ -86,6 +93,11 @@ public class Statistics {
                 System.out.println("Unable to update statistics. Invalid grade.");
             }
         }
+//        System.out.println("HD students: " + hdStudents);
+//        System.out.println("D students: " + dStudents);
+//        System.out.println("CR students: " + crStudents);
+//        System.out.println("P students: " + pStudents);
+//        System.out.println("F students: " + fStudents);
     }
 
     void updateStatistics() {
@@ -262,8 +274,13 @@ public class Statistics {
         return classStudents;
     }
 
+    public BarChart<String, Number> getBarChart() {
+        return barChart;
+    }
+
     void fillBarChart(BarChart<String, Number> barChart, StudentGroup group) {
-        barChart.setTitle("Total Grade (" + group.getName() + ")");
+        this.barChart = barChart;
+        barChart.setTitle("Total Grade");
         addChartData(barChart, group);
 
     }
@@ -272,71 +289,111 @@ public class Statistics {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName(group.getName());
 
-        XYChart.Data<String, Number> hdData = new XYChart.Data<>("HD", getPercentageOfHDs());
+        hdData = new XYChart.Data<>("HD", getPercentageOfHDs());
         series.getData().add(hdData);
-        hdStudents.addListener(new ListChangeListener<Student>() {
-            @Override
-            public void onChanged(Change<? extends Student> change) {
-                while (change.next()) {
-                    if (change.wasRemoved() || change.wasAdded()) {
-                        hdData.setYValue(getPercentageOfHDs());
-                    }
-                }
-            }
-        });
+//        hdStudents.addListener(new ListChangeListener<Student>() {
+//            @Override
+//            public void onChanged(Change<? extends Student> change) {
+//                while (change.next()) {
+//                    if (change.wasRemoved() || change.wasAdded()) {
+//                        hdData.setYValue(getPercentageOfHDs());
+//                    }
+//                }
+//            }
+//        });
 
-        XYChart.Data<String, Number> dData = new XYChart.Data<>("D", getPercentageOfDs());
+        dData = new XYChart.Data<>("D", getPercentageOfDs());
         series.getData().add(dData);
-        dStudents.addListener(new ListChangeListener<Student>() {
-            @Override
-            public void onChanged(Change<? extends Student> change) {
-                while (change.next()) {
-                    if (change.wasRemoved() || change.wasAdded()) {
-                        dData.setYValue(getPercentageOfDs());
-                    }
-                }
-            }
-        });
+//        dStudents.addListener(new ListChangeListener<Student>() {
+//            @Override
+//            public void onChanged(Change<? extends Student> change) {
+//                while (change.next()) {
+//                    if (change.wasRemoved() || change.wasAdded()) {
+//                        dData.setYValue(getPercentageOfDs());
+//                    }
+//                }
+//            }
+//        });
 
-        XYChart.Data<String, Number> crData = new XYChart.Data<>("CR", getPercentageOfCRs());
+        crData = new XYChart.Data<>("CR", getPercentageOfCRs());
         series.getData().add(crData);
-        crStudents.addListener(new ListChangeListener<Student>() {
-            @Override
-            public void onChanged(Change<? extends Student> change) {
-                while (change.next()) {
-                    if (change.wasRemoved() || change.wasAdded()) {
-                        crData.setYValue(getPercentageOfCRs());
-                    }
-                }
-            }
-        });
+//        crStudents.addListener(new ListChangeListener<Student>() {
+//            @Override
+//            public void onChanged(Change<? extends Student> change) {
+//                while (change.next()) {
+//                    if (change.wasRemoved() || change.wasAdded()) {
+////                        crData.setYValue(getPercentageOfCRs());
+//                    }
+//                }
+//            }
+//        });
 
-        XYChart.Data<String, Number> pData = new XYChart.Data<>("P", getPercentageOfPs());
+       pData = new XYChart.Data<>("P", getPercentageOfPs());
         series.getData().add(pData);
-        pStudents.addListener(new ListChangeListener<Student>() {
-            @Override
-            public void onChanged(Change<? extends Student> change) {
-                while (change.next()) {
-                    if (change.wasRemoved() || change.wasAdded()) {
-                        pData.setYValue(getPercentageOfPs());
-                    }
-                }
-            }
-        });
+//        pStudents.addListener(new ListChangeListener<Student>() {
+//            @Override
+//            public void onChanged(Change<? extends Student> change) {
+//                while (change.next()) {
+//                    if (change.wasRemoved() || change.wasAdded()) {
+////                        pData.setYValue(getPercentageOfPs());
+//                    }
+//                }
+//            }
+//        });
 
-        XYChart.Data<String, Number> fData = new XYChart.Data<>("F", getPercentageOfFs());
+        fData = new XYChart.Data<>("F", getPercentageOfFs());
         series.getData().add(fData);
-        fStudents.addListener(new ListChangeListener<Student>() {
-            @Override
-            public void onChanged(Change<? extends Student> change) {
-                while (change.next()) {
-                    if (change.wasRemoved() || change.wasAdded()) {
-                        fData.setYValue(getPercentageOfFs());
-                    }
-                }
-            }
-        });
+//        fStudents.addListener(new ListChangeListener<Student>() {
+//            @Override
+//            public void onChanged(Change<? extends Student> change) {
+//                while (change.next()) {
+//                    if (change.wasRemoved() || change.wasAdded()) {
+////                        fData.setYValue(getPercentageOfFs());
+//                    }
+//                }
+//            }
+//        });
+//
+//        setChartYValueBindings(hdStudents, hdData, dData, crData, pData, fData);
+//        setChartYValueBindings(dStudents, hdData, dData, crData, pData, fData);
+//        setChartYValueBindings(crStudents, hdData, dData, crData, pData, fData);
+//        setChartYValueBindings(pStudents, hdData, dData, crData, pData, fData);
+//        setChartYValueBindings(fStudents, hdData, dData, crData, pData, fData);
 
         barChart.getData().add(series);
+    }
+
+//    private void setChartYValueBindings(ObservableList<Student> students, XYChart.Data<String, Number> hdData, XYChart.Data<String, Number> dData, XYChart.Data<String, Number> crData, XYChart.Data<String, Number> pData, XYChart.Data<String, Number> fData) {
+//        students.addListener(new ListChangeListener<Student>() {
+//            @Override
+//            public void onChanged(Change<? extends Student> change) {
+//                while (change.next()) {
+//
+//                    if (change.wasRemoved() || change.wasAdded()) {
+////                        System.out.println("Student removed or added from list!");
+//
+////                        System.out.println("HD: " + getPercentageOfHDs());
+//                        hdData.setYValue(getPercentageOfHDs());
+////                        System.out.println("D " + getPercentageOfDs());
+//                        dData.setYValue(getPercentageOfDs());
+////                        System.out.println("CR " + getPercentageOfCRs());
+//                        crData.setYValue(getPercentageOfCRs());
+////                        System.out.println("P " + getPercentageOfPs());
+//                        pData.setYValue(getPercentageOfPs());
+////                        System.out.println("F " + getPercentageOfFs());
+//                        fData.setYValue(getPercentageOfFs());
+//                    }
+//                }
+//            }
+//        });
+//
+//    }
+
+    public void updateBarChartValues() {
+        hdData.setYValue(getPercentageOfHDs());
+        dData.setYValue(getPercentageOfDs());
+        crData.setYValue(getPercentageOfCRs());
+        pData.setYValue(getPercentageOfPs());
+        fData.setYValue(getPercentageOfFs());
     }
 }

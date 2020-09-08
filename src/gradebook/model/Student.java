@@ -162,6 +162,7 @@ public class Student {
         grades.add(stdAssessment, data);
 
         data.gradeProperty().addListener(obs -> {
+//            System.out.println("Student " + this.getSurname() + " grade changed (" + data.getStdAssessment() + ")");
             grades.updateTotalGrade();
 
             if (data.gradeProperty() != null && data.gradeProperty().getValue() != null) {
@@ -170,6 +171,8 @@ public class Student {
                 }
                 if (courseCohort != null) {
                     courseCohort.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
+//                    System.out.println("All students no of HDs: " + courseCohort.getTotalStatistics().numberOfHDs());
+//                    System.out.println("No. with grades: " + courseCohort.getTotalStatistics().getNumberOfStudentsWithGrades());
                 }
             }
         });

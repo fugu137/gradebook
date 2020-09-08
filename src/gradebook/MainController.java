@@ -16,6 +16,8 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -198,6 +200,9 @@ public class MainController implements Initializable {
     private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
 
     private CommandManager commandManager = new CommandManager();
+
+    private ChangeListener<AssessmentColumn<Student, ?>> columnsComboBoxListener;
+    private ChangeListener<StudentGroup> statisticsClassComboBoxListener;
 
     private Scene assessmentCreationWindow;
     private AssessmentCreationController assessmentCreationController;
@@ -512,9 +517,9 @@ public class MainController implements Initializable {
 //        setupGradeListBox();
         setupStatisticsLabels();
         setupStatisticsClassBox();
-        columnsComboBoxBinding();
+        setColumnsComboBoxListener();
 
-        statisticsClassBoxBinding();
+        setStatisticsClassBoxListener();
     }
 
     private void otherButtonBindings() {
@@ -1116,7 +1121,7 @@ public class MainController implements Initializable {
 //        }
 //    }
 
-    private void setupStatisticsLabels() {
+    public void setupStatisticsLabels() {
         StudentGroup selectedGroup = statisticsClassComboBox.getSelectionModel().getSelectedItem();
         AssessmentColumn<Student, ?> selectedColumn = columnComboBox.getSelectionModel().getSelectedItem();
 
@@ -1196,19 +1201,47 @@ public class MainController implements Initializable {
         });
     }
 
-    private void columnsComboBoxBinding() {
-        this.columnComboBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
-            setupStatisticsLabels();
-            updateBarChart();
-        });
+    public void setColumnsComboBoxListener() {
+        columnsComboBoxListener = new ChangeListener<AssessmentColumn<Student, ?>>() {
+            @Override
+            public void changed(ObservableValue<? extends AssessmentColumn<Student, ?>> observableValue, AssessmentColumn<Student, ?> oldValue, AssessmentColumn<Student, ?> newValue) {
+                StudentGroup group = statisticsClassComboBox.getSelectionModel().getSelectedItem();
+
+                if (oldValue != null && newValue != null && group != null) {
+                    commandManager.execute(new StatisticsFilterCommand(MainController.this, statisticsClassComboBox, columnComboBox, group, oldValue), true);
+                }
+            }
+        };
+
+        this.columnComboBox.getSelectionModel().selectedItemProperty().addListener(columnsComboBoxListener);
+//            setupStatisticsLabels();
+//            updateBarChart();
+
     }
 
 
-    private void statisticsClassBoxBinding() {
-        statisticsClassComboBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
-            setupStatisticsLabels();
-            updateBarChart();
-        });
+    public void setStatisticsClassBoxListener() {
+        statisticsClassComboBoxListener = new ChangeListener<StudentGroup>() {
+            @Override
+            public void changed(ObservableValue<? extends StudentGroup> observableValue, StudentGroup oldValue, StudentGroup newValue) {
+                AssessmentColumn<Student, ?> column = columnComboBox.getSelectionModel().getSelectedItem();
+
+                if (oldValue != null && column != null) {
+                    commandManager.execute(new StatisticsFilterCommand(MainController.this, statisticsClassComboBox, columnComboBox, oldValue, column), true);
+                }
+            }
+
+        };
+
+        statisticsClassComboBox.getSelectionModel().
+
+                selectedItemProperty().
+
+                addListener(statisticsClassComboBoxListener);
+
+//            setupStatisticsLabels();
+//            updateBarChart();
+//        });
     }
 
     private void setupStatisticsClassBox() {
@@ -1216,7 +1249,19 @@ public class MainController implements Initializable {
         statisticsClassComboBox.getSelectionModel().selectFirst();
     }
 
-    private void updateBarChart() {
+    public void removeColumnsComboBoxListener() {
+        if (columnsComboBoxListener != null) {
+            columnComboBox.getSelectionModel().selectedItemProperty().removeListener(columnsComboBoxListener);
+        }
+    }
+
+    public void removeStatisticsClassBoxListener() {
+        if (statisticsClassComboBoxListener != null) {
+            statisticsClassComboBox.getSelectionModel().selectedItemProperty().removeListener(statisticsClassComboBoxListener);
+        }
+    }
+
+    public void updateBarChart() {
         if (statisticsPane != null) {
             statisticsPane.replaceAndFillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
         }
@@ -1367,8 +1412,6 @@ public class MainController implements Initializable {
     //Toolbar Control Methods//
 
     public void loadGradebook() {
-        //TODO: reset filter comboboxes
-
         Alert popup = new Alert(Alert.AlertType.CONFIRMATION, "Load Gradebook?", ButtonType.YES, ButtonType.NO);
         popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
 
@@ -1391,9 +1434,14 @@ public class MainController implements Initializable {
             if (file != null) {
                 fileManager.load(file, this);
                 saveMenuItem.setDisable(false);
+
+                //TODO: reset filter comboboxes
+                //TODO: reset statsPane (especially charts which aren't refreshed)
+
             }
         }
     }
+
 
     public void saveGradebook() {
 
@@ -1609,7 +1657,10 @@ public class MainController implements Initializable {
 
             @Override
             public Integer fromString(String string) {
-                if (!string.matches("\\d+")) {
+                if (string.equals("")) {
+                    return null;
+
+                } else if (!string.matches("\\d+")) {
                     Toolkit.getDefaultToolkit().beep();
                     throw new NumberFormatException();
 
@@ -1785,7 +1836,8 @@ public class MainController implements Initializable {
         }
     }
 
-    private AssessmentColumn<Student, ?> findAndRemoveAssessmentColumn(ObservableList<AssessmentColumn<Student, ?>> columnList, Assessment assessment) {
+    private AssessmentColumn<Student, ?> findAndRemoveAssessmentColumn(ObservableList<AssessmentColumn<Student, ?>>
+                                                                               columnList, Assessment assessment) {
         AssessmentColumn<Student, ?> column = null;
 
         for (AssessmentColumn<Student, ?> c : columnList) {
