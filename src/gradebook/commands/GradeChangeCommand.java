@@ -4,19 +4,19 @@ import gradebook.model.AssessmentSet;
 import gradebook.model.StdAssessment;
 import gradebook.model.Student;
 
-public class ChangeGradeCommand implements UserCommand {
+public class GradeChangeCommand implements UserCommand {
 
-    AssessmentSet assessmentSet;
-    StdAssessment stdAssessment;
-    Student student;
-    Integer oldGrade;
-    Integer newGrade;
+    private AssessmentSet assessmentSet;
+    private StdAssessment stdAssessment;
+    private Student student;
+    private Integer oldGrade;
+    private Integer newGrade;
 
-    public ChangeGradeCommand(StdAssessment stdAssessment, Student student, Integer oldGrade, Integer newGrade) {
+    public GradeChangeCommand(StdAssessment stdAssessment, Student student, Integer oldGrade, Integer newGrade) {
         this(null, stdAssessment, student, oldGrade, newGrade);
     }
 
-    public ChangeGradeCommand(AssessmentSet assessmentSet, StdAssessment stdAssessment, Student student, Integer oldGrade, Integer newGrade) {
+    public GradeChangeCommand(AssessmentSet assessmentSet, StdAssessment stdAssessment, Student student, Integer oldGrade, Integer newGrade) {
         this.assessmentSet = assessmentSet;
         this.stdAssessment = stdAssessment;
         this.student = student;

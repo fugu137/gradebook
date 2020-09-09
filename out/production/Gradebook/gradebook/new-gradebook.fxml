@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
 <VBox prefHeight="900.0" prefWidth="1440.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gradebook.MainController">
    <children>
       <TabPane fx:id="tabPane" maxHeight="117.0" minHeight="117.0" prefHeight="117.0" tabClosingPolicy="UNAVAILABLE">
@@ -659,7 +678,7 @@
               <columns>
                 <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
                 <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />
-                  <TableColumn fx:id="preferredNameColumn" minWidth="-1.0" prefWidth="125.0" text="Preferred Name" />
+                  <TableColumn fx:id="preferredNameColumn" minWidth="-1.0" onEditCommit="#editPreferredNameCell" prefWidth="125.0" text="Preferred Name" />
                   <TableColumn fx:id="classColumn" minWidth="-1.0" onEditCommit="#editClassCell" prefWidth="60.0" text="Class" />
                   <TableColumn fx:id="genderColumn" minWidth="-1.0" onEditCommit="#editGenderCell" prefWidth="58.0" text="Gender" />
                   <TableColumn fx:id="sidColumn" minWidth="-1.0" prefWidth="90.0" text="SID" />

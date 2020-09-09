@@ -1334,29 +1334,56 @@ public class MainController implements Initializable {
     @FXML
     public void editSurnameCell(TableColumn.CellEditEvent<Student, String> editedCell) {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
-        String surname = editedCell.getNewValue();
+        String newSurname = editedCell.getNewValue();
+        String oldSurname = editedCell.getOldValue();
 
         if (selectedStudent == blankStudent) {
 //            courseManager.newStudent(blankStudent);
 //            newBlankStudent();
+            selectedStudent.setSurname(newSurname);
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
+
+        } else {
+            commandManager.execute(new SurnameChangeCommand(selectedStudent, oldSurname, newSurname), true);
         }
-        selectedStudent.setSurname(surname);
+
 
     }
 
     @FXML
     public void editGivenNamesCell(TableColumn.CellEditEvent<Student, String> editedCell) {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
-        String givenNames = editedCell.getNewValue();
+        String newGivenNames = editedCell.getNewValue();
+        String oldGivenNames = editedCell.getOldValue();
 
         if (selectedStudent == blankStudent) {
 //            courseManager.newStudent(blankStudent);
 //            newBlankStudent();
+            selectedStudent.setGivenNames(newGivenNames);
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
-        }
-        selectedStudent.setGivenNames(givenNames);
 
+        } else {
+            commandManager.execute(new GivenNamesChangeCommand(selectedStudent, oldGivenNames, newGivenNames), true);
+        }
+
+
+    }
+
+    @FXML
+    public void editPreferredNameCell(TableColumn.CellEditEvent<Student, String> editedCell) {
+        Student selectedStudent = table.getSelectionModel().getSelectedItem();
+        String newPreferredName = editedCell.getNewValue();
+        String oldPreferredName = editedCell.getOldValue();
+
+        if (selectedStudent == blankStudent) {
+//            courseManager.newStudent(blankStudent);
+//            newBlankStudent();
+            selectedStudent.setPreferredName(newPreferredName);
+            commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
+
+        } else {
+            commandManager.execute(new PreferredNameChangeCommand(selectedStudent, oldPreferredName, newPreferredName), true);
+        }
     }
 
     @FXML
@@ -1683,7 +1710,7 @@ public class MainController implements Initializable {
             Integer newValue = e.getNewValue();
             Student selectedStudent = table.getSelectionModel().getSelectedItem();
 
-            commandManager.execute(new ChangeGradeCommand(std, selectedStudent, oldValue, newValue), true);
+            commandManager.execute(new GradeChangeCommand(std, selectedStudent, oldValue, newValue), true);
         });
 
         table.getColumns().add(column);
@@ -1710,7 +1737,7 @@ public class MainController implements Initializable {
                 Integer newValue = e.getNewValue();
                 Student selectedStudent = table.getSelectionModel().getSelectedItem();
 
-                commandManager.execute(new ChangeGradeCommand(assessmentSet, std, selectedStudent, oldValue, newValue), true);
+                commandManager.execute(new GradeChangeCommand(assessmentSet, std, selectedStudent, oldValue, newValue), true);
 
             });
 
