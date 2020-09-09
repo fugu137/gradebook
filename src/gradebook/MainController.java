@@ -4,7 +4,6 @@ import gradebook.commands.*;
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
 import gradebook.enums.Grade;
-import gradebook.model.Class;
 import gradebook.model.*;
 import gradebook.tools.CommandManager;
 import gradebook.tools.FileChooserWindow;
@@ -72,7 +71,7 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Student, String> preferredNameColumn;
     @FXML
-    private TableColumn<Student, Class> classColumn;
+    private TableColumn<Student, ClassGroup> classColumn;
     @FXML
     private TableColumn<Student, Gender> genderColumn;
     @FXML
@@ -398,30 +397,80 @@ public class MainController implements Initializable {
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         givenNamesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         preferredNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        sidColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         degreeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        emailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        emailColumn.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<String>() {
+            @Override
+            public String toString(String string) {
+                return string == null ? "" : string.trim();
+            }
+
+            @Override
+            public String fromString(String string) {
+                if (string.isBlank()) {
+                    return null;
+
+                } else if (string.trim().matches("(\\S+)@(\\S+)(.com)(.\\S\\S)?")){
+                    return string.trim();
+
+                } else {
+                    Toolkit.getDefaultToolkit().beep();
+                    setStatusText("Not a valid email address", 4);
+                    throw new IllegalArgumentException();
+                }
+            }
+        }));
+
+        sidColumn.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer integer) {
+                return integer == null ? "" : String.format("%09d", integer);
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                if (string.isBlank()) {
+                    return null;
+
+                } else if (!string.trim().matches("\\d+")) {
+                    Toolkit.getDefaultToolkit().beep();
+                    setStatusText("Student ID must be a number", 4);
+                    throw new NumberFormatException();
+
+                } else {
+                    int intValue = Integer.parseInt(string);
+
+                    if (intValue > 999999999 || intValue < 0) {
+                        Toolkit.getDefaultToolkit().beep();
+                        setStatusText("Student ID must be a (positive) 9-digit number", 4);
+                        throw new NumberFormatException();
+                    } else {
+                        return intValue;
+                    }
+                }
+            }
+        }));
 
         classColumn.setCellFactory(c -> {
-            ComboBoxTableCell<Student, Class> comboBoxCell = new ComboBoxTableCell<>(courseManager.getClasses());
+            ComboBoxTableCell<Student, ClassGroup> comboBoxCell = new ComboBoxTableCell<>(courseManager.getClasses());
             comboBoxCell.setComboBoxEditable(true);
 
             comboBoxCell.setConverter(new StringConverter<>() {
                 @Override
-                public String toString(Class classGroup) {
+                public String toString(ClassGroup classGroup) {
                     return classGroup == null ? "" : classGroup.getName();
                 }
 
                 @Override
-                public Class fromString(String className) {
-                    Class classGroup = courseManager.getClass(className);
+                public ClassGroup fromString(String className) {
+                    ClassGroup classGroup = courseManager.getClass(className);
 
                     if (classGroup != null) {
                         return classGroup;
                     } else {
 
                         if (!className.isBlank()) {
-                            Class newClass = new Class(className);
+                            ClassGroup newClass = new ClassGroup(className.trim());
                             courseManager.addClass(newClass);
                             return newClass;
                         } else {
@@ -456,8 +505,8 @@ public class MainController implements Initializable {
 //        genderColumn.setVisible(false);
     }
 
-    private void renameClass(ComboBoxTableCell<Student, Class> comboBoxCell) {
-        Class classGroup = comboBoxCell.getItem();
+    private void renameClass(ComboBoxTableCell<Student, ClassGroup> comboBoxCell) {
+        ClassGroup classGroup = comboBoxCell.getItem();
 
         TextInputDialog popup = new TextInputDialog(classGroup.getName());
         popup.setTitle("Rename Class");
@@ -475,8 +524,8 @@ public class MainController implements Initializable {
         }
     }
 
-    private void removeClass(ComboBoxTableCell<Student, Class> comboBoxCell) {
-        Class selectedClass = comboBoxCell.getItem();
+    private void removeClass(ComboBoxTableCell<Student, ClassGroup> comboBoxCell) {
+        ClassGroup selectedClass = comboBoxCell.getItem();
         removeClass(selectedClass);
     }
 
@@ -1344,7 +1393,7 @@ public class MainController implements Initializable {
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
 
         } else {
-            commandManager.execute(new SurnameChangeCommand(selectedStudent, oldSurname, newSurname), true);
+            commandManager.execute(new ChangeSurnameCommand(selectedStudent, oldSurname, newSurname), true);
         }
 
 
@@ -1363,10 +1412,8 @@ public class MainController implements Initializable {
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
 
         } else {
-            commandManager.execute(new GivenNamesChangeCommand(selectedStudent, oldGivenNames, newGivenNames), true);
+            commandManager.execute(new ChangeGivenNamesCommand(selectedStudent, oldGivenNames, newGivenNames), true);
         }
-
-
     }
 
     @FXML
@@ -1382,22 +1429,53 @@ public class MainController implements Initializable {
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
 
         } else {
-            commandManager.execute(new PreferredNameChangeCommand(selectedStudent, oldPreferredName, newPreferredName), true);
+            commandManager.execute(new ChangePreferredNameCommand(selectedStudent, oldPreferredName, newPreferredName), true);
         }
     }
 
     @FXML
-    public void editClassCell(TableColumn.CellEditEvent<Student, Class> editedCell) {
+    public void editClassCell(TableColumn.CellEditEvent<Student, ClassGroup> editedCell) {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
-        Class classGroup = editedCell.getNewValue();
-        selectedStudent.setClassGroup(classGroup);
+        ClassGroup newClassGroup = editedCell.getNewValue();
+        ClassGroup oldClassGroup = editedCell.getOldValue();
+//        selectedStudent.setClassGroup(classGroup);
+        commandManager.execute(new ChangeClassGroupCommand(selectedStudent, oldClassGroup, newClassGroup), true);
     }
 
     @FXML
     public void editGenderCell(TableColumn.CellEditEvent<Student, Gender> editedCell) {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
-        Gender gender = editedCell.getNewValue();
-        selectedStudent.setGender(gender);
+        Gender newGender = editedCell.getNewValue();
+        Gender oldGender = editedCell.getOldValue();
+//        selectedStudent.setGender(gender);
+        commandManager.execute(new ChangeGenderCommand(selectedStudent, oldGender, newGender), true);
+    }
+
+    @FXML
+    public void editSIDCell(TableColumn.CellEditEvent<Student, Integer> editedCell) {
+        Student selectedStudent = table.getSelectionModel().getSelectedItem();
+        Integer newSID = editedCell.getNewValue();
+        Integer oldSID = editedCell.getOldValue();
+
+        commandManager.execute(new ChangeSIDCommand(selectedStudent, oldSID, newSID), true);
+    }
+
+    @FXML
+    public void editDegreeCell(TableColumn.CellEditEvent<Student, String> editedCell) {
+        Student selectedStudent = table.getSelectionModel().getSelectedItem();
+        String newDegree = editedCell.getNewValue();
+        String oldDegree = editedCell.getOldValue();
+
+        commandManager.execute(new ChangeDegreeCommand(selectedStudent, oldDegree, newDegree), true);
+    }
+
+    @FXML
+    public void editEmailCell(TableColumn.CellEditEvent<Student, String> editedCell) {
+        Student selectedStudent = table.getSelectionModel().getSelectedItem();
+        String newEmail = editedCell.getNewValue();
+        String oldEmail = editedCell.getOldValue();
+
+        commandManager.execute(new ChangeEmailCommand(selectedStudent, oldEmail, newEmail), true);
     }
 
     public void reset() {
@@ -1537,7 +1615,7 @@ public class MainController implements Initializable {
         addAssessmentsButton.setDisable(true);
         modifyAssessmentsButton.setDisable(false);
 
-        setStatusText("Assessments successfully created...");
+        setStatusText("Assessments successfully created...", 4);
 
     }
 
@@ -1684,11 +1762,12 @@ public class MainController implements Initializable {
 
             @Override
             public Integer fromString(String string) {
-                if (string.equals("")) {
+                if (string.isBlank()) {
                     return null;
 
-                } else if (!string.matches("\\d+")) {
+                } else if (!string.trim().matches("\\d+")) {
                     Toolkit.getDefaultToolkit().beep();
+                    setStatusText("Grades must be integers", 4);
                     throw new NumberFormatException();
 
                 } else {
@@ -1696,6 +1775,7 @@ public class MainController implements Initializable {
 
                     if (intValue < 0 || intValue > 100) {
                         Toolkit.getDefaultToolkit().beep();
+                        setStatusText("Grades must be integers between 0 and 100", 4);
                         throw new NumberFormatException();
                     } else {
                         return intValue;
@@ -1710,7 +1790,7 @@ public class MainController implements Initializable {
             Integer newValue = e.getNewValue();
             Student selectedStudent = table.getSelectionModel().getSelectedItem();
 
-            commandManager.execute(new GradeChangeCommand(std, selectedStudent, oldValue, newValue), true);
+            commandManager.execute(new ChangeGradeCommand(std, selectedStudent, oldValue, newValue), true);
         });
 
         table.getColumns().add(column);
@@ -1737,7 +1817,7 @@ public class MainController implements Initializable {
                 Integer newValue = e.getNewValue();
                 Student selectedStudent = table.getSelectionModel().getSelectedItem();
 
-                commandManager.execute(new GradeChangeCommand(assessmentSet, std, selectedStudent, oldValue, newValue), true);
+                commandManager.execute(new ChangeGradeCommand(assessmentSet, std, selectedStudent, oldValue, newValue), true);
 
             });
 
@@ -1918,7 +1998,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void removeClass(Class classGroup) {
+    public void removeClass(ClassGroup classGroup) {
         ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         Alert popup = new Alert(Alert.AlertType.WARNING, "Remove " + classGroup + " from the gradebook?", ButtonType.OK, cancel);
@@ -1983,7 +2063,7 @@ public class MainController implements Initializable {
         statisticsPane.prefHeightProperty().bind(table.heightProperty());
     }
 
-    public void setStatusText(String text) {
+    public void setStatusText(String text, int duration) {
         statusLabel.setText(text);
 
         FadeTransition ft = new FadeTransition(Duration.seconds(1), statusLabel);
@@ -1993,7 +2073,7 @@ public class MainController implements Initializable {
             statusLabel.setOpacity(1);
         });
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), e -> ft.play()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(duration), e -> ft.play()));
         timeline.play();
     }
 
@@ -2239,12 +2319,12 @@ public class MainController implements Initializable {
 
     //Test Methods//
     public void addDummyData() {
-        Class w15A = new Class("W15A");
-        Class t17B = new Class("T17B");
+        ClassGroup w15A = new ClassGroup("W15A");
+        ClassGroup t17B = new ClassGroup("T17B");
 //        courseManager.addClass(w15A);
 //        courseManager.addClass(t17B);
 
-        Class r11C = new Class("R11C");
+        ClassGroup r11C = new ClassGroup("R11C");
 
         Student fred = new Student("Fredson", "Fred", "Freddie", w15A, Gender.M, 1035, "DH205", "fred@mail.com");
         Student mary = new Student("McKillop", "Mary", "Mar", t17B, Gender.F, 2022, "LH304", "mary@mail.com");

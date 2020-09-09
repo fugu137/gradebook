@@ -1,7 +1,7 @@
 package gradebook.tools;
 
 import gradebook.enums.Gender;
-import gradebook.model.Class;
+import gradebook.model.ClassGroup;
 import gradebook.model.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +19,7 @@ public abstract class StudentImporter {
     public static ObservableList<Student> importStudents(File file)  {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
 
-        Class classGroup = null;
+        ClassGroup classGroup = null;
 
         try {
             reader = new Scanner(file);
@@ -41,7 +41,7 @@ public abstract class StudentImporter {
                     String email = details.get(7);
 
                     if (classGroup == null) {
-                        classGroup = new Class(className);
+                        classGroup = new ClassGroup(className);
                     }
 
                     studentList.add(new Student(surname, givenNames, preferredName, classGroup, gender, sid, degree, email));

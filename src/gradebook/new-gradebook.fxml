@@ -662,9 +662,9 @@
                   <TableColumn fx:id="preferredNameColumn" minWidth="-1.0" onEditCommit="#editPreferredNameCell" prefWidth="125.0" text="Preferred Name" />
                   <TableColumn fx:id="classColumn" minWidth="-1.0" onEditCommit="#editClassCell" prefWidth="60.0" text="Class" />
                   <TableColumn fx:id="genderColumn" minWidth="-1.0" onEditCommit="#editGenderCell" prefWidth="58.0" text="Gender" />
-                  <TableColumn fx:id="sidColumn" minWidth="-1.0" prefWidth="90.0" text="SID" />
-                  <TableColumn fx:id="degreeColumn" minWidth="-1.0" prefWidth="65.0" text="Degree" />
-                  <TableColumn fx:id="emailColumn" minWidth="-1.0" prefWidth="185.0" text="Email Address" />
+                  <TableColumn fx:id="sidColumn" minWidth="-1.0" onEditCommit="#editSIDCell" prefWidth="90.0" text="SID" />
+                  <TableColumn fx:id="degreeColumn" minWidth="-1.0" onEditCommit="#editDegreeCell" prefWidth="65.0" text="Degree" />
+                  <TableColumn fx:id="emailColumn" minWidth="-1.0" onEditCommit="#editEmailCell" prefWidth="185.0" text="Email Address" />
               </columns>
                <contextMenu>
                   <ContextMenu>

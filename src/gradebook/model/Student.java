@@ -17,8 +17,8 @@ public class Student {
     private StringProperty givenNames;
     private StringProperty preferredName;
     private CourseCohort courseCohort;
-    private ObjectProperty<Class> classGroup;
-    private Gender gender;
+    private ObjectProperty<ClassGroup> classGroup;
+    private ObjectProperty<Gender> gender;
     private ObjectProperty<Integer> sid;
     private StringProperty degree;
     private StringProperty email;
@@ -30,12 +30,12 @@ public class Student {
         this(null, null, null, null, null, null, null, null);
     }
 
-    public Student(String surname, String givenNames, String preferredName, Class classGroup, Gender gender, Integer sid, String degree, String email) {
+    public Student(String surname, String givenNames, String preferredName, ClassGroup classGroup, Gender gender, Integer sid, String degree, String email) {
         this.surname = new SimpleStringProperty(surname);
         this.givenNames = new SimpleStringProperty(givenNames);
         this.preferredName = new SimpleStringProperty(preferredName);
         this.classGroup = new SimpleObjectProperty<>(classGroup);
-        this.gender = gender;
+        this.gender = new SimpleObjectProperty<>(gender);
         this.sid = new SimpleObjectProperty<>(sid);
         this.degree = new SimpleStringProperty(degree);
         this.email = new SimpleStringProperty(email);
@@ -45,7 +45,7 @@ public class Student {
     }
 
     private void addTotalGradeListener() {
-        Class studentClass = classGroup.getValue();
+        ClassGroup studentClass = classGroup.getValue();
 
         grades.totalGradeProperty().addListener(obs -> {
             if (studentClass != null) {
@@ -97,24 +97,28 @@ public class Student {
         this.preferredName.set(preferredName);
     }
 
-    public Class getClassGroup() {
+    public ClassGroup getClassGroup() {
         return classGroup.getValue();
     }
 
-    public ObjectProperty<Class> classGroupProperty() {
+    public ObjectProperty<ClassGroup> classGroupProperty() {
         return classGroup;
     }
 
-    public void setClassGroup(Class classGroup) {
+    public void setClassGroup(ClassGroup classGroup) {
         this.classGroup.set(classGroup);
     }
 
     public Gender getGender() {
+        return gender.getValue();
+    }
+
+    public ObjectProperty<Gender> genderProperty() {
         return gender;
     }
 
     public void setGender(Gender gender) {
-        this.gender = gender;
+        this.gender.set(gender);
     }
 
     public Integer getSid() {
@@ -156,7 +160,7 @@ public class Student {
 
     //Main Methods//
     public void addStdAssessmentData(StdAssessment stdAssessment) {
-        Class studentClass = classGroup.getValue();
+        ClassGroup studentClass = classGroup.getValue();
 
         StdAssessmentData data = new StdAssessmentData(stdAssessment);
         grades.add(stdAssessment, data);
@@ -179,7 +183,7 @@ public class Student {
     }
 
     public void addAssessmentSetData(AssessmentSet assessmentSet) {
-        Class studentClass = classGroup.getValue();
+        ClassGroup studentClass = classGroup.getValue();
 
         AssessmentSetData data = new AssessmentSetData(assessmentSet);
         grades.add(assessmentSet, data);

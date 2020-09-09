@@ -2,13 +2,13 @@ package gradebook.commands;
 
 import gradebook.model.Student;
 
-public abstract class NameChangeCommand implements UserCommand {
+public abstract class ChangeNameCommand implements UserCommand {
 
     private Student student;
     private String oldName;
     private String newName;
 
-    public NameChangeCommand(Student student, String oldName, String newName) {
+    public ChangeNameCommand(Student student, String oldName, String newName) {
         this.student = student;
         this.oldName = oldName;
         this.newName = newName;

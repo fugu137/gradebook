@@ -11,7 +11,7 @@ import javafx.scene.chart.BarChart;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Class implements StudentGroup {
+public class ClassGroup implements StudentGroup {
 
     private StringProperty name;
     private ObservableList<Student> students;
@@ -19,7 +19,7 @@ public class Class implements StudentGroup {
     private ObservableMap<Assessment, AssessmentStatistics> assessmentStatistics;
     private Statistics totalGradeStatistics;
 
-    public Class(String name) {
+    public ClassGroup(String name) {
         this.name = new SimpleStringProperty(name);
         this.students = FXCollections.observableArrayList();
         this.assessments = FXCollections.observableArrayList();

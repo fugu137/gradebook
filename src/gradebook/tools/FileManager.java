@@ -3,7 +3,6 @@ package gradebook.tools;
 import gradebook.MainController;
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
-import gradebook.model.Class;
 import gradebook.model.*;
 import javafx.collections.ObservableList;
 
@@ -27,7 +26,7 @@ public class FileManager {
     public void save(MainController mainController) {
         CourseManager courseManager = mainController.getCourseManager();
         String courseName = courseManager.getCourseName();
-        ObservableList<Class> classes = courseManager.getClasses();
+        ObservableList<ClassGroup> classes = courseManager.getClasses();
 
         if (file == null) {
             System.out.println("No file found!");
@@ -36,7 +35,7 @@ public class FileManager {
         try {
             writer = new PrintWriter(new FileWriter(file, false));
 
-            for (Class c : classes) {
+            for (ClassGroup c : classes) {
                 ObservableList<Student> students = c.getStudents();
 
                 for (Student s : students) {
@@ -99,7 +98,7 @@ public class FileManager {
             writer.close();
             System.out.println("Save successful!");
 
-            mainController.setStatusText("Save successful!");
+            mainController.setStatusText("Save successful!", 4);
 
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -114,7 +113,7 @@ public class FileManager {
         this.file = fileFromFileChooser;
 
         CourseManager courseManager = mainController.getCourseManager();
-        Map<String, Class> classMap = new HashMap<>();
+        Map<String, ClassGroup> classMap = new HashMap<>();
         classMap.put("None", courseManager.getUnassigned());
 //
 //        mainController.setCourseManager(courseManager);
@@ -366,11 +365,11 @@ public class FileManager {
 //        }
 //    }
 
-    private Student makeStudent(Map<String, Class> classMap, String[] courseAndClass, String[] studentInfo) {
-        Class classGroup;
+    private Student makeStudent(Map<String, ClassGroup> classMap, String[] courseAndClass, String[] studentInfo) {
+        ClassGroup classGroup;
 
         if (!classMap.containsKey(courseAndClass[1])) {
-            classGroup = new Class(courseAndClass[1]);
+            classGroup = new ClassGroup(courseAndClass[1]);
             classMap.put(courseAndClass[1], classGroup);
 
         } else {

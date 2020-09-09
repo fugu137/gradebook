@@ -15,13 +15,13 @@ public class CourseManager {
 
     private CourseCohort courseCohort;
     private ObservableList<StudentGroup> studentGroups;
-    private ObservableList<Class> classes;
-    private Class unassigned;
+    private ObservableList<ClassGroup> classes;
+    private ClassGroup unassigned;
     private ObservableList<Assessment> assessments;
 
     public CourseManager(String courseName) {
         this.courseCohort = new CourseCohort(courseName);
-        this.unassigned = new Class("None");
+        this.unassigned = new ClassGroup("None");
         this.studentGroups = FXCollections.observableArrayList();
         this.classes = FXCollections.observableArrayList();
         studentGroups.add(courseCohort);
@@ -44,7 +44,7 @@ public class CourseManager {
 
     public void newStudent(Student student) {
 
-        Class studentClass = student.getClassGroup();
+        ClassGroup studentClass = student.getClassGroup();
         ObservableList<Assessment> assessments;
 
         student.setCourseCohort(courseCohort);
@@ -106,7 +106,7 @@ public class CourseManager {
         for (Student s : students) {
 
             if (s.getAssessmentDataList().size() > 0) {
-                Class classGroup = s.getClassGroup();
+                ClassGroup classGroup = s.getClassGroup();
                 classGroup.addStudent(s);
 
             } else {
@@ -117,7 +117,7 @@ public class CourseManager {
 
     public void removeStudent(Student student) {
         courseCohort.removeStudent(student);
-        for (Class c : classes) {
+        for (ClassGroup c : classes) {
             c.removeStudent(student);
         }
     }
@@ -126,7 +126,7 @@ public class CourseManager {
         return courseCohort.getStudents();
     }
 
-    public void addClass(Class classGroup) {
+    public void addClass(ClassGroup classGroup) {
 
         if (classes.contains(classGroup)) {
             System.out.println("Class already exists!");
@@ -141,10 +141,10 @@ public class CourseManager {
         }
     }
 
-    public Class getClass(String className) {
-        Class targetClass = null;
+    public ClassGroup getClass(String className) {
+        ClassGroup targetClass = null;
 
-        for (Class c : classes) {
+        for (ClassGroup c : classes) {
             if (c.getName().equals(className)) {
                 targetClass = c;
                 break;
@@ -165,7 +165,7 @@ public class CourseManager {
         return targetGroup;
     }
 
-    public ObservableList<Class> getClasses() {
+    public ObservableList<ClassGroup> getClasses() {
         return classes;
     }
 
@@ -174,11 +174,11 @@ public class CourseManager {
         return courseCohort;
     }
 
-    public Class getUnassigned() {
+    public ClassGroup getUnassigned() {
         return unassigned;
     }
 
-    public void addAllAssessments(Class classGroup) {
+    public void addAllAssessments(ClassGroup classGroup) {
         assessments.forEach(classGroup::addAssessment);
     }
 
@@ -193,7 +193,7 @@ public class CourseManager {
     public void unassignAssessment(Assessment assessment) {
         assessments.remove(assessment);
 
-        for (Class c : classes) {
+        for (ClassGroup c : classes) {
             c.removeAssessment(assessment);
         }
     }
@@ -580,7 +580,7 @@ public class CourseManager {
         });
     }
 
-    public void removeClass(Class classGroup) {
+    public void removeClass(ClassGroup classGroup) {
         courseCohort.getStudents().removeAll(classGroup.getStudents());
         studentGroups.remove(classGroup);
         classes.remove(classGroup);

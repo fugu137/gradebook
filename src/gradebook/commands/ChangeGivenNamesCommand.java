@@ -2,9 +2,9 @@ package gradebook.commands;
 
 import gradebook.model.Student;
 
-public class GivenNamesChangeCommand extends NameChangeCommand {
+public class ChangeGivenNamesCommand extends ChangeNameCommand {
 
-    public GivenNamesChangeCommand(Student student, String oldName, String newName) {
+    public ChangeGivenNamesCommand(Student student, String oldName, String newName) {
         super(student, oldName, newName);
     }
 
