@@ -517,8 +517,8 @@ public class MainController implements Initializable {
 //        setupGradeListBox();
         setupStatisticsLabels();
         setupStatisticsClassBox();
-        setColumnsComboBoxListener();
 
+        setColumnsComboBoxListener();
         setStatisticsClassBoxListener();
     }
 
@@ -1437,7 +1437,7 @@ public class MainController implements Initializable {
 
                 //TODO: reset filter comboboxes
                 //TODO: reset statsPane (especially charts which aren't refreshed)
-
+                setupStatisticsLabels();
             }
         }
     }
@@ -1679,10 +1679,15 @@ public class MainController implements Initializable {
         column.setPrefWidth(62);
 
 //        column.setOnEditCommit(e -> {
-//            if (e.getNewValue() < 0 || e.getNewValue() > 100) {
-//                Toolkit.getDefaultToolkit().beep();
-//                table.refresh();
-//            }
+//            Integer oldValue = e.getOldValue();
+//            Integer newValue = e.getNewValue();
+//            Student selectedStudent = table.getSelectionModel().getSelectedItem();
+//
+////            commandManager.execute(new ChangeGradeCommand(std, selectedStudent, oldValue, newValue));
+//
+////            if (averageLabel.getText().equals("N/A")) {
+////                setupStatisticsLabels();
+////            }
 //        });
 
         table.getColumns().add(column);
@@ -1703,6 +1708,15 @@ public class MainController implements Initializable {
             column.setPrefWidth(62);
 
             addAssessmentColumnContextMenu(column);
+
+//            column.setOnEditCommit(e -> {
+//                Integer oldValue = e.getOldValue();
+//                Integer newValue = e.getNewValue();
+//                Student selectedStudent = table.getSelectionModel().getSelectedItem();
+//
+////                commandManager.execute(new ChangeGradeCommand(assessmentSet, std, selectedStudent, oldValue, newValue));
+//
+//            });
 
             table.getColumns().add(column);
             addToColumnsList(column);
@@ -2291,28 +2305,31 @@ public class MainController implements Initializable {
     @FXML
     public void printAssessmentStatistics() {
 
-        for (StudentGroup c : classListBox.getItems()) {
-            System.out.println(c.getName());
-            c.getAssessments().forEach(a -> {
-                System.out.println(a.getName() + ":");
-                System.out.println("number of HDs = " + c.getStatistics(a).numberOfHDs());
-                System.out.println("number of Ds = " + c.getStatistics(a).numberOfDs());
-                System.out.println("number of CRs = " + c.getStatistics(a).numberOfCRs());
-                System.out.println("number of Ps = " + c.getStatistics(a).numberOfPs());
-                System.out.println("number of Fs = " + c.getStatistics(a).numberOfFs());
-                System.out.println("Number of compeleted assessments = " + c.getNumberAttempted(a));
-                System.out.println("Number of students = " + c.getNumberOfStudents());
-                System.out.println();
-            });
+        System.out.println("Ave = " + courseManager.getCourseCohort().totalGradeAverageProperty().getValue());
+        System.out.println("N = " + courseManager.getCourseCohort().numberAttemptedProperty().getValue());
 
-            System.out.println("Total Grade:");
-            System.out.println("number of HDs = " + c.getTotalStatistics().numberOfHDs());
-            System.out.println("number of Ds = " + c.getTotalStatistics().numberOfDs());
-            System.out.println("number of CRs = " + c.getTotalStatistics().numberOfCRs());
-            System.out.println("number of Ps = " + c.getTotalStatistics().numberOfPs());
-            System.out.println("number of Fs = " + c.getTotalStatistics().numberOfFs());
-            System.out.println();
-        }
+//        for (StudentGroup c : classListBox.getItems()) {
+//            System.out.println(c.getName());
+//            c.getAssessments().forEach(a -> {
+//                System.out.println(a.getName() + ":");
+//                System.out.println("number of HDs = " + c.getStatistics(a).numberOfHDs());
+//                System.out.println("number of Ds = " + c.getStatistics(a).numberOfDs());
+//                System.out.println("number of CRs = " + c.getStatistics(a).numberOfCRs());
+//                System.out.println("number of Ps = " + c.getStatistics(a).numberOfPs());
+//                System.out.println("number of Fs = " + c.getStatistics(a).numberOfFs());
+//                System.out.println("Number of compeleted assessments = " + c.getNumberAttempted(a));
+//                System.out.println("Number of students = " + c.getNumberOfStudents());
+//                System.out.println();
+//            });
+//
+//            System.out.println("Total Grade:");
+//            System.out.println("number of HDs = " + c.getTotalStatistics().numberOfHDs());
+//            System.out.println("number of Ds = " + c.getTotalStatistics().numberOfDs());
+//            System.out.println("number of CRs = " + c.getTotalStatistics().numberOfCRs());
+//            System.out.println("number of Ps = " + c.getTotalStatistics().numberOfPs());
+//            System.out.println("number of Fs = " + c.getTotalStatistics().numberOfFs());
+//            System.out.println();
+//        }
     }
 }
 

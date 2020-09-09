@@ -116,37 +116,54 @@ public class Statistics {
             this.lowestGrade.set(grades.get(0));
             this.highestGrade.set(grades.get(grades.size() - 1));
 
-            setMedian(grades);
-            setAverage(grades);
+        } else {
+            this.numberOfStudentsWithGrades.set(null);
+            this.lowestGrade.set(null);
+            this.highestGrade.set(null);
         }
+
+        setMedian(grades);
+        setAverage(grades);
 
     }
 
     void setMedian(List<Double> grades) {
-        double median;
 
-        if (grades.size() % 2 == 0) {
-            int middleIndex = (grades.size() / 2) - 1;
-            median = (grades.get(middleIndex) + grades.get(middleIndex + 1)) / 2;
-            median = NumberRounder.round(median, 1);
+        if (grades.size() == 0) {
+            this.median.set(null);
 
         } else {
-            int middleIndex = grades.size() / 2;
-            median = grades.get(middleIndex);
-        }
+            double median;
 
-        this.median.set(median);
+            if (grades.size() % 2 == 0) {
+                int middleIndex = (grades.size() / 2) - 1;
+                median = (grades.get(middleIndex) + grades.get(middleIndex + 1)) / 2;
+                median = NumberRounder.round(median, 1);
+
+            } else {
+                int middleIndex = grades.size() / 2;
+                median = grades.get(middleIndex);
+            }
+
+            this.median.set(median);
+        }
     }
 
     void setAverage(List<Double> grades) {
-        double sum = 0;
-        int number = 0;
 
-        for (Double d : grades) {
-            sum = sum + d;
-            number++;
+        if (grades.size() == 0) {
+            this.average.set(null);
+
+        } else {
+            double sum = 0;
+            int number = 0;
+
+            for (Double d : grades) {
+                sum = sum + d;
+                number++;
+            }
+            this.average.set(NumberRounder.round(sum / number, 1));
         }
-        this.average.set(NumberRounder.round(sum / number, 1));
     }
 
     public int numberOfHDs() {
@@ -328,7 +345,7 @@ public class Statistics {
 //            }
 //        });
 
-       pData = new XYChart.Data<>("P", getPercentageOfPs());
+        pData = new XYChart.Data<>("P", getPercentageOfPs());
         series.getData().add(pData);
 //        pStudents.addListener(new ListChangeListener<Student>() {
 //            @Override
