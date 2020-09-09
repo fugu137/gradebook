@@ -1,14 +1,18 @@
 package gradebook;
 
 import gradebook.commands.primitive_commands.RedoCommand;
+import gradebook.commands.primitive_commands.SaveGradebookAsCommand;
+import gradebook.commands.primitive_commands.SaveGradebookCommand;
 import gradebook.commands.primitive_commands.UndoCommand;
 import gradebook.commands.refresh_commands.LoadGradebookCommand;
+import gradebook.commands.refresh_commands.NewGradebookCommand;
 import gradebook.commands.standard_commands.*;
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
 import gradebook.enums.Grade;
 import gradebook.model.*;
 import gradebook.tools.CommandManager;
+import gradebook.tools.CourseManager;
 import gradebook.tools.FileChooserWindow;
 import gradebook.tools.FileManager;
 import javafx.animation.FadeTransition;
@@ -17,7 +21,9 @@ import javafx.animation.Timeline;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -197,7 +203,7 @@ public class MainController implements Initializable {
     private ObservableList<AssessmentColumn<Student, ?>> otherColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private AssessmentColumn<Student, Double> totalColumn;
 
-    private CourseManager courseManager = new CourseManager("PHIL1011");    //TODO: request course name
+    private CourseManager courseManager = new CourseManager("Your Course");
     private Student blankStudent;
     private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
 
@@ -210,7 +216,7 @@ public class MainController implements Initializable {
     private AssessmentCreationController assessmentCreationController;
     private Stage stage;
 
-    private FileManager fileManager;
+    private ObjectProperty<FileManager> fileManager = new SimpleObjectProperty<>(null);
 
 
 //    public void setCourseManager(CourseManager newCourseManager) {
@@ -281,11 +287,9 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadTabPaneSettings();
+//        displayWelcomeWindow();
 
-        table.getItems().addAll(courseManager.getAllStudents());
-//        addDummyData();
-        newBlankStudent();
+        loadTabPaneSettings();
 
         loadTableSettings();
         setupColumns();
@@ -295,9 +299,30 @@ public class MainController implements Initializable {
         setupToolbarBindings();
 
         loadFooterSettings();
+
+        table.getItems().addAll(courseManager.getAllStudents());
+//        addDummyData();
+        newBlankStudent();
     }
 
     //Initialize Methods//
+    public void displayWelcomeWindow() {
+        TextInputDialog popup = new TextInputDialog();
+
+        popup.setTitle("Gradebook");
+        popup.setHeaderText("Welcome to Gradebook");
+        popup.setContentText("Please enter the name of your course:");
+        popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+        popup.getDialogPane().setStyle("-fx-graphic: null");
+
+        if (popup.showAndWait().isPresent()) {
+            String courseName = popup.getResult();
+            courseManager.setCourseName(courseName);
+//            StringProperty courseNameProperty = new SimpleStringProperty(courseName);
+//            mainStage.titleProperty().bind(Bindings.concat("Gradebook - ", courseNameProperty));
+        }
+    }
+
     public void newBlankStudent() {
         blankStudent = new Student();
         table.getItems().add(blankStudent);
@@ -545,8 +570,8 @@ public class MainController implements Initializable {
 
     private void loadToolbarSettings() {
         studentViewToggleButton.setSelected(true);
-
-        saveMenuItem.setDisable(true);
+//
+//        saveMenuItem.setDisable(true);
 
         essaysCheckBox.setDisable(true);
         examsCheckBox.setDisable(true);
@@ -559,6 +584,9 @@ public class MainController implements Initializable {
     }
 
     private void setupToolbarBindings() {
+
+        saveMenuItem.disableProperty().bind(fileManager.isNull().or(commandManager.undoStackEmptyProperty()));
+
         toggleButtonBindings();
         checkBoxBindings();
         homeBarBindings();
@@ -1482,10 +1510,12 @@ public class MainController implements Initializable {
     }
 
     public void reset() {
+        closeStatisticsPane();
         clearTable();
         removeAssessmentColumns();
         courseManager.clear();
         assessmentCreationController = null;
+
     }
 
     private void clearTable() {
@@ -1504,6 +1534,7 @@ public class MainController implements Initializable {
 //        participationColumns.clear();
 //        presentationColumns.clear();
 //        otherColumns.clear();
+        columnComboBox.getItems().clear();
     }
 
     public void removeTotalColumn() {
@@ -1519,7 +1550,23 @@ public class MainController implements Initializable {
 
     //Toolbar Control Methods//
 
-    public void loadGradebook() {
+    //File Menu//
+    @FXML
+    public void newGradebookItemPressed() {
+        Alert popup = new Alert(Alert.AlertType.CONFIRMATION, "Create New Gradebook?", ButtonType.YES, ButtonType.NO);
+        popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
+
+        popup.setTitle("New Gradebook");
+        popup.setHeaderText("Are you sure you want to create a new gradebook?");
+        popup.setContentText("Any unsaved student data in the current gradebook will be lost.");
+
+        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.YES) {
+            commandManager.execute(new NewGradebookCommand(this));
+        }
+    }
+
+    @FXML
+    public void loadGradebookItemPressed() {
         Alert popup = new Alert(Alert.AlertType.CONFIRMATION, "Load Gradebook?", ButtonType.YES, ButtonType.NO);
         popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
 
@@ -1537,7 +1584,7 @@ public class MainController implements Initializable {
 
             File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
 
-            commandManager.execute(new LoadGradebookCommand(this, statisticsPane, fileManager, file));
+            commandManager.execute(new LoadGradebookCommand(this, statisticsPane, fileManager, file, stage));
 //            fileManager = new FileManager();
 //
 //            if (file != null) {
@@ -1551,30 +1598,34 @@ public class MainController implements Initializable {
         }
     }
 
-    public void disableSaveMenuItem(boolean disable) {
-        saveAsMenuItem.setDisable(disable);
-    }
 
-    public void saveGradebook() {
+    @FXML
+    public void saveGradebookItemPressed() {
 
-        if (fileManager == null) {
+        if (fileManager.getValue() == null || fileManager == null) {
             System.out.println("No file to save!");
 
         } else {
-            fileManager.save(this);
+            commandManager.execute(new SaveGradebookCommand(this, fileManager.getValue()) {
+            });
+//            fileManager.getValue().save(this);
         }
-        //TODO: only allow save after a change has been made
     }
 
-    public void saveGradebookAs() {
+    @FXML
+    public void saveGradebookAsItemPressed() {
         Stage stage = (Stage) table.getParent().getScene().getWindow();
-
         File file = FileChooserWindow.displaySaveWindow(stage, "Save As...");
 
-        fileManager = new FileManager();
+        commandManager.execute(new SaveGradebookAsCommand(this, fileManager, file, stage));
+//        fileManager.set(new FileManager());
+//        fileManager.getValue().saveAs(file, this);
+//
+//        stage.setTitle("Gradebook - " + file.getName());
+    }
 
-        fileManager.saveAs(file, this);
-        saveMenuItem.setDisable(false);
+    public void clearFileManager() {
+        fileManager.set(null);
     }
 
     @FXML
@@ -2441,6 +2492,14 @@ public class MainController implements Initializable {
 //            System.out.println("number of Fs = " + c.getTotalStatistics().numberOfFs());
 //            System.out.println();
 //        }
+    }
+
+    @FXML
+    public void viewHistory() {
+        System.out.println("Undo Stack");
+        System.out.println(commandManager.getUndoStack());
+        System.out.println("Redo Stack");
+        System.out.println(commandManager.getRedoStack());
     }
 }
 

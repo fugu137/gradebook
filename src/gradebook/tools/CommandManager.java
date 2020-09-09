@@ -34,8 +34,18 @@ public class CommandManager {
     public void execute(RefreshCommand command) {
         command.execute();
 
+        emptyUndoStack();
+        emptyRedoStack();
+    }
+
+    private void emptyUndoStack() {
         undoStack.clear();
+        undoStackEmpty.set(true);
+    }
+
+    private void emptyRedoStack() {
         redoStack.clear();
+        redoStackEmpty.set(true);
     }
 
     public void execute(PrimitiveCommand command) {
@@ -96,5 +106,13 @@ public class CommandManager {
 
     public BooleanProperty redoStackEmptyProperty() {
         return redoStackEmpty;
+    }
+
+    public Deque<StandardCommand> getUndoStack() {
+        return undoStack;
+    }
+
+    public Deque<StandardCommand> getRedoStack() {
+        return redoStack;
     }
 }

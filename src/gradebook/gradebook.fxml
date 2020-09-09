@@ -16,9 +16,9 @@
                <graphic>
                   <MenuButton contentDisplay="TEXT_ONLY" mnemonicParsing="false" styleClass="left-tab-button" text="File">
                     <items>
-                      <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" onAction="#loadGradebook" text="Load..." />
-                      <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveGradebook" text="Save" />
-                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveGradebookAs" text="Save As..." />
+                      <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" onAction="#loadGradebookItemPressed" text="Load..." />
+                      <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveGradebookItemPressed" text="Save" />
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveGradebookAsItemPressed" text="Save As..." />
                     </items>
                   </MenuButton>
                </graphic>

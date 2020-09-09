@@ -1,8 +1,8 @@
 package gradebook.commands.standard_commands;
 
 import gradebook.MainController;
-import gradebook.model.CourseManager;
 import gradebook.model.Student;
+import gradebook.tools.CourseManager;
 import gradebook.tools.FileChooserWindow;
 import gradebook.tools.StudentImporter;
 import javafx.collections.FXCollections;

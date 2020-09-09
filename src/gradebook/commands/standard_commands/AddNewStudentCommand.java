@@ -1,8 +1,8 @@
 package gradebook.commands.standard_commands;
 
 import gradebook.MainController;
-import gradebook.model.CourseManager;
 import gradebook.model.Student;
+import gradebook.tools.CourseManager;
 import javafx.collections.ObservableList;
 
 public class AddNewStudentCommand implements StandardCommand {

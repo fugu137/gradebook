@@ -1,9 +1,9 @@
 package gradebook;
 
 import gradebook.model.AssessmentColumn;
-import gradebook.model.CourseManager;
 import gradebook.model.Student;
 import gradebook.model.StudentGroup;
+import gradebook.tools.CourseManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;

@@ -1,8 +1,8 @@
 package gradebook.commands.standard_commands;
 
 import gradebook.MainController;
-import gradebook.model.CourseManager;
 import gradebook.model.Student;
+import gradebook.tools.CourseManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;

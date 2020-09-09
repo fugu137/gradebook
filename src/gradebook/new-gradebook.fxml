@@ -16,9 +16,10 @@
                <graphic>
                   <MenuButton contentDisplay="TEXT_ONLY" mnemonicParsing="false" styleClass="left-tab-button" text="File">
                     <items>
-                      <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" onAction="#loadGradebook" text="Load..." />
-                      <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveGradebook" text="Save" />
-                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveGradebookAs" text="Save As..." />
+                        <MenuItem mnemonicParsing="false" onAction="#newGradebookItemPressed" text="New..." />
+                      <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" onAction="#loadGradebookItemPressed" text="Load..." />
+                      <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveGradebookItemPressed" text="Save" />
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveGradebookAsItemPressed" text="Save As..." />
                     </items>
                   </MenuButton>
                </graphic>
@@ -672,6 +673,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#printSelectedStudents" text="Print Selected Student Info" />
                       <MenuItem mnemonicParsing="false" onAction="#printStudents" text="Print Student List" />
                         <MenuItem mnemonicParsing="false" onAction="#printAssessmentStatistics" text="Print Assessment Statistics" />
+                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
                     </items>
                   </ContextMenu>
                </contextMenu>
