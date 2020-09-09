@@ -1678,17 +1678,13 @@ public class MainController implements Initializable {
         }));
         column.setPrefWidth(62);
 
-//        column.setOnEditCommit(e -> {
-//            Integer oldValue = e.getOldValue();
-//            Integer newValue = e.getNewValue();
-//            Student selectedStudent = table.getSelectionModel().getSelectedItem();
-//
-////            commandManager.execute(new ChangeGradeCommand(std, selectedStudent, oldValue, newValue));
-//
-////            if (averageLabel.getText().equals("N/A")) {
-////                setupStatisticsLabels();
-////            }
-//        });
+        column.setOnEditCommit(e -> {
+            Integer oldValue = e.getOldValue();
+            Integer newValue = e.getNewValue();
+            Student selectedStudent = table.getSelectionModel().getSelectedItem();
+
+            commandManager.execute(new ChangeGradeCommand(std, selectedStudent, oldValue, newValue), true);
+        });
 
         table.getColumns().add(column);
         addToColumnsList(column);
@@ -1709,14 +1705,14 @@ public class MainController implements Initializable {
 
             addAssessmentColumnContextMenu(column);
 
-//            column.setOnEditCommit(e -> {
-//                Integer oldValue = e.getOldValue();
-//                Integer newValue = e.getNewValue();
-//                Student selectedStudent = table.getSelectionModel().getSelectedItem();
-//
-////                commandManager.execute(new ChangeGradeCommand(assessmentSet, std, selectedStudent, oldValue, newValue));
-//
-//            });
+            column.setOnEditCommit(e -> {
+                Integer oldValue = e.getOldValue();
+                Integer newValue = e.getNewValue();
+                Student selectedStudent = table.getSelectionModel().getSelectedItem();
+
+                commandManager.execute(new ChangeGradeCommand(assessmentSet, std, selectedStudent, oldValue, newValue), true);
+
+            });
 
             table.getColumns().add(column);
             addToColumnsList(column);
