@@ -1,6 +1,9 @@
 package gradebook;
 
-import gradebook.commands.*;
+import gradebook.commands.primitive_commands.RedoCommand;
+import gradebook.commands.primitive_commands.UndoCommand;
+import gradebook.commands.refresh_commands.LoadGradebookCommand;
+import gradebook.commands.standard_commands.*;
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
 import gradebook.enums.Grade;
@@ -410,7 +413,7 @@ public class MainController implements Initializable {
                 if (string.isBlank()) {
                     return null;
 
-                } else if (string.trim().matches("(\\S+)@(\\S+)(.com)(.\\S\\S)?")){
+                } else if (string.trim().matches("(\\S+)@(\\S+)(.com)(.\\S\\S)?")) {
                     return string.trim();
 
                 } else {
@@ -1526,27 +1529,31 @@ public class MainController implements Initializable {
 
         if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.YES) {
 //        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
-            if (statisticsPane != null) {
-                closeStatisticsPane();
-            }
+//            if (statisticsPane != null) {
+//                closeStatisticsPane();
+//            }
 
             Stage stage = (Stage) table.getParent().getScene().getWindow();
 
             File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
 
-            fileManager = new FileManager();
+            commandManager.execute(new LoadGradebookCommand(this, statisticsPane, fileManager, file));
+//            fileManager = new FileManager();
+//
+//            if (file != null) {
+//                fileManager.load(file, this);
+//                saveMenuItem.setDisable(false);
 
-            if (file != null) {
-                fileManager.load(file, this);
-                saveMenuItem.setDisable(false);
+            //TODO: reset filter comboboxes?
+            //TODO: reset statsPane (especially charts which aren't refreshed) //done?
+//                setupStatisticsLabels();
 
-                //TODO: reset filter comboboxes
-                //TODO: reset statsPane (especially charts which aren't refreshed)
-                setupStatisticsLabels();
-            }
         }
     }
 
+    public void disableSaveMenuItem(boolean disable) {
+        saveAsMenuItem.setDisable(disable);
+    }
 
     public void saveGradebook() {
 
@@ -2051,6 +2058,7 @@ public class MainController implements Initializable {
 
     public void closeStatisticsPane() {
         mainPane.getChildren().remove(statisticsPane);
+        statisticsPane = null;
     }
 
     private void setupCloseButton(Button closeButton) {
@@ -2165,12 +2173,12 @@ public class MainController implements Initializable {
 
     @FXML
     public void undoButtonPressed() {
-        commandManager.execute(new UndoCommand(commandManager), false);
+        commandManager.execute(new UndoCommand(commandManager));
     }
 
     @FXML
     public void redoButtonPressed() {
-        commandManager.execute(new RedoCommand(commandManager), false);
+        commandManager.execute(new RedoCommand(commandManager));
     }
 
     @FXML
