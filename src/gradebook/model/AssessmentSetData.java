@@ -155,4 +155,13 @@ public class AssessmentSetData implements AssessmentData {
         return assessmentSet;
     }
 
+    public StdAssessmentData getSubAssessmentData(StdAssessment subAssessment) {
+        for (StdAssessmentData d : stdAssessmentDataList) {
+            if (d.getStdAssessment() == subAssessment) {
+                return d;
+            }
+        }
+        return null;
+    }
+
 }

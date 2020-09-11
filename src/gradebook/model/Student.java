@@ -293,6 +293,11 @@ public class Student {
         return grades.get(assessment);
     }
 
+    public StdAssessmentData getSubAssessmentData(AssessmentSet assessmentSet, StdAssessment subAssessment) {
+        AssessmentSetData setData = (AssessmentSetData) getAssessmentData(assessmentSet);
+        return setData.getSubAssessmentData(subAssessment);
+    }
+
     public void setStdAssessmentGrade(StdAssessment stdAssessment, Integer grade) {
         StdAssessmentData stdAssessmentData = (StdAssessmentData) grades.get(stdAssessment);
         stdAssessmentData.setGrade(grade);

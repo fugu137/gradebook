@@ -1898,18 +1898,26 @@ public class MainController implements Initializable {
 
     private void addAssessmentColumnContextMenu(AssessmentColumn<Student, ?> column) {
         ContextMenu menu = new ContextMenu();
-        MenuItem info = new MenuItem("Assessment Info...");
+        MenuItem info = new MenuItem("Assessment Info");
         MenuItem rename = new MenuItem("Rename Assessment...");
+        MenuItem finalise = new MenuItem("Set Incomplete to Zero");
+
         menu.getItems().add(info);
         menu.getItems().add(rename);
+        menu.getItems().add(finalise);
 
         info.setOnAction(e -> displayAssessmentInfo(column));
 
         rename.setOnAction(e -> {
+            //TODO: create rename command
             String result = renameAssessment(column);
             if (result != null) {
                 column.getAssessment().setName(result);
             }
+        });
+
+        finalise.setOnAction(e -> {
+            commandManager.execute(new FinaliseColumnCommand(column, courseManager.getAllStudents()), true);
         });
 
         column.setContextMenu(menu);
