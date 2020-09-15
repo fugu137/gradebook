@@ -194,26 +194,28 @@ public class CourseManager {
     public void unassignAssessment(Assessment assessment) {
         assessments.remove(assessment);
 
-        for (ClassGroup c : classes) {
-            c.removeAssessment(assessment);
+//        for (ClassGroup c : classes) {
+//            c.removeAssessment(assessment);
+//        }
+        for (StudentGroup g : studentGroups) {
+            g.removeAssessment(assessment);
         }
     }
 
     public void assignNewSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment) {
-        for (StudentGroup g : studentGroups) {
-            g.addSubAssessment(assessmentSet, subAssessment);
-        }
+        courseCohort.addSubAssessment(assessmentSet, subAssessment);
 
-        assessmentSet.setQuantity(assessmentSet.getQuantity() + 1);
+//        assessmentSet.setQuantity(assessmentSet.getQuantity() + 1);
+        assessmentSet.addSubAssessment(subAssessment);
     }
 
     public void unassignSubAssessments(AssessmentSet assessmentSet, List<StdAssessment> toRemove) {
-        for (StudentGroup g : studentGroups) {
-            g.removeSubAssessments(assessmentSet, toRemove);
-        }
+        courseCohort.removeSubAssessments(assessmentSet, toRemove);
 
-        int numberToRemove = toRemove.size();
-        assessmentSet.setQuantity(assessmentSet.getQuantity() - numberToRemove);
+//        int numberToRemove = toRemove.size();
+//        assessmentSet.setQuantity(assessmentSet.getQuantity() - numberToRemove);
+        toRemove.forEach(assessmentSet::removeSubAssessment);
+
     }
 
     public ObservableList<Assessment> getAssessments() {

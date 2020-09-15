@@ -23,12 +23,12 @@ public class FinaliseAllAssessmentsCommand implements StandardCommand {
         for (Student s : students) {
             s.getAssessmentDataList().forEach(d -> {
                 if (d instanceof StdAssessmentData) {
-                    StandardCommand command = new FinaliseStdAssessmentDataCommand((StdAssessmentData) d);
+                    StandardCommand command = new FinaliseStdAssessmentDataSubCommand((StdAssessmentData) d);
                     command.execute();
                     commands.add(command);
                 }
                 if (d instanceof AssessmentSetData) {
-                    StandardCommand command = new FinaliseAssessmentSetDataCommand((AssessmentSetData) d);
+                    StandardCommand command = new FinaliseAssessmentSetDataSubCommand((AssessmentSetData) d);
                     command.execute();
                     commands.add(command);
                 }

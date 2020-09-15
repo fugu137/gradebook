@@ -17,6 +17,7 @@ public interface StudentGroup {
     Integer getNumberAttempted(Assessment assessment);
     int getNumberOfStudents();
     void addAssessment(Assessment assessment);
+    void removeAssessment(Assessment assessment);
     void addSubAssessment(AssessmentSet assessmentSet, StdAssessment subAssessment);
     void removeSubAssessments(AssessmentSet set, List<StdAssessment> toRemove);
     ObjectProperty<Double> totalGradeMedianProperty();

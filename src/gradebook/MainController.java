@@ -6,7 +6,12 @@ import gradebook.commands.primitive_commands.SaveGradebookCommand;
 import gradebook.commands.primitive_commands.UndoCommand;
 import gradebook.commands.refresh_commands.LoadGradebookCommand;
 import gradebook.commands.refresh_commands.NewGradebookCommand;
-import gradebook.commands.standard_commands.*;
+import gradebook.commands.standard_commands.AddNewStudentCommand;
+import gradebook.commands.standard_commands.FinaliseAllAssessmentsCommand;
+import gradebook.commands.standard_commands.FinaliseColumnCommand;
+import gradebook.commands.standard_commands.ImportStudentsCommand;
+import gradebook.commands.standard_commands.edit_commands.*;
+import gradebook.commands.standard_commands.view_commands.*;
 import gradebook.enums.AssessmentType;
 import gradebook.enums.Gender;
 import gradebook.enums.Grade;
@@ -237,6 +242,14 @@ public class MainController implements Initializable {
         return clipBoardStudents;
     }
 
+    public Button getAddAssessmentsButton() {
+        return addAssessmentsButton;
+    }
+
+    public Button getModifyAssessmentsButton() {
+        return modifyAssessmentsButton;
+    }
+
     public Student getBlankStudent() {
         return blankStudent;
     }
@@ -272,6 +285,7 @@ public class MainController implements Initializable {
 
             assessmentCreationController = loader.getController();
             assessmentCreationController.setMainController(this);
+            assessmentCreationController.setCommandManager(commandManager);
 
             assessmentCreationWindow = new Scene(root);
 
@@ -1635,6 +1649,11 @@ public class MainController implements Initializable {
 
         AssessmentCreationController assessmentSetupController = loader.getController();
         assessmentSetupController.setMainController(this);
+        assessmentSetupController.setCommandManager(commandManager);
+
+//        assessmentCreationController = loader.getController();    //TODO: try
+//        assessmentCreationController.setMainController(this);
+//        assessmentCreationController.setCommandManager(commandManager);
 
         assessmentCreationWindow = new Scene(root);
 
@@ -1652,30 +1671,30 @@ public class MainController implements Initializable {
         stage.showAndWait();
     }
 
-    public void setupAllAssessments(ObservableList<Assessment> assessments) {
-        Map<Boolean, List<Assessment>> split = assessments.stream().collect(Collectors.partitioningBy(a -> a instanceof StdAssessment));
-        List<StdAssessment> stdAssessments = split.get(true).stream().map(a -> (StdAssessment) a).collect(Collectors.toList());
-        List<AssessmentSet> assessmentSets = split.get(false).stream().map(a -> (AssessmentSet) a).collect(Collectors.toList());
-
-        for (StdAssessment std : stdAssessments) {
-            courseManager.assignAssessment(std);
-            blankStudent.addStdAssessmentData(std);
-            createStdAssessmentColumn(std);
-        }
-
-        for (AssessmentSet set : assessmentSets) {
-            courseManager.assignAssessment(set);
-            blankStudent.addAssessmentSetData(set);
-            createAssessmentSetColumns(set);
-        }
-
-        createTotalColumn();
-        addAssessmentsButton.setDisable(true);
-        modifyAssessmentsButton.setDisable(false);
-
-        setStatusText("Assessments successfully created...", 4);
-
-    }
+//    public void setupAllAssessments(ObservableList<Assessment> assessments) {
+//        Map<Boolean, List<Assessment>> split = assessments.stream().collect(Collectors.partitioningBy(a -> a instanceof StdAssessment));
+//        List<StdAssessment> stdAssessments = split.get(true).stream().map(a -> (StdAssessment) a).collect(Collectors.toList());
+//        List<AssessmentSet> assessmentSets = split.get(false).stream().map(a -> (AssessmentSet) a).collect(Collectors.toList());
+//
+//        for (StdAssessment std : stdAssessments) {
+//            courseManager.assignAssessment(std);
+//            blankStudent.addStdAssessmentData(std);
+//            createStdAssessmentColumn(std);
+//        }
+//
+//        for (AssessmentSet set : assessmentSets) {
+//            courseManager.assignAssessment(set);
+//            blankStudent.addAssessmentSetData(set);
+//            createAssessmentSetColumns(set);
+//        }
+//
+//        createTotalColumn();
+//        addAssessmentsButton.setDisable(true);
+//        modifyAssessmentsButton.setDisable(false);
+//
+//        setStatusText("Assessments successfully created...", 4);
+//
+//    }
 
 //    public void setupStdAssessment(StdAssessment stdAssessment) {
 //        courseManager.assignAssessment(stdAssessment);
@@ -1698,6 +1717,7 @@ public class MainController implements Initializable {
 
     public void changeAssessmentSetQuantity(AssessmentSet assessmentSet, int newQuantity) {
         int oldQuantity = assessmentSet.getQuantity();
+
         System.out.println("Old Quantity: " + oldQuantity);
         System.out.println("New Quantity: " + newQuantity);
 
@@ -1757,7 +1777,7 @@ public class MainController implements Initializable {
 
     }
 
-    private void createSubAssessmentColumn(AssessmentSet assessmentSet, StdAssessment subAssessment) {
+    public void createSubAssessmentColumn(AssessmentSet assessmentSet, StdAssessment subAssessment) {
         SubAssessmentColumn<Student, Integer> column = new SubAssessmentColumn<>(subAssessment.getName(), subAssessment, assessmentSet);
         column.textProperty().bind(subAssessment.nameProperty());
         column.setCellValueFactory(c -> c.getValue().assessmentSetGradeProperty(assessmentSet, subAssessment));
@@ -1774,7 +1794,7 @@ public class MainController implements Initializable {
         addToColumnsList(column);
     }
 
-    private List<SubAssessmentColumn<Student, ?>> getSubAssessmentColumns(AssessmentSet assessmentSet) {
+    public List<SubAssessmentColumn<Student, ?>> getSubAssessmentColumns(AssessmentSet assessmentSet) {
         ObservableList<AssessmentColumn<Student, ?>> columnsOfType = getAssessmentColumnsByType(assessmentSet.getType());
 
         @SuppressWarnings("unchecked")
@@ -1808,7 +1828,7 @@ public class MainController implements Initializable {
 //        addAssessmentsButton.setDisable(true);
 //    }
 
-    private void createStdAssessmentColumn(StdAssessment std) {
+    public void createStdAssessmentColumn(StdAssessment std) {
         AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
         column.textProperty().bind(std.nameProperty());
         column.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(std));
@@ -1859,7 +1879,50 @@ public class MainController implements Initializable {
         addAssessmentColumnContextMenu(column);
     }
 
-    private void createAssessmentSetColumns(AssessmentSet assessmentSet) {
+    public void removeStdAssessmentColumn(StdAssessment stdAssessment) {
+        AssessmentType type = stdAssessment.getType();
+
+        switch (type) {
+            case ESSAY:
+                removeStdAssessmentColumnFromList(essayColumns, stdAssessment);
+                break;
+            case ESSAY_PLAN:
+                removeStdAssessmentColumnFromList(essayPlanColumns, stdAssessment);
+                break;
+            case EXAM:
+                removeStdAssessmentColumnFromList(examColumns, stdAssessment);
+                break;
+            case QUIZ:
+                removeStdAssessmentColumnFromList(quizColumns, stdAssessment);
+                break;
+            case ARG_ANALYSIS:
+                removeStdAssessmentColumnFromList(argAnalysisColumns, stdAssessment);
+                break;
+            case PARTICIPATION:
+                removeStdAssessmentColumnFromList(participationColumns, stdAssessment);
+                break;
+            case PRESENTATION:
+                removeStdAssessmentColumnFromList(presentationColumns, stdAssessment);
+                break;
+            case OTHER:
+                removeStdAssessmentColumnFromList(otherColumns, stdAssessment);
+                break;
+        }
+    }
+
+    private void removeStdAssessmentColumnFromList(ObservableList<AssessmentColumn<Student, ?>> columns, StdAssessment stdAssessment) {
+        for (AssessmentColumn<Student, ?> c : columns) {
+            if (c.getAssessment() == stdAssessment) {
+                table.getColumns().remove(c);
+                columns.remove(c);
+
+                this.columnComboBox.getItems().remove(c);
+                break;
+            }
+        }
+    }
+
+    public void createAssessmentSetColumns(AssessmentSet assessmentSet) {
         for (StdAssessment std : assessmentSet.getStdAssessments()) {
 
             SubAssessmentColumn<Student, Integer> column = new SubAssessmentColumn<>(std.getName(), std, assessmentSet);
@@ -1896,6 +1959,59 @@ public class MainController implements Initializable {
         this.columnComboBox.getItems().add(setColumn);
     }
 
+    public void removeAssessmentSetColumns(AssessmentSet assessmentSet) {
+        AssessmentType type = assessmentSet.getType();
+
+        switch (type) {
+            case ESSAY:
+                removeSetColumnsFromList(essayColumns, assessmentSet);
+                break;
+            case ESSAY_PLAN:
+                removeSetColumnsFromList(essayPlanColumns, assessmentSet);
+                break;
+            case EXAM:
+                removeSetColumnsFromList(examColumns, assessmentSet);
+                break;
+            case QUIZ:
+                removeSetColumnsFromList(quizColumns, assessmentSet);
+                break;
+            case ARG_ANALYSIS:
+                removeSetColumnsFromList(argAnalysisColumns, assessmentSet);
+                break;
+            case PARTICIPATION:
+                removeSetColumnsFromList(participationColumns, assessmentSet);
+                break;
+            case PRESENTATION:
+                removeSetColumnsFromList(presentationColumns, assessmentSet);
+                break;
+            case OTHER:
+                removeSetColumnsFromList(otherColumns, assessmentSet);
+                break;
+        }
+    }
+
+    private void removeSetColumnsFromList(ObservableList<AssessmentColumn<Student, ?>> columns, AssessmentSet set) {
+        ObservableList<AssessmentColumn<Student, ?>> toRemove = FXCollections.observableArrayList();
+
+        for (AssessmentColumn<Student, ?> c : columns) {
+
+            if (c.getAssessment() == set) {
+                table.getColumns().remove(c);
+                toRemove.add(c);
+                columnComboBox.getItems().remove(c);
+
+            } else if (c instanceof SubAssessmentColumn) {
+                SubAssessmentColumn<Student, ?> subAssessmentColumn = (SubAssessmentColumn<Student, ?>) c;
+
+                if (subAssessmentColumn.getParent() == set) {
+                    table.getColumns().remove(subAssessmentColumn);
+                    toRemove.add(subAssessmentColumn);
+                }
+            }
+        }
+        columns.removeAll(toRemove);
+    }
+
     private void addAssessmentColumnContextMenu(AssessmentColumn<Student, ?> column) {
         ContextMenu menu = new ContextMenu();
         MenuItem info = new MenuItem("Assessment Info");
@@ -1909,7 +2025,6 @@ public class MainController implements Initializable {
         info.setOnAction(e -> displayAssessmentInfo(column));
 
         rename.setOnAction(e -> {
-            //TODO: create rename command
             String result = renameAssessment(column);
             if (result != null) {
                 column.getAssessment().setName(result);
@@ -1967,7 +2082,7 @@ public class MainController implements Initializable {
         }
     }
 
-    private void removeAssessmentColumn(Assessment assessment) {
+    public void removeAssessmentColumn(Assessment assessment) {
         AssessmentType type = assessment.getType();
         AssessmentColumn<Student, ?> column = null;
 
@@ -2019,8 +2134,7 @@ public class MainController implements Initializable {
         }
     }
 
-    private AssessmentColumn<Student, ?> findAndRemoveAssessmentColumn(ObservableList<AssessmentColumn<Student, ?>>
-                                                                               columnList, Assessment assessment) {
+    private AssessmentColumn<Student, ?> findAndRemoveAssessmentColumn(ObservableList<AssessmentColumn<Student, ?>> columnList, Assessment assessment) {
         AssessmentColumn<Student, ?> column = null;
 
         for (AssessmentColumn<Student, ?> c : columnList) {

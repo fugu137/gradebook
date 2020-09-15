@@ -24,13 +24,13 @@ public class FinaliseColumnCommand implements StandardCommand {
     public void execute() {
 
         if (column instanceof SubAssessmentColumn) {
-            SubAssessmentColumn<Student, ?> subAssessmentColumn = (SubAssessmentColumn<Student, ?>) column;
+            SubAssessmentColumn<?, ?> subAssessmentColumn = (SubAssessmentColumn<?, ?>) column;
             AssessmentSet set = subAssessmentColumn.getParent();
             StdAssessment stdAssessment = (StdAssessment) assessment;
 
             for (Student s : students) {
                 StdAssessmentData stdData = s.getSubAssessmentData(set, stdAssessment);
-                StandardCommand command = new FinaliseStdAssessmentDataCommand(stdData);
+                StandardCommand command = new FinaliseStdAssessmentDataSubCommand(stdData);
                 command.execute();
                 commands.add(command);
             }
@@ -40,12 +40,12 @@ public class FinaliseColumnCommand implements StandardCommand {
                 AssessmentData d = s.getAssessmentData(assessment);
 
                 if (d instanceof StdAssessmentData) {
-                    StandardCommand command = new FinaliseStdAssessmentDataCommand((StdAssessmentData) d);
+                    StandardCommand command = new FinaliseStdAssessmentDataSubCommand((StdAssessmentData) d);
                     command.execute();
                     commands.add(command);
                 }
                 if (d instanceof AssessmentSetData) {
-                    StandardCommand command = new FinaliseAssessmentSetDataCommand((AssessmentSetData) d);
+                    StandardCommand command = new FinaliseAssessmentSetDataSubCommand((AssessmentSetData) d);
                     command.execute();
                     commands.add(command);
                 }

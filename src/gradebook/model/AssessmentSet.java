@@ -48,7 +48,13 @@ public class AssessmentSet implements Assessment {
 
     @Override
     public void setName(String name) {
+        String oldName = getName();
         this.name.set(name);
+
+        stdAssessments.forEach(std -> {
+            String stdName = std.getName();
+            std.setName(stdName.replace(oldName, name));
+        });
     }
 
     public ObservableList<StdAssessment> getStdAssessments() {
@@ -68,8 +74,17 @@ public class AssessmentSet implements Assessment {
         return quantity.getValue();
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity.set(quantity);
+//    public void setQuantity(int quantity) {
+//        this.quantity.set(quantity);
+//    }
+    public void addSubAssessment(StdAssessment subAssessment) {
+        stdAssessments.add(subAssessment);
+        this.quantity.set(getQuantity() + 1);
+    }
+
+    public void removeSubAssessment(StdAssessment subAssessment) {
+        stdAssessments.remove(subAssessment);
+        this.quantity.set(getQuantity() - 1);
     }
 
 //    public void setQuantity(Integer quantity) {

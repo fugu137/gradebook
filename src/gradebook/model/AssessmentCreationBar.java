@@ -252,12 +252,13 @@ public class AssessmentCreationBar {
         this.assessment = null;
 
         formComboBox.setDisable(false);
-        formComboBox.getSelectionModel().clearSelection();
-        typeComboBox.getSelectionModel().clearSelection();
         nameField.clear();
         quantityField.clear();
         bestOfField.clear();
         weightingField.clear();
+
+        formComboBox.getSelectionModel().clearSelection();
+        typeComboBox.getSelectionModel().clearSelection();
 
         return toReturn;
     }
@@ -296,40 +297,63 @@ public class AssessmentCreationBar {
         }
     }
 
-    public boolean modifyAssessment() {
-
-        if (isActive.getValue() && !this.hasInvalidEntries()) {
-//            AssessmentForm assessmentForm = getForm();
-            AssessmentType type = getType();
-            String name = getName();
-            Integer quantity = getQuantity();
-            Integer bestOf = getBestOf();
-            Double weighting = (double) ((int) getWeighting()) / 100;
-
-            if (assessment instanceof StdAssessment) {
-                StdAssessment stdAssessment = (StdAssessment) assessment;
-                stdAssessment.setType(type);
-                stdAssessment.setName(name);
-                stdAssessment.setWeighting(weighting);
-                return false;
-            }
-
-            if (assessment instanceof AssessmentSet) {
-                AssessmentSet set = (AssessmentSet) assessment;
-                set.setType(type);
-                set.setName(name);
-                set.setWeighting(weighting);
-//                set.setQuantity(quantity);
-                set.setBestOf(bestOf);
-
-                if (!quantity.equals(set.getQuantity())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public void removeAssessment() {
+        this.assessment = null;
     }
 
+//    public boolean modifyAssessment() {
+//
+//        if (isActive.getValue() && !this.hasInvalidEntries()) {
+////            AssessmentForm assessmentForm = getForm();
+//            AssessmentType type = getType();
+//            String name = getName();
+//            Integer quantity = getQuantity();
+//            Integer bestOf = getBestOf();
+//            Double weighting = (double) ((int) getWeighting()) / 100;
+//
+//            if (assessment instanceof StdAssessment) {
+//                StdAssessment stdAssessment = (StdAssessment) assessment;
+//                stdAssessment.setType(type);
+//                stdAssessment.setName(name);
+//                stdAssessment.setWeighting(weighting);
+//                return false;
+//            }
+//
+//            if (assessment instanceof AssessmentSet) {
+//                AssessmentSet set = (AssessmentSet) assessment;
+//                set.setType(type);
+//                set.setName(name);
+//                set.setWeighting(weighting);
+////                set.setQuantity(quantity);
+//                set.setBestOf(bestOf);
+//
+//                if (!quantity.equals(set.getQuantity())) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
+    public void setType(AssessmentType type) {
+        this.typeComboBox.getSelectionModel().select(type);
+    }
+
+    public void setName(String name) {
+        this.nameField.setText(name);
+    }
+
+//    public void setQuantity(Integer quantity) {
+//        this.quantityField.setText(String.valueOf(quantity));
+//    }
+
+    public void setBestOf(Integer bestOf) {
+        this.bestOfField.setText(String.valueOf(bestOf));
+    }
+
+    public void setWeighting(Double weighting) {
+        Integer w = NumberRounder.roundToInt(weighting * 100);
+        this.weightingField.setText(String.valueOf(w));
+    }
 }
 

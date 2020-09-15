@@ -5,6 +5,7 @@ import javafx.scene.layout.VBox;
 
 public interface Assessment {
 
+    public void setWeighting(Double weighting);
     public Double getWeighting();
     public AssessmentType getType();
     public void setType(AssessmentType type);

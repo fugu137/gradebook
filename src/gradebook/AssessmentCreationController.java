@@ -1,10 +1,11 @@
 package gradebook;
 
+import gradebook.commands.standard_commands.assessment_creation_commands.SubmitAssessmentsCommand;
 import gradebook.enums.AssessmentForm;
 import gradebook.enums.AssessmentType;
 import gradebook.model.Assessment;
 import gradebook.model.AssessmentCreationBar;
-import gradebook.model.AssessmentSet;
+import gradebook.tools.CommandManager;
 import gradebook.tools.Formatter;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -156,6 +157,7 @@ public class AssessmentCreationController implements Initializable {
 
     //Control//
     private MainController mainController;
+    private CommandManager commandManager;
     private ObservableList<AssessmentCreationBar> assessmentCreationBars = FXCollections.observableArrayList();
 
     NumberStringConverter converter = new NumberStringConverter();
@@ -179,12 +181,21 @@ public class AssessmentCreationController implements Initializable {
         this.mainController = mainController;
     }
 
+    public void setCommandManager(CommandManager commandManager) {
+        this.commandManager = commandManager;
+    }
+
+    public ObservableList<Assessment> getAssessmentsToRemove() {
+        return assessmentsToRemove;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fillComboBoxes();
         addAssessmentCreationBars();
         bindTotalWeightingField();
         formatWeightingFields();
+
     }
 
     //Initialize Methods//
@@ -240,6 +251,8 @@ public class AssessmentCreationController implements Initializable {
                 .and(comboBox8.getSelectionModel().selectedItemProperty().isNull());
         totalWeightField.disableProperty().bind(allDisabled);
 
+        submitButton.disableProperty().bind(allDisabled);
+
         weightField1.textProperty().bindBidirectional(weight1AsInt, converter);
         weightField2.textProperty().bindBidirectional(weight2AsInt, converter);
         weightField3.textProperty().bindBidirectional(weight3AsInt, converter);
@@ -276,6 +289,7 @@ public class AssessmentCreationController implements Initializable {
         weightField8.setText(null);
     }
 
+
     //Assessment Creation Window Methods//
     public void addAssessment(Assessment assessment) {
         for (AssessmentCreationBar bar : assessmentCreationBars) {
@@ -287,18 +301,13 @@ public class AssessmentCreationController implements Initializable {
     }
 
     @FXML
-    public void submitAssessments() {
+    public void submitButtonPressed() {
         errorMessages.clear();
 
         boolean unableToSubmit = false;
-        int totalWeighting = 0;
+        Integer totalWeighting = null;
 
         for (AssessmentCreationBar bar : assessmentCreationBars) {
-            Integer barWeighting = bar.getWeighting();
-            if (barWeighting == null) {
-                barWeighting = 0;
-            }
-            totalWeighting = totalWeighting + barWeighting;
 
             if (bar.hasInvalidEntries()) {
                 unableToSubmit = true;
@@ -307,9 +316,24 @@ public class AssessmentCreationController implements Initializable {
                         errorMessages.add(s);
                     }
                 });
+
+            } else if (bar.isActive()) {
+
+                Integer barWeighting = bar.getWeighting();
+
+                if (barWeighting == null) {
+                    barWeighting = 0;
+                }
+                if (totalWeighting == null) {
+                    totalWeighting = 0;
+                }
+
+                totalWeighting = totalWeighting + barWeighting;
+
             }
         }
-        if (totalWeighting != 100) {
+
+        if (totalWeighting != null && !totalWeighting.equals(100)) {
             unableToSubmit = true;
             errorMessages.add("- Weightings must sum to 100.");
             for (AssessmentCreationBar bar : assessmentCreationBars) {
@@ -336,7 +360,7 @@ public class AssessmentCreationController implements Initializable {
 
         } else {
             System.out.println("Creating assessments...");
-            SubmitAssessments();
+            commandManager.execute(new SubmitAssessmentsCommand(mainController, this, assessmentCreationBars), true);
 
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.close();
@@ -349,43 +373,43 @@ public class AssessmentCreationController implements Initializable {
     }
 
 
-    private void SubmitAssessments() {
-        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
-
-        for (AssessmentCreationBar bar : assessmentCreationBars) {
-            if (bar.isActive()) {
-
-                if (bar.getAssessment() == null) {
-                    bar.createAssessment();
-                    assessments.add(bar.getAssessment());
-                    bar.getFormComboBox().setDisable(true);
-
-                } else {
-                    if (bar.modifyAssessment()) {
-                        int quantity = bar.getQuantity();
-                        mainController.changeAssessmentSetQuantity((AssessmentSet) bar.getAssessment(), quantity);
-                    }
-                }
-            }
-        }
-        assessmentsToRemove.forEach(a -> mainController.removeAssessment(a));
-        mainController.setupAllAssessments(assessments);
-
-//        for (AssessmentCreationBar bar: assessmentCreationBars) {
-//            bar.disableQuantityAndBestOfFields();
+//    private void submitAssessments() {
+//        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
+//
+//        for (AssessmentCreationBar bar : assessmentCreationBars) {
+//            if (bar.isActive()) {
+//
+//                if (bar.getAssessment() == null) {
+//                    bar.createAssessment();
+//                    assessments.add(bar.getAssessment());
+//                    bar.getFormComboBox().setDisable(true);
+//
+//                } else {
+//                    if (bar.modifyAssessment()) {
+//                        int quantity = bar.getQuantity();
+//                        mainController.changeAssessmentSetQuantity((AssessmentSet) bar.getAssessment(), quantity);
+//                    }
+//                }
+//            }
 //        }
-    }
+//        assessmentsToRemove.forEach(a -> mainController.removeAssessment(a));
+//        mainController.setupAllAssessments(assessments);
+//
+////        for (AssessmentCreationBar bar: assessmentCreationBars) {
+////            bar.disableQuantityAndBestOfFields();
+////        }
+//    }
 
     public void submitAssessmentsWithoutClick() {
-        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
+//        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
 
         for (AssessmentCreationBar bar : assessmentCreationBars) {
             if (bar.getAssessment() != null) {
-                assessments.add(bar.getAssessment());
+//                assessments.add(bar.getAssessment());
                 bar.getFormComboBox().setDisable(true);
             }
         }
-        mainController.setupAllAssessments(assessments);
+        commandManager.execute(new SubmitAssessmentsCommand(mainController, this, assessmentCreationBars), true);
     }
 
 
@@ -394,15 +418,20 @@ public class AssessmentCreationController implements Initializable {
         Button button = (Button) event.getSource();
         AssessmentCreationBar bar = (AssessmentCreationBar) button.getUserData();
 
+        submitButton.disableProperty().unbind();
+
         Alert popup = new Alert(Alert.AlertType.CONFIRMATION);
         popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
         popup.setHeaderText("Are you sure you want to remove this assessment?");
         popup.setContentText("Clicking 'OK' will remove the assessment from the assessment modification window. When the 'Submit' button is pressed, the assessment will be deleted from the gradebook, and any grades for the assessment will be lost.");
 
-        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {
+        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {//TODO: remove at this stage, not later?
             Assessment assessment = bar.clear();
             assessmentsToRemove.add(assessment);
+
         }
+
+
 
 //        if (assessment != null) {
 //            mainController.removeAssessment(assessment);
