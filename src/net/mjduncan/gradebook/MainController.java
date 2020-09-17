@@ -280,6 +280,7 @@ public class MainController implements Initializable {
     public AssessmentCreationController getAssessmentCreationController() throws IOException {
 
         if (this.assessmentCreationController == null) {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("assessment-creation-window.fxml"));
             Parent root = loader.load();
 

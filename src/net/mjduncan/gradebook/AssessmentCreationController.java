@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
+import net.mjduncan.gradebook.commands.standard_commands.assessment_creation_commands.SetupAllAssessmentsSubCommand;
 import net.mjduncan.gradebook.commands.standard_commands.assessment_creation_commands.SubmitAssessmentsCommand;
 import net.mjduncan.gradebook.enums.AssessmentForm;
 import net.mjduncan.gradebook.enums.AssessmentType;
@@ -293,6 +294,7 @@ public class AssessmentCreationController implements Initializable {
     //Assessment Creation Window Methods//
     public void addAssessment(Assessment assessment) {
         for (AssessmentCreationBar bar : assessmentCreationBars) {
+
             if (!bar.isActive()) {
                 bar.addAssessment(assessment);
                 break;
@@ -401,15 +403,18 @@ public class AssessmentCreationController implements Initializable {
 //    }
 
     public void submitAssessmentsWithoutClick() {
-//        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
+        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
 
         for (AssessmentCreationBar bar : assessmentCreationBars) {
             if (bar.getAssessment() != null) {
-//                assessments.add(bar.getAssessment());
+                assessments.add(bar.getAssessment());
                 bar.getFormComboBox().setDisable(true);
             }
         }
-        commandManager.execute(new SubmitAssessmentsCommand(mainController, this, assessmentCreationBars), true);
+        Button addAssessmentsButton = mainController.getAddAssessmentsButton();
+        Button modifyAssessmentsButton = mainController.getModifyAssessmentsButton();
+
+        commandManager.execute(new SetupAllAssessmentsSubCommand(mainController, assessments, addAssessmentsButton, modifyAssessmentsButton), true);
     }
 
 

@@ -108,34 +108,41 @@ public class AssessmentCreationBar {
     public void addAssessment(Assessment assessment) {
         if (this.assessment != null) {
             System.out.println("Assessment already present on this bar!");
+
         } else {
             this.assessment = assessment;
-
-            AssessmentForm form = null;
-            if (assessment instanceof StdAssessment) {
-                form = AssessmentForm.SINGLE;
-            }
-            if (assessment instanceof AssessmentSet) {
-                form = AssessmentForm.SET;
-
-                Integer quantity = ((AssessmentSet) assessment).getQuantity();
-                quantityField.setText(String.valueOf(quantity));
-
-                Integer bestOf = ((AssessmentSet) assessment).getBestOf();
-                bestOfField.setText(String.valueOf(bestOf));
-            }
-            formComboBox.getSelectionModel().select(form);
-
-            AssessmentType type = assessment.getType();
-            typeComboBox.getSelectionModel().select(type);
-
-            String name = assessment.getName();
-            nameField.setText(name);
-
-            Double weighting = assessment.getWeighting();
-            Integer w = NumberRounder.roundToInt(weighting * 100);
-            weightingField.setText(String.valueOf(w));
+            addAssessmentDetails(assessment);
         }
+    }
+
+    private void addAssessmentDetails(Assessment assessment) {
+        AssessmentForm form = null;
+
+        if (assessment instanceof StdAssessment) {
+            form = AssessmentForm.SINGLE;
+        }
+
+        if (assessment instanceof AssessmentSet) {
+            form = AssessmentForm.SET;
+
+            Integer quantity = ((AssessmentSet) assessment).getQuantity();
+            quantityField.setText(String.valueOf(quantity));
+
+            Integer bestOf = ((AssessmentSet) assessment).getBestOf();
+            bestOfField.setText(String.valueOf(bestOf));
+        }
+
+        formComboBox.getSelectionModel().select(form);
+
+        AssessmentType type = assessment.getType();
+        typeComboBox.getSelectionModel().select(type);
+
+        String name = assessment.getName();
+        nameField.setText(name);
+
+        Double weighting = assessment.getWeighting();
+        Integer w = NumberRounder.roundToInt(weighting * 100);
+        weightingField.setText(String.valueOf(w));
     }
 
     public ComboBox<AssessmentForm> getFormComboBox() {

@@ -145,6 +145,8 @@ public class FileManager {
 //                        assessments = getAssessments(stdAssessments, assessmentSets);
 //                    }
                     if (lineNumber == 1 && !(stdAssessments[0].isBlank() && assessmentSets[0].isBlank())) {
+                        System.out.println("Adding assessments...");
+
                         addAssessments(mainController, stdAssessmentMap, assessmentSetMap, stdAssessments, assessmentSets);
                     }
 
@@ -152,8 +154,6 @@ public class FileManager {
                     courseManager.newStudent(student);
 
                     addGrades(stdAssessmentMap, assessmentSetMap, student, stdAssessments, assessmentSets);
-//                    addAssessmentsAndGrades(mainController, stdAssessmentMap, assessmentSetMap, lineNumber, student, stdAssessments, assessmentSets);
-
                     lineNumber++;
                 }
             }
@@ -225,6 +225,7 @@ public class FileManager {
     }
 
     private void addGrades(Map<String, StdAssessment> stdAssessmentMap, Map<String, AssessmentSet> assessmentSetMap, Student student, String[] stdAssessments, String[] assessmentSets) {
+
         for (String s : stdAssessments) {
             String[] assessmentInfo = s.trim().split(", ");
             StdAssessment stdAssessment = null;

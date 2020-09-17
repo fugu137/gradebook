@@ -250,7 +250,7 @@ public class Student {
         AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
 
         if (data != null) {
-            return data.gradeProperty();
+            return data.gradeProperty();    //TODO: find listener and make sure it updates total grade when "best of" value of set is changed. (Currently, table values not recalculating).
 
         } else if (surname.getValue() != null || givenNames.getValue() != null) {
             System.out.println("AssessmentSet not found! [Student: " + this.getSurname() + ", Assessment: " + assessmentSet.getName() + "]");
@@ -261,8 +261,7 @@ public class Student {
         }
     }
 
-    public ObjectProperty<Integer> assessmentSetGradeProperty(AssessmentSet assessmentSet, StdAssessment
-            stdAssessment) {
+    public ObjectProperty<Integer> assessmentSetGradeProperty(AssessmentSet assessmentSet, StdAssessment stdAssessment) {
         AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
 
         if (data != null) {
