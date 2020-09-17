@@ -66,6 +66,10 @@ public class AssessmentSet implements Assessment {
         return weighting.getValue();
     }
 
+    public DoubleProperty weightingProperty() {
+        return weighting;
+    }
+
     public void setWeighting(Double weighting) {
         this.weighting.set(weighting);
     }
@@ -127,6 +131,10 @@ public class AssessmentSet implements Assessment {
 
     public Integer getBestOf() {
         return bestOf.getValue();
+    }
+
+    public IntegerProperty bestOfProperty() {
+        return bestOf;
     }
 
     public void setBestOf(Integer bestOf) {

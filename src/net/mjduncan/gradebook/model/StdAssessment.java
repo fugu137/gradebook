@@ -48,6 +48,10 @@ public class StdAssessment implements Assessment {
         return weighting.getValue();
     }
 
+    public DoubleProperty weightingProperty() {
+        return weighting;
+    }
+
     public void setWeighting(Double weighting) {
         this.weighting.set(weighting);
     }

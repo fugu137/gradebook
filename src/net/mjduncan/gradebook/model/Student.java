@@ -180,6 +180,8 @@ public class Student {
                 }
             }
         });
+
+        stdAssessment.weightingProperty().addListener(obs -> grades.updateTotalGrade());
     }
 
     public void addAssessmentSetData(AssessmentSet assessmentSet) {
@@ -204,6 +206,9 @@ public class Student {
         for (StdAssessmentData d : data.getStdAssessmentDataList()) {
             d.gradeProperty().addListener(obs -> data.updateAssessmentSetTotalGrade());
         }
+
+        assessmentSet.weightingProperty().addListener(obs -> grades.updateTotalGrade());
+        assessmentSet.bestOfProperty().addListener(obs -> data.updateAssessmentSetTotalGrade());
     }
 
     public void addSubAssessmentData(AssessmentSet assessmentSet, StdAssessment subAssessment) {

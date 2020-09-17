@@ -40,9 +40,6 @@ public class ModifyAssessmentSubCommand implements StandardCommand {
             Integer newQuantity = bar.getQuantity();
             Integer oldQuantity = assessmentSet.getQuantity();
 
-            System.out.println("New Quantity: " + newQuantity);
-            System.out.println("Old Quantity: " + oldQuantity);
-
             if (newQuantity > oldQuantity) {
                 changeQuantityCommand = new AddSubAssessmentsSubCommand(mainController, assessmentSet, newQuantity);
                 changeQuantityCommand.execute();
@@ -51,9 +48,10 @@ public class ModifyAssessmentSubCommand implements StandardCommand {
                 changeQuantityCommand = new RemoveSubAssessmentsSubCommand(mainController, assessmentSet, newQuantity);
                 changeQuantityCommand.execute();
             }
-        }
 
-        changeAssessmentValues(bar.getAssessment(), type, name, weighting, null);
+        } else {    //TODO: verify that "else" here is good (rather than just the line below without the else)
+            changeAssessmentValues(bar.getAssessment(), type, name, weighting, null);
+        }
 
     }
 
@@ -113,6 +111,7 @@ public class ModifyAssessmentSubCommand implements StandardCommand {
     private void changeAssessmentValues(Assessment assessment, AssessmentType type, String name, Double weighting, Integer bestOf) {
         assessment.setType(type);
         assessment.setName(name);
+
         assessment.setWeighting(weighting);
 
         if (bestOf != null && assessment instanceof AssessmentSet) {
