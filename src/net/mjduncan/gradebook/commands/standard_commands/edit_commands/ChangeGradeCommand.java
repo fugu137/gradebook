@@ -28,10 +28,12 @@ public class ChangeGradeCommand implements StandardCommand {
     @Override
     public void execute() {
         if (assessmentSet == null) {
-            student.stdAssessmentGradeProperty(stdAssessment).set(newGrade);
+//            student.stdAssessmentGradeProperty(stdAssessment).set(newGrade);
+            student.setStdAssessmentGrade(stdAssessment, newGrade);
 
         } else {
-            student.assessmentSetGradeProperty(assessmentSet, stdAssessment).set(newGrade);
+//            student.assessmentSetGradeProperty(assessmentSet, stdAssessment).set(newGrade);
+            student.setSubAssessmentGrade(assessmentSet, stdAssessment, newGrade);
         }
     }
 

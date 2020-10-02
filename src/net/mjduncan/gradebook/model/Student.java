@@ -157,6 +157,11 @@ public class Student {
         this.email.set(email);
     }
 
+    public Grades getGrades() {
+        return grades;
+    }
+
+
 
     //Main Methods//
     public void addStdAssessmentData(StdAssessment stdAssessment) {
@@ -255,7 +260,7 @@ public class Student {
         AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
 
         if (data != null) {
-            return data.gradeProperty();    //TODO: find listener and make sure it updates total grade when "best of" value of set is changed. (Currently, table values not recalculating).
+            return data.gradeProperty();
 
         } else if (surname.getValue() != null || givenNames.getValue() != null) {
             System.out.println("AssessmentSet not found! [Student: " + this.getSurname() + ", Assessment: " + assessmentSet.getName() + "]");
@@ -293,6 +298,10 @@ public class Student {
         return grades.assessmentDataList();
     }
 
+    public List<Assessment> getAssessmentList() {
+        return grades.assessmentList();
+    }
+
     public AssessmentData getAssessmentData(Assessment assessment) {
         return grades.get(assessment);
     }
@@ -303,8 +312,13 @@ public class Student {
     }
 
     public void setStdAssessmentGrade(StdAssessment stdAssessment, Integer grade) {
-        StdAssessmentData stdAssessmentData = (StdAssessmentData) grades.get(stdAssessment);
-        stdAssessmentData.setGrade(grade);
+//        StdAssessmentData stdAssessmentData = (StdAssessmentData) grades.get(stdAssessment);
+//        stdAssessmentData.setGrade(grade);
+        stdAssessmentGradeProperty(stdAssessment).set(grade);
+    }
+
+    public void setSubAssessmentGrade(AssessmentSet assessmentSet, StdAssessment subAssessment, Integer grade) {
+        assessmentSetGradeProperty(assessmentSet, subAssessment).set(grade);
     }
 
     public void finaliseGrades() {

@@ -104,7 +104,8 @@ public class FileManager {
             System.out.println("An error occurred.");
             e.printStackTrace();
 
-            //TODO: error message
+            mainController.setStatusText("Gradebook failed to save!", 4);
+            //TODO: detailed error message?
         }
     }
 

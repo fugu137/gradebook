@@ -105,7 +105,6 @@ public class CourseManager {
         courseCohort.addAllAt(index, students);
 
         for (Student s : students) {
-
             if (s.getAssessmentDataList().size() > 0) {
                 ClassGroup classGroup = s.getClassGroup();
                 classGroup.addStudent(s);

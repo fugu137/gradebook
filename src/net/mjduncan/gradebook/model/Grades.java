@@ -6,8 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import net.mjduncan.gradebook.tools.NumberRounder;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Grades {
 
@@ -83,8 +84,12 @@ public class Grades {
         return grades.get(assessment);
     }
 
-    public Collection<AssessmentData> assessmentDataList() {
-        return grades.values();
+    public List<Assessment> assessmentList() {
+        return new ArrayList<>(grades.keySet());
+    }
+
+    public List<AssessmentData> assessmentDataList() {
+        return new ArrayList<>(grades.values());
     }
 
     public ObjectProperty<Double> totalGradeProperty() {

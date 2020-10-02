@@ -112,6 +112,16 @@ public class AssessmentSetData implements AssessmentData {
         }
     }
 
+    public Integer[] getSubAssessmentGrades() {
+        int size = stdAssessmentDataList.size();
+        Integer[] grades = new Integer[size];
+
+        for (int i = 0; i < size; i++) {
+            grades[i] = stdAssessmentDataList.get(i).getGrade();
+        }
+        return grades;
+    }
+
     public void addSubAssessmentData(StdAssessmentData stdData) {
         stdAssessmentDataList.add(stdData);
     }
