@@ -10,8 +10,8 @@ import net.mjduncan.gradebook.model.StdAssessment;
 
 public class ModifyAssessmentSubCommand implements StandardCommand {
 
-    private MainController mainController;
-    private AssessmentCreationBar bar;
+    private final MainController mainController;
+    private final AssessmentCreationBar bar;
     private StandardCommand changeQuantityCommand;
     private Assessment assessmentCopyForUndo;
     private Assessment assessmentCopyForRedo;
@@ -49,10 +49,9 @@ public class ModifyAssessmentSubCommand implements StandardCommand {
                 changeQuantityCommand.execute();
             }
 
-        } else {    //TODO: verify that "else" here is good (rather than just the line below without the else)
+        } else {
             changeAssessmentValues(bar.getAssessment(), type, name, weighting, null);
         }
-
     }
 
     @Override

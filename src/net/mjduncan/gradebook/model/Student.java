@@ -13,17 +13,16 @@ import java.util.Objects;
 
 public class Student {
 
-    private StringProperty surname;
-    private StringProperty givenNames;
-    private StringProperty preferredName;
+    private final StringProperty surname;
+    private final StringProperty givenNames;
+    private final StringProperty preferredName;
     private CourseCohort courseCohort;
-    private ObjectProperty<ClassGroup> classGroup;
-    private ObjectProperty<Gender> gender;
-    private ObjectProperty<Integer> sid;
-    private StringProperty degree;
-    private StringProperty email;
-
-    private Grades grades;
+    private final ObjectProperty<ClassGroup> classGroup;
+    private final ObjectProperty<Gender> gender;
+    private final ObjectProperty<Integer> sid;
+    private final StringProperty degree;
+    private final StringProperty email;
+    private final Grades grades;
 
 
     public Student() {
@@ -166,7 +165,6 @@ public class Student {
         grades.add(stdAssessment, data);
 
         data.gradeProperty().addListener(obs -> {
-//            System.out.println("Student " + this.getSurname() + " grade changed (" + data.getStdAssessment() + ")");
             grades.updateTotalGrade();
 
             if (data.gradeProperty() != null && data.gradeProperty().getValue() != null) {
@@ -175,8 +173,6 @@ public class Student {
                 }
                 if (courseCohort != null) {
                     courseCohort.updateAssessmentStatistics(stdAssessment, this, data.gradeProperty());
-//                    System.out.println("All students no of HDs: " + courseCohort.getTotalStatistics().numberOfHDs());
-//                    System.out.println("No. with grades: " + courseCohort.getTotalStatistics().getNumberOfStudentsWithGrades());
                 }
             }
         });
@@ -223,14 +219,6 @@ public class Student {
         AssessmentSetData data = (AssessmentSetData) grades.get(assessmentSet);
         data.removeSubAssessmentData(toRemove);
     }
-
-//    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
-//            grades.addSubAssessments(set, oldQuantity, newQuantity);
-//    }
-//
-//    public void removeSubAssessmentSetData(AssessmentSet set, int oldQuantity, int newQuantity) {
-//        grades.removeSubAssessmentGrades(set, oldQuantity, newQuantity);
-//    }
 
     public void removeAssessmentData(Assessment assessment) {
         grades.remove(assessment);
@@ -307,8 +295,6 @@ public class Student {
     }
 
     public void setStdAssessmentGrade(StdAssessment stdAssessment, Integer grade) {
-//        StdAssessmentData stdAssessmentData = (StdAssessmentData) grades.get(stdAssessment);
-//        stdAssessmentData.setGrade(grade);
         stdAssessmentGradeProperty(stdAssessment).set(grade);
     }
 

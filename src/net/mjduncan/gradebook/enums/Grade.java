@@ -9,9 +9,9 @@ public enum Grade {
     P("P"),
     F("F");
 
-    private String name;
+    private final String name;
 
-    private Grade(String name) {
+   Grade(String name) {
         this.name = name;
     }
 

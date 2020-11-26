@@ -14,18 +14,18 @@ import net.mjduncan.gradebook.tools.NumberRounder;
 
 public class AssessmentCreationBar {
 
-    private ComboBox<AssessmentForm> formComboBox;
-    private ComboBox<AssessmentType> typeComboBox;
-    private Button clearButton;
-    private TextField nameField;
-    private TextField quantityField;
-    private TextField bestOfField;
-    private TextField weightingField;
+    private final ComboBox<AssessmentForm> formComboBox;
+    private final ComboBox<AssessmentType> typeComboBox;
+    private final Button clearButton;
+    private final TextField nameField;
+    private final TextField quantityField;
+    private final TextField bestOfField;
+    private final TextField weightingField;
 
-    private BooleanProperty isActive;
+    private final BooleanProperty isActive;
     private Assessment assessment;
 
-    private ObservableList<String> errorMessages;
+    private final ObservableList<String> errorMessages;
 
     public AssessmentCreationBar(ComboBox<AssessmentForm> formComboBox, ComboBox<AssessmentType> typeComboBox, Button clearButton, TextField nameField, TextField quantityField, TextField bestOfField, TextField weightingField) {
         this.formComboBox = formComboBox;

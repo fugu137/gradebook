@@ -10,11 +10,11 @@ import net.mjduncan.gradebook.tools.CourseManager;
 
 public class CutCommand implements StandardCommand {
 
-    private MainController mainController;
-    private CourseManager courseManager;
-    private TableView<Student> table;
-    private ObservableList<Student> clipBoardCopy;
-    private ObservableList<Student> tableItemsCopy;
+    private final MainController mainController;
+    private final CourseManager courseManager;
+    private final TableView<Student> table;
+    private final ObservableList<Student> clipBoardCopy;
+    private final ObservableList<Student> tableItemsCopy;
 
     public CutCommand(MainController mainController) {
         this.mainController = mainController;

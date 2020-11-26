@@ -6,9 +6,9 @@ import net.mjduncan.gradebook.model.Student;
 
 public class ChangeClassGroupCommand implements StandardCommand {
 
-    private Student student;
-    private ClassGroup oldClass;
-    private ClassGroup newClass;
+    private final Student student;
+    private final ClassGroup oldClass;
+    private final ClassGroup newClass;
 
     public ChangeClassGroupCommand(Student student, ClassGroup oldClass, ClassGroup newClass) {
         this.student = student;

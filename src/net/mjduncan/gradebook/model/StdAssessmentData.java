@@ -5,8 +5,8 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class StdAssessmentData implements AssessmentData {
 
-    private StdAssessment stdAssessment;
-    private ObjectProperty<Integer> grade;
+    private final StdAssessment stdAssessment;
+    private final ObjectProperty<Integer> grade;
 
     public StdAssessmentData(StdAssessment stdAssessment) {
         this(stdAssessment, null);

@@ -9,10 +9,10 @@ import java.io.File;
 
 public class SaveGradebookAsCommand implements PrimitiveCommand {
 
-    private MainController mainController;
-    private ObjectProperty<FileManager> fileManager;
-    private File file;
-    private Stage stage;
+    private final MainController mainController;
+    private final ObjectProperty<FileManager> fileManager;
+    private final File file;
+    private final Stage stage;
 
     public SaveGradebookAsCommand(MainController mainController, ObjectProperty<FileManager> fileManager, File file, Stage stage) {
         this.mainController = mainController;

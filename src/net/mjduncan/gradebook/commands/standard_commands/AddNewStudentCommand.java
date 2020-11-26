@@ -7,10 +7,10 @@ import net.mjduncan.gradebook.tools.CourseManager;
 
 public class AddNewStudentCommand implements StandardCommand {
 
-    private MainController mainController;
-    private CourseManager courseManager;
-    private ObservableList<Student> tableItems;
-    private Student student;
+    private final MainController mainController;
+    private final CourseManager courseManager;
+    private final ObservableList<Student> tableItems;
+    private final Student student;
 
     public AddNewStudentCommand(MainController mainController, Student student) {
         this.mainController = mainController;

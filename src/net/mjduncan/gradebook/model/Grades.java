@@ -12,8 +12,8 @@ import java.util.List;
 
 public class Grades {
 
-    private ObservableMap<Assessment, AssessmentData> grades;
-    private ObjectProperty<Double> totalGrade;
+    private final ObservableMap<Assessment, AssessmentData> grades;
+    private final ObjectProperty<Double> totalGrade;
 
     public Grades() {
         this.grades = FXCollections.observableMap(new LinkedHashMap<>());
@@ -69,16 +69,6 @@ public class Grades {
     public void remove(Assessment assessment) {
         grades.remove(assessment);
     }
-
-//    public void removeSubAssessmentGrades(AssessmentSet set, int oldQuantity, int newQuantity) {
-//        AssessmentSetData data = (AssessmentSetData) grades.get(set);
-//        data.removeSubAssessmentGrades(oldQuantity, newQuantity);
-//    }
-//
-//    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
-//        AssessmentSetData data = (AssessmentSetData) grades.get(set);
-//        data.addSubAssessments(oldQuantity, newQuantity);
-//    }
 
     public AssessmentData get(Assessment assessment) {
         return grades.get(assessment);

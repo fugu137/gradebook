@@ -11,10 +11,10 @@ import net.mjduncan.gradebook.model.StudentGroup;
 
 class FilterByGroupSubCommand implements StandardCommand {
 
-    private TableView<Student> table;
-    private Student blankStudent;
-    private StudentGroup selectedGroup;
-    private ObservableList<Student> tableStudentsCopy;
+    private final TableView<Student> table;
+    private final Student blankStudent;
+    private final StudentGroup selectedGroup;
+    private final ObservableList<Student> tableStudentsCopy;
 
     FilterByGroupSubCommand(MainController mainController, ComboBox<StudentGroup>comboBox) {
         this.table = mainController.getTable();

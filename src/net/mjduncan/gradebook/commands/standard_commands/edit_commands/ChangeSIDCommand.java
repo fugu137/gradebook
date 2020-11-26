@@ -5,9 +5,9 @@ import net.mjduncan.gradebook.model.Student;
 
 public class ChangeSIDCommand implements StandardCommand {
 
-    private Student student;
-    private Integer oldSID;
-    private Integer newSID;
+    private final Student student;
+    private final Integer oldSID;
+    private final Integer newSID;
 
     public ChangeSIDCommand(Student student, Integer oldSID, Integer newSID) {
         this.student = student;

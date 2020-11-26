@@ -5,9 +5,9 @@ import net.mjduncan.gradebook.model.Student;
 
 public class ChangeDegreeCommand implements StandardCommand {
 
-    private Student student;
-    private String oldDegree;
-    private String newDegree;
+    private final Student student;
+    private final String oldDegree;
+    private final String newDegree;
 
     public ChangeDegreeCommand(Student student, String oldDegree, String newDegree) {
         this.student = student;

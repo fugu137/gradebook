@@ -5,9 +5,9 @@ import net.mjduncan.gradebook.model.Student;
 
 public class ChangeEmailCommand implements StandardCommand {
 
-    private Student student;
-    private String oldEmail;
-    private String newEmail;
+    private final Student student;
+    private final String oldEmail;
+    private final String newEmail;
 
     public ChangeEmailCommand(Student student, String oldEmail, String newEmail) {
         this.student = student;

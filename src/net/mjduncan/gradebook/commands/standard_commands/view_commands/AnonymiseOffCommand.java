@@ -7,7 +7,7 @@ import net.mjduncan.gradebook.model.Student;
 
 public class AnonymiseOffCommand implements StandardCommand {
 
-    private ObservableList<TableColumn<Student, ?>> infoColumns;
+    private final ObservableList<TableColumn<Student, ?>> infoColumns;
 
     public AnonymiseOffCommand(ObservableList<TableColumn<Student, ?>> infoColumns) {
         this.infoColumns = infoColumns;

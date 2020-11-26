@@ -14,11 +14,11 @@ import java.util.List;
 
 public class CourseManager {
 
-    private CourseCohort courseCohort;
-    private ObservableList<StudentGroup> studentGroups;
-    private ObservableList<ClassGroup> classes;
-    private ClassGroup unassigned;
-    private ObservableList<Assessment> assessments;
+    private final CourseCohort courseCohort;
+    private final ObservableList<StudentGroup> studentGroups;
+    private final ObservableList<ClassGroup> classes;
+    private final ClassGroup unassigned;
+    private final ObservableList<Assessment> assessments;
 
     public CourseManager(String courseName) {
         this.courseCohort = new CourseCohort(courseName);
@@ -385,76 +385,6 @@ public class CourseManager {
         barChart.setTitle(assessment.columnName());
         addOverallGradeChartData(barChart);
     }
-
-//    void addAssessmentChartData(BarChart<String, Number> barChart, Assessment assessment) {
-//        ObservableList<StudentGroup> groups = FXCollections.observableArrayList();
-//        groups.addAll(studentGroups);
-//        groups.removeIf(s -> s.getStudents().size() < 1);
-//
-//        for (StudentGroup c : groups) {
-//            XYChart.Series<String, Number> series = new XYChart.Series<>();
-//            series.setName(c.getName());
-//
-//            XYChart.Data<String, Number> hdData = new XYChart.Data<>("HD", c.getStatistics(assessment).getPercentageOfHDs());
-//            series.getData().add(hdData);
-//
-//
-//            XYChart.Data<String, Number> dData = new XYChart.Data<>("D", c.getStatistics(assessment).getPercentageOfDs());
-//            series.getData().add(dData);
-//            c.getStatistics(assessment).getDStudents().addListener(new ListChangeListener<Student>() {
-//                @Override
-//                public void onChanged(Change<? extends Student> change) {
-//                    while (change.next()) {
-//                        if (change.wasAdded() || change.wasRemoved()) {
-//                            hdData.setYValue(c.getStatistics(assessment).getPercentageOfDs());
-//                        }
-//                    }
-//                }
-//            });
-//
-//            XYChart.Data<String, Number> crData = new XYChart.Data<>("CR", c.getStatistics(assessment).getPercentageOfCRs());
-//            series.getData().add(crData);
-//            c.getStatistics(assessment).getCRStudents().addListener(new ListChangeListener<Student>() {
-//                @Override
-//                public void onChanged(Change<? extends Student> change) {
-//                    while (change.next()) {
-//                        if (change.wasAdded() || change.wasRemoved()) {
-//                            hdData.setYValue(c.getStatistics(assessment).getPercentageOfCRs());
-//                        }
-//                    }
-//                }
-//            });
-//
-//            XYChart.Data<String, Number> pData = new XYChart.Data<>("P", c.getStatistics(assessment).getPercentageOfPs());
-//            series.getData().add(pData);
-//            c.getStatistics(assessment).getPStudents().addListener(new ListChangeListener<Student>() {
-//                @Override
-//                public void onChanged(Change<? extends Student> change) {
-//                    while (change.next()) {
-//                        if (change.wasAdded() || change.wasRemoved()) {
-//                            hdData.setYValue(c.getStatistics(assessment).getPercentageOfPs());
-//                        }
-//                    }
-//                }
-//            });
-//
-//            XYChart.Data<String, Number> fData = new XYChart.Data<>("F", c.getStatistics(assessment).getPercentageOfFs());
-//            series.getData().add(fData);
-//            c.getStatistics(assessment).getFStudents().addListener(new ListChangeListener<Student>() {
-//                @Override
-//                public void onChanged(Change<? extends Student> change) {
-//                    while (change.next()) {
-//                        if (change.wasAdded() || change.wasRemoved()) {
-//                            hdData.setYValue(c.getStatistics(assessment).getPercentageOfFs());
-//                        }
-//                    }
-//                }
-//            });
-//
-//            barChart.getData().add(series);
-//        }
-//
-//    }
 
     public void fillPieChart(PieChart pieChart) {
         Statistics stats = courseCohort.getTotalStatistics();

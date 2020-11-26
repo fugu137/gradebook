@@ -5,7 +5,7 @@ import javafx.scene.layout.VBox;
 
 public class SubAssessmentColumn<Student, Number> extends AssessmentColumn<Student, Number> implements Comparable<SubAssessmentColumn<Student, ?>> {
 
-    AssessmentSet parent;
+    private AssessmentSet parent;
 
     public SubAssessmentColumn(String name) {
         super(name);

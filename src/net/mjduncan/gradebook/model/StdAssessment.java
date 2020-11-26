@@ -13,7 +13,7 @@ import net.mjduncan.gradebook.tools.NumberRounder;
 
 public class StdAssessment implements Assessment {
 
-    private StringProperty name;
+    private final StringProperty name;
     private AssessmentType type;
     private DoubleProperty weighting;
 
@@ -26,12 +26,8 @@ public class StdAssessment implements Assessment {
     public StdAssessment(String name, AssessmentType type, Double weighting) {
         this.name = new SimpleStringProperty(name);
         this.type = type;
-//
-//        if (weighting != null) {
-            this.weighting = new SimpleDoubleProperty(weighting);
-//        } else {
-//            this.weighting = null;
-//        }
+
+        this.weighting = new SimpleDoubleProperty(weighting);
     }
 
     @Override

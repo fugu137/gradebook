@@ -12,10 +12,10 @@ import java.util.List;
 
 public class DeleteCommand implements StandardCommand {
 
-    private CourseManager courseManager;
-    private TableView<Student> table;
-    private ObservableList<Student> tableItemsCopy;
-    private ObservableList<Student> selected;
+    private final CourseManager courseManager;
+    private final TableView<Student> table;
+    private final ObservableList<Student> tableItemsCopy;
+    private final ObservableList<Student> selected;
 
     public DeleteCommand(MainController mainController, List<Student> selected) {
         this.courseManager = mainController.getCourseManager();

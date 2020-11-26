@@ -5,8 +5,8 @@ import net.mjduncan.gradebook.tools.FileManager;
 
 public class SaveGradebookCommand implements PrimitiveCommand {
 
-    private MainController mainController;
-    private FileManager fileManager;
+    private final MainController mainController;
+    private final FileManager fileManager;
 
     public SaveGradebookCommand(MainController mainController, FileManager fileManager) {
         this.mainController = mainController;

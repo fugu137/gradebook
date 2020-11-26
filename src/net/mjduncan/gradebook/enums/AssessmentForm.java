@@ -5,9 +5,9 @@ public enum AssessmentForm {
     SINGLE("Single"),
     SET("Set");
 
-    private String name;
+    private final String name;
 
-    private AssessmentForm(String name) {
+    AssessmentForm(String name) {
         this.name = name;
     }
 

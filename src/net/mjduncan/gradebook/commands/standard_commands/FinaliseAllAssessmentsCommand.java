@@ -10,8 +10,8 @@ import java.util.List;
 
 public class FinaliseAllAssessmentsCommand implements StandardCommand {
 
-    private ObservableList<Student> students;
-    private List<StandardCommand> commands;
+    private final ObservableList<Student> students;
+    private final List<StandardCommand> commands;
 
     public FinaliseAllAssessmentsCommand(ObservableList<Student> students) {
         this.students = students;

@@ -5,7 +5,7 @@ import javafx.scene.layout.VBox;
 
 public class AssessmentColumn<Student, Number> extends TableColumn<Student, Number> {
 
-    private Assessment assessment;
+    private final Assessment assessment;
 
     public AssessmentColumn(String name) {
         this(name, null);

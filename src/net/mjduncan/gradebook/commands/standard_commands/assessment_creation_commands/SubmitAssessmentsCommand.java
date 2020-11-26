@@ -11,12 +11,12 @@ import net.mjduncan.gradebook.model.AssessmentCreationBar;
 
 public class SubmitAssessmentsCommand implements StandardCommand {
 
-    private MainController mainController;
-    private AssessmentCreationController assessmentCreationController;
-    private ObservableList<AssessmentCreationBar> assessmentCreationBars;
-    private ObservableList<StandardCommand> commands;
-    private Button addAssessmentsButton;
-    private Button modifyAssessmentsButton;
+    private final MainController mainController;
+    private final AssessmentCreationController assessmentCreationController;
+    private final ObservableList<AssessmentCreationBar> assessmentCreationBars;
+    private final ObservableList<StandardCommand> commands;
+    private final Button addAssessmentsButton;
+    private final Button modifyAssessmentsButton;
 
     public SubmitAssessmentsCommand(MainController mainController, AssessmentCreationController assessmentCreationController, ObservableList<AssessmentCreationBar> assessmentCreationBars) {
         this.mainController = mainController;
@@ -42,7 +42,6 @@ public class SubmitAssessmentsCommand implements StandardCommand {
             if (bar.isActive()) {
 
                 if (bar.getAssessment() == null) {
-//                    System.out.println("Adding assessment!");
                     AddBarAssessmentSubCommand command = new AddBarAssessmentSubCommand(bar);
                     command.execute();
                     commands.add(command);
@@ -50,7 +49,6 @@ public class SubmitAssessmentsCommand implements StandardCommand {
                     assessments.add(bar.getAssessment());
 
                 } else {
-//                    System.out.println("Modifying assessment!");
                     ModifyAssessmentSubCommand command = new ModifyAssessmentSubCommand(mainController, bar);
                     command.execute();
                     commands.add(command);
@@ -67,7 +65,6 @@ public class SubmitAssessmentsCommand implements StandardCommand {
 
     @Override
     public void undo() {
-
         for (StandardCommand command : commands) {
             command.undo();
         }
@@ -75,7 +72,6 @@ public class SubmitAssessmentsCommand implements StandardCommand {
 
     @Override
     public void redo() {
-
         for (StandardCommand command : commands) {
             command.redo();
         }

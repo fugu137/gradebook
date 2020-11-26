@@ -8,10 +8,10 @@ import java.util.List;
 
 public class FinaliseColumnCommand implements StandardCommand {
 
-    private AssessmentColumn<Student, ?> column;
-    private Assessment assessment;
-    private ObservableList<Student> students;
-    private List<StandardCommand> commands;
+    private final AssessmentColumn<Student, ?> column;
+    private final Assessment assessment;
+    private final ObservableList<Student> students;
+    private final List<StandardCommand> commands;
 
     public FinaliseColumnCommand(AssessmentColumn<Student, ?> column, ObservableList<Student> students) {
         this.column = column;

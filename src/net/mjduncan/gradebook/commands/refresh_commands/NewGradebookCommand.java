@@ -4,7 +4,7 @@ import net.mjduncan.gradebook.MainController;
 
 public class NewGradebookCommand implements RefreshCommand {
 
-    MainController mainController;
+    private final MainController mainController;
 
     public NewGradebookCommand(MainController mainController) {
         this.mainController = mainController;
@@ -13,8 +13,6 @@ public class NewGradebookCommand implements RefreshCommand {
     @Override
     public void execute() {
         mainController.reset();
-//        mainController.addBlankStudent();
-//        mainController.setupStatisticsLabels();
         mainController.clearFileManager();
         mainController.initialize();
     }

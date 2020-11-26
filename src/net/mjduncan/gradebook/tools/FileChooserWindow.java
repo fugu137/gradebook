@@ -9,7 +9,6 @@ import java.util.List;
 
 public class FileChooserWindow {
 
-
     public static List<File> displayImportWindow(Window window, String title, boolean setMultiple) {
 
         FileChooser fileChooser = new FileChooser();

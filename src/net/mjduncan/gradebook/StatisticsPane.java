@@ -19,14 +19,14 @@ import net.mjduncan.gradebook.tools.CourseManager;
 
 public class StatisticsPane extends VBox {
 
-    VBox chartBox;
-    Button closeButton;
+    private VBox chartBox;
+    private Button closeButton;
 
-    BarChart<String, Number> barChart;
-    CategoryAxis xAxis;
-    NumberAxis yAxis;
+    private BarChart<String, Number> barChart;
+    private CategoryAxis xAxis;
+    private NumberAxis yAxis;
 
-    PieChart pieChart;
+    private PieChart pieChart;
 
     public StatisticsPane() {
         setStyles();
@@ -55,7 +55,7 @@ public class StatisticsPane extends VBox {
         xAxis.setLabel("Grades");
         yAxis.setLabel("Percentage of Students");
 
-        barChart = new BarChart<String, Number>(xAxis, yAxis);
+        barChart = new BarChart<>(xAxis, yAxis);
         yAxis.setAnimated(false);
 
         pieChart = new PieChart();
@@ -112,50 +112,11 @@ public class StatisticsPane extends VBox {
                 }
             }
 
-
             addTooltips();
 
         } else {
             System.out.println("Class or column not selected [statistics tab]");
         }
-
-
-//        courseManager.fillBarChartWithOverallGrades(barChart);
-
-//        if (courseManager.getClass("R11A") != null) {
-//            Assessment assessment = courseManager.getClass("R11A").getAssessments().get(0);
-//            courseManager.getClass("R11A").fillBarChartWithAssessmentGrades(barChart, assessment);
-//        }
-
-//        if (courseManager.getAssessments().size() > 0) {
-//            Assessment assessment = courseManager.getAssessments().get(0);
-//            courseManager.fillBarChartWithAssessmentGrades(barChart, assessment);
-//        }
-
-
-//        barChart.setTitle("Overall Grade Distribution");
-//
-//        ObservableList<StudentGroup> studentGroups = FXCollections.observableArrayList();
-//        studentGroups.addAll(groups);
-//        studentGroups.removeIf(s -> s.getStudents().size() < 1);
-//
-//        barChart.getData().clear();
-//        if (courseManager.getStudentGroups() != null) {
-//
-//            for (StudentGroup c : courseManager.getStudentGroups()) {
-//                XYChart.Series<String, Number> series = new XYChart.Series<>();
-//                series.setName(c.getName());
-//
-//                series.getData().add(new XYChart.Data<>("HD", c.getTotalStatistics().getPercentageOfHDs()));
-//                series.getData().add(new XYChart.Data<>("D", c.getTotalStatistics().getPercentageOfDs()));
-//                series.getData().add(new XYChart.Data<>("CR", c.getTotalStatistics().getPercentageOfCRs()));
-//                series.getData().add(new XYChart.Data<>("P", c.getTotalStatistics().getPercentageOfPs()));
-//                series.getData().add(new XYChart.Data<>("F", c.getTotalStatistics().getPercentageOfFs()));
-//
-//                barChart.getData().add(series);
-//            }
-//        }
-
     }
 
     private void addTooltips() {

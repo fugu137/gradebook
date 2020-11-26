@@ -10,11 +10,11 @@ import java.io.File;
 
 public class LoadGradebookCommand implements RefreshCommand {
 
-    private MainController mainController;
-    private boolean statsPaneShowing;
-    private ObjectProperty<FileManager> fileManager;
-    private File file;
-    private Stage stage;
+    private final MainController mainController;
+    private final boolean statsPaneShowing;
+    private final ObjectProperty<FileManager> fileManager;
+    private final File file;
+    private final Stage stage;
 
     public LoadGradebookCommand(MainController mainController, StatisticsPane statisticsPane, ObjectProperty<FileManager> fileManager, File file, Stage stage) {
         this.mainController = mainController;
@@ -33,9 +33,7 @@ public class LoadGradebookCommand implements RefreshCommand {
         fileManager.set(new FileManager());
         fileManager.getValue().load(file, mainController);
 
-//        mainController.disableSaveMenuItem(false);
         mainController.setupStatisticsLabels();
-
         stage.setTitle("Gradebook - " + file.getName());
     }
 

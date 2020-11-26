@@ -6,9 +6,9 @@ import net.mjduncan.gradebook.model.Student;
 
 public class StudentInfoViewOffCommand implements StandardCommand {
 
-    private TableColumn<Student, ?> emailColumn;
-    private TableColumn<Student, ?> sidColumn;
-    private TableColumn<Student, ?> degreeColumn;
+    private final TableColumn<Student, ?> emailColumn;
+    private final TableColumn<Student, ?> sidColumn;
+    private final TableColumn<Student, ?> degreeColumn;
 
 
     public StudentInfoViewOffCommand(TableColumn<Student, ?> emailColumn, TableColumn<Student, ?> sidColumn, TableColumn<Student, ?> degreeColumn) {

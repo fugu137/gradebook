@@ -9,15 +9,15 @@ import net.mjduncan.gradebook.model.StudentGroup;
 
 public class StatisticsFilterCommand implements StandardCommand {
 
-    private MainController mainController;
-    private ComboBox<StudentGroup> groupListBox;
-    private ComboBox<AssessmentColumn<Student, ?>> columnListBox;
+    private final MainController mainController;
+    private final ComboBox<StudentGroup> groupListBox;
+    private final ComboBox<AssessmentColumn<Student, ?>> columnListBox;
 
-    private StudentGroup oldGroup;
-    private AssessmentColumn<Student, ?> oldColumn;
+    private final StudentGroup oldGroup;
+    private final AssessmentColumn<Student, ?> oldColumn;
 
-    private StudentGroup newGroup;
-    private AssessmentColumn<Student, ?> newColumn;
+    private final StudentGroup newGroup;
+    private final AssessmentColumn<Student, ?> newColumn;
 
 
     public StatisticsFilterCommand(MainController mainController, ComboBox<StudentGroup> groupListBox, ComboBox<AssessmentColumn<Student, ?>> columnListBox, StudentGroup oldGroup, AssessmentColumn<Student, ?> oldColumn) {

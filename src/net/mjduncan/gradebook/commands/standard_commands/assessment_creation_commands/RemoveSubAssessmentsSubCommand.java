@@ -17,12 +17,12 @@ import java.util.List;
 
 public class RemoveSubAssessmentsSubCommand implements StandardCommand {
 
-    private MainController mainController;
-    private CourseManager courseManager;
-    private TableView<Student> table;
-    private AssessmentSet assessmentSet;
-    private int numberToRemove;
-    private ObservableList<StdAssessment> subAssessments;
+    private final MainController mainController;
+    private final CourseManager courseManager;
+    private final TableView<Student> table;
+    private final AssessmentSet assessmentSet;
+    private final int numberToRemove;
+    private final ObservableList<StdAssessment> subAssessments;
     private StandardCommand addSubAssessmentsCommand;
 
     RemoveSubAssessmentsSubCommand(MainController mainController, AssessmentSet assessmentSet, int newQuantity) {
@@ -36,8 +36,6 @@ public class RemoveSubAssessmentsSubCommand implements StandardCommand {
 
     @Override
     public void execute() {
-//        int oldQuantity = assessmentSet.getQuantity();
-//        int numberToRemove = oldQuantity - newQuantity;
 
         if (displayAlertAndReturnResponse(numberToRemove) == ButtonType.OK) {
 

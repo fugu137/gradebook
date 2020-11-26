@@ -10,10 +10,10 @@ import net.mjduncan.gradebook.tools.CourseManager;
 
 public class PasteCommand implements StandardCommand {
 
-    private CourseManager courseManager;
-    private TableView<Student> table;
-    private ObservableList<Student> clipBoardCopy;
-    private int index;
+    private final CourseManager courseManager;
+    private final TableView<Student> table;
+    private final ObservableList<Student> clipBoardCopy;
+    private final int index;
 
     public PasteCommand(MainController mainController) {
         this.courseManager = mainController.getCourseManager();
@@ -32,7 +32,7 @@ public class PasteCommand implements StandardCommand {
 
     @Override
     public void undo() {
-        clipBoardCopy.forEach(s -> courseManager.removeStudent(s));
+        clipBoardCopy.forEach(courseManager::removeStudent);
         table.getItems().removeAll(clipBoardCopy);
     }
 

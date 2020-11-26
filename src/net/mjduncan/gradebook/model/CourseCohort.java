@@ -13,10 +13,10 @@ import java.util.List;
 
 public class CourseCohort implements StudentGroup {
 
-    private StringProperty name;
-    private ObservableList<Student> students;
-    private ObservableList<Assessment> assessments;
-    private ObservableMap<Assessment, AssessmentStatistics> assessmentStatistics;
+    private final StringProperty name;
+    private final ObservableList<Student> students;
+    private final ObservableList<Assessment> assessments;
+    private final ObservableMap<Assessment, AssessmentStatistics> assessmentStatistics;
     private Statistics totalGradeStatistics;
 
     public CourseCohort(String name) {
@@ -119,18 +119,6 @@ public class CourseCohort implements StudentGroup {
             s.removeSubAssessmentData(assessmentSet, toRemove);
         }
     }
-
-//    public void removeSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
-//        for (Student s: students) {
-//            s.removeSubAssessmentSetData(set, oldQuantity, newQuantity);
-//        }
-//    }
-//
-//    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
-//        for (Student s: students) {
-//            s.addSubAssessments(set, oldQuantity, newQuantity);
-//        }
-//    }
 
     public ObjectProperty<Double> totalGradeMedianProperty() {
         return totalGradeStatistics.medianProperty();

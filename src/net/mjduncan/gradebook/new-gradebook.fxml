@@ -670,10 +670,10 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#printSelectedStudents" text="Print Selected Student Info" />
-                      <MenuItem mnemonicParsing="false" onAction="#printStudents" text="Print Student List" />
-                        <MenuItem mnemonicParsing="false" onAction="#printAssessmentStatistics" text="Print Assessment Statistics" />
-                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                        <MenuItem mnemonicParsing="false" onAction="#cutButtonPressed" text="Cut" />
+                        <MenuItem mnemonicParsing="false" onAction="#copyButtonPressed" text="Copy" />
+                        <MenuItem mnemonicParsing="false" onAction="#pasteButtonPressed" text="Paste" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteButtonPressed" text="Delete" />
                     </items>
                   </ContextMenu>
                </contextMenu>

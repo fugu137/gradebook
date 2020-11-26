@@ -13,10 +13,10 @@ import java.util.List;
 
 public class ClassGroup implements StudentGroup {
 
-    private StringProperty name;
-    private ObservableList<Student> students;
-    private ObservableList<Assessment> assessments;
-    private ObservableMap<Assessment, AssessmentStatistics> assessmentStatistics;
+    private final StringProperty name;
+    private final ObservableList<Student> students;
+    private final ObservableList<Assessment> assessments;
+    private final ObservableMap<Assessment, AssessmentStatistics> assessmentStatistics;
     private Statistics totalGradeStatistics;
 
     public ClassGroup(String name) {

@@ -72,7 +72,7 @@ public class MainController {
 
     //Main Layout//
     @FXML
-    HBox mainPane;
+    private HBox mainPane;
 
     //Table//
     @FXML
@@ -198,21 +198,21 @@ public class MainController {
 
 
     //Controller Variables//
-    private ObservableList<AssessmentColumn<Student, ?>> essayColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
-    private ObservableList<AssessmentColumn<Student, ?>> examColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
-    private ObservableList<AssessmentColumn<Student, ?>> essayPlanColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
-    private ObservableList<AssessmentColumn<Student, ?>> participationColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
-    private ObservableList<AssessmentColumn<Student, ?>> argAnalysisColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
-    private ObservableList<AssessmentColumn<Student, ?>> quizColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
-    private ObservableList<AssessmentColumn<Student, ?>> presentationColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
-    private ObservableList<AssessmentColumn<Student, ?>> otherColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> essayColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> examColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> essayPlanColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> participationColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> argAnalysisColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> quizColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> presentationColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
+    private final ObservableList<AssessmentColumn<Student, ?>> otherColumns = FXCollections.observableArrayList((AssessmentColumn<Student, ?> col) -> new Observable[]{col.visibleProperty()});
     private AssessmentColumn<Student, Double> totalColumn;
 
-    private CourseManager courseManager = new CourseManager("Your Course");
+    private final CourseManager courseManager = new CourseManager("Your Course");
     private Student blankStudent;
-    private ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
+    private final ObservableList<Student> clipBoardStudents = FXCollections.observableArrayList();
 
-    private CommandManager commandManager = new CommandManager();
+    private final CommandManager commandManager = new CommandManager();
 
     private ChangeListener<AssessmentColumn<Student, ?>> columnsComboBoxListener;
     private ChangeListener<StudentGroup> statisticsClassComboBoxListener;
@@ -221,14 +221,9 @@ public class MainController {
     private AssessmentCreationController assessmentCreationController;
     private Stage stage;
 
-    private ObjectProperty<FileManager> fileManager = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<FileManager> fileManager = new SimpleObjectProperty<>(null);
 
 
-//    public void setCourseManager(CourseManager newCourseManager) {
-//        this.courseManager = newCourseManager;
-//        setupClassListBox();
-//        setupStatisticsClassBox();
-//    }
 
     public CourseManager getCourseManager() {
         return courseManager;
@@ -253,29 +248,6 @@ public class MainController {
     public Student getBlankStudent() {
         return blankStudent;
     }
-//
-//    public CheckBox getAssessmentCheckBox(AssessmentType type) {
-//        switch (type) {
-//            case ESSAY:
-//                return essaysCheckBox;
-//            case ESSAY_PLAN:
-//                return essayPlansCheckBox;
-//            case EXAM:
-//                return examsCheckBox;
-//            case QUIZ:
-//                return quizzesCheckBox;
-//            case ARG_ANALYSIS:
-//                return argAnalysesCheckBox;
-//            case PRESENTATION:
-//                return presentationsCheckBox;
-//            case PARTICIPATION:
-//                return participationCheckBox;
-//            case OTHER:
-//                return otherCheckBox;
-//            default:
-//                return null;
-//        }
-//    }
 
     public AssessmentCreationController getAssessmentCreationController() throws IOException {
 
@@ -301,8 +273,6 @@ public class MainController {
     }
 
     public void initialize() {
-//        displayWelcomeWindow();
-
         loadTabPaneSettings();
 
         loadTableSettings();
@@ -315,7 +285,6 @@ public class MainController {
         loadFooterSettings();
 
         table.getItems().addAll(courseManager.getAllStudents());
-//        addDummyData();
         newBlankStudent();
     }
 
@@ -332,35 +301,13 @@ public class MainController {
         if (popup.showAndWait().isPresent()) {
             String courseName = popup.getResult();
             courseManager.setCourseName(courseName);
-//            StringProperty courseNameProperty = new SimpleStringProperty(courseName);
-//            mainStage.titleProperty().bind(Bindings.concat("Gradebook - ", courseNameProperty));
         }
     }
 
     public void newBlankStudent() {
         blankStudent = new Student();
         table.getItems().add(blankStudent);
-//
-//        addBlankStudentListeners();
     }
-
-//
-//    private void addBlankStudentListeners() {
-//
-//        blankStudent.surnameProperty().addListener(obs -> {
-//            if (!blankStudent.getSurname().isBlank()) {
-//                courseManager.newStudent(blankStudent);
-//                newBlankStudent();
-//            }
-//        });
-//
-//        blankStudent.givenNamesProperty().addListener(obs -> {
-//            if (!blankStudent.getGivenNames().isBlank()) {
-//                courseManager.newStudent(blankStudent);
-//                newBlankStudent();
-//            }
-//        });
-
 
     private void loadTabPaneSettings() {
         statisticsTab.selectedProperty().addListener(obs -> {
@@ -539,12 +486,6 @@ public class MainController {
         });
 
         genderColumn.setCellFactory(c -> new ComboBoxTableCell<>(Gender.values()));
-
-//        preferredNameColumn.setVisible(false);
-//        sidColumn.setVisible(false);
-//        degreeColumn.setVisible(false);
-//        emailColumn.setVisible(false);
-//        genderColumn.setVisible(false);
     }
 
     private void renameClass(ComboBoxTableCell<Student, ClassGroup> comboBoxCell) {
@@ -584,8 +525,6 @@ public class MainController {
 
     private void loadToolbarSettings() {
         studentViewToggleButton.setSelected(true);
-//
-//        saveMenuItem.setDisable(true);
 
         modifyAssessmentsButton.setDisable(true);
 
@@ -609,8 +548,6 @@ public class MainController {
         otherButtonBindings();
 
         setupFilterBoxes();
-//        setupClassListBox();
-//        setupGradeListBox();
         setupStatisticsLabels();
         setupStatisticsClassBox();
 
@@ -642,12 +579,6 @@ public class MainController {
         undoButton.disableProperty().bind(commandManager.undoStackEmptyProperty());
         redoButton.disableProperty().bind(commandManager.redoStackEmptyProperty());
     }
-
-//    public void refreshCourseManagerBindings() {
-//        finaliseButton.disableProperty().bind(Bindings.size(courseManager.getAssessments()).lessThan(1));
-//        selectAllButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
-//        selectNoneButton.disableProperty().bind(Bindings.size(courseManager.getAllStudents()).lessThan(1));
-//    }
 
     private void toggleButtonBindings() {
 
@@ -704,109 +635,17 @@ public class MainController {
                 anonymiseToggleButton.setSelected(false);
             }
         });
-
-
-//        studentViewToggleButton.selectedProperty().addListener(obs -> {
-//            ObservableList<TableColumn<Student, ?>> columns = table.getColumns();
-//
-//            if (studentViewToggleButton.isSelected()) {
-//                setStudentInfoView(true);
-//
-//            } else {
-//                setStudentInfoView(false);
-//            }
-//        });
-//
-//        anonymiseToggleButton.selectedProperty().addListener(obs -> {
-//
-//            if (anonymiseToggleButton.isSelected()) {
-//                studentViewToggleButton.setSelected(false);
-//
-//                surnameColumn.setVisible(false);
-//                givenNamesColumn.setVisible(false);
-//
-//            } else {
-//                studentViewToggleButton.setSelected(true);
-//            }
-//        });
     }
-
-//    private void setStudentInfoView(boolean on) {
-//        ObservableList<TableColumn<Student, ?>> columns = table.getColumns();
-//
-//        if (on) {
-//            anonymiseToggleButton.setSelected(false);
-//
-//            for (TableColumn<Student, ?> c : columns) {
-//                if (!(c instanceof AssessmentColumn)) {
-//                    c.setVisible(true);
-//                }
-//                ;
-//            }
-//
-//        } else {
-//
-//            for (TableColumn<Student, ?> c : columns) {
-//                c.setVisible(c instanceof AssessmentColumn);
-//            }
-//
-//            surnameColumn.setVisible(true);
-//            givenNamesColumn.setVisible(true);
-//            classColumn.setVisible(true);
-//            preferredNameColumn.setVisible(false);
-//            genderColumn.setVisible(false);
-//            sidColumn.setVisible(false);
-//            degreeColumn.setVisible(false);
-//            emailColumn.setVisible(false);
-//        }
-//    }
 
     private void checkBoxBindings() {
-
-//        essaysCheckBoxBinding();
-//        essayColumnBinding();
         assessmentColumnBindings(essayColumns, essaysCheckBox);
-
-//        examsCheckBoxBinding();
-//        examColumnsBinding();
         assessmentColumnBindings(examColumns, examsCheckBox);
-
-//        essayPlansCheckBoxBinding();
-//        essayPlanColumnBinding();
         assessmentColumnBindings(essayPlanColumns, essayPlansCheckBox);
-
-//        argAnalysesCheckBoxBinding();
-//        argAnalysisColumnBinding();
         assessmentColumnBindings(argAnalysisColumns, argAnalysesCheckBox);
-
-//        participationCheckBoxBinding();
-//        participationColumnBinding();
         assessmentColumnBindings(participationColumns, participationCheckBox);
-
-//        quizzesCheckBoxBinding();
-//        quizColumnBinding();
         assessmentColumnBindings(quizColumns, quizzesCheckBox);
-
-//        presentationsCheckBoxBinding();
-//        presentationColumnBinding();
         assessmentColumnBindings(presentationColumns, presentationsCheckBox);
-
-//        otherCheckBoxBinding();
-//        otherColumnBinding();
         assessmentColumnBindings(otherColumns, otherCheckBox);
-    }
-
-    private void essaysCheckBoxBinding() {
-
-        essaysCheckBox.selectedProperty().addListener(obs -> {
-            if ((essaysCheckBox.isSelected())) {
-                commandManager.execute(new ShowAssessmentColumnCommand(essayColumns), true);
-//                essayColumns.forEach(c -> c.setVisible(true));
-            } else {
-                commandManager.execute(new HideAssessmentColumnCommand(essayColumns), true);
-//                essayColumns.forEach(c -> c.setVisible(false));
-            }
-        });
     }
 
     private void assessmentColumnBindings(ObservableList<AssessmentColumn<Student, ?>> columns, CheckBox checkBox) {
@@ -841,304 +680,10 @@ public class MainController {
             }
         });
     }
-//
-//    private void essayColumnBinding() {
-//
-//        essayColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-////                if (essayColumns.size() <= 0) {
-//////                    essaysCheckBox.setDisable(true);
-////                    essaysCheckBox.setSelected(false);
-////
-////                }
-////                essaysCheckBox.setDisable(essayColumns.size() <= 0);
-//
-//                if (essayColumns.size() <= 0) {
-//                    essaysCheckBox.setSelected(false);
-//                    essaysCheckBox.setDisable(true);
-//
-//                } else {
-//                    essaysCheckBox.setDisable(false);
-//                }
-//
-//
-//                boolean allVisible = true;
-//
-//                if (essayColumns.size() > 0) {
-//                    for (AssessmentColumn<Student, ?> c : essayColumns) {
-//
-//                        if (!c.isVisible()) {
-//                            allVisible = false;
-//                            break;
-//                        }
-//                    }
-//                } else {
-//                    allVisible = false;
-//                }
-//
-//                essaysCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-
-    private void examsCheckBoxBinding() {
-
-        examsCheckBox.selectedProperty().addListener(obs -> {
-            if ((examsCheckBox.isSelected())) {
-                commandManager.execute(new ShowAssessmentColumnCommand(examColumns), true);
-//                examColumns.forEach(c -> c.setVisible(true));
-            } else {
-                commandManager.execute(new HideAssessmentColumnCommand(examColumns), true);
-//                examColumns.forEach(c -> c.setVisible(false));
-            }
-        });
-    }
-
-//    private void examColumnsBinding() {
-//
-//        examColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-//                examsCheckBox.setDisable(examColumns.size() <= 0);
-//
-//                boolean allVisible = true;
-//
-//                for (AssessmentColumn<Student, ?> c : examColumns) {
-//
-//                    if (!c.isVisible()) {
-//                        allVisible = false;
-//                        break;
-//                    }
-//                }
-//
-//                examsCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-
-    private void essayPlansCheckBoxBinding() {
-
-        essayPlansCheckBox.selectedProperty().addListener(obs -> {
-            if ((essayPlansCheckBox.isSelected())) {
-                essayColumns.forEach(c -> c.setVisible(true));
-            } else {
-                essayPlanColumns.forEach(c -> c.setVisible(false));
-            }
-        });
-    }
-
-//    private void essayPlanColumnBinding() {
-//
-//        essayPlanColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-//                essayPlansCheckBox.setDisable(essayPlanColumns.size() <= 0);
-//
-//                boolean allVisible = true;
-//
-//                for (AssessmentColumn<Student, ?> c : essayPlanColumns) {
-//
-//                    if (!c.isVisible()) {
-//                        allVisible = false;
-//                        break;
-//                    }
-//                }
-//
-//                essayPlansCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-
-    private void argAnalysesCheckBoxBinding() {
-
-        argAnalysesCheckBox.selectedProperty().addListener(obs -> {
-            if ((argAnalysesCheckBox.isSelected())) {
-                argAnalysisColumns.forEach(c -> c.setVisible(true));
-            } else {
-                argAnalysisColumns.forEach(c -> c.setVisible(false));
-            }
-        });
-    }
-
-//    private void argAnalysisColumnBinding() {
-//
-//        argAnalysisColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-//                argAnalysesCheckBox.setDisable(argAnalysisColumns.size() <= 0);
-//
-//                boolean allVisible = true;
-//
-//                for (AssessmentColumn<Student, ?> c : argAnalysisColumns) {
-//
-//                    if (!c.isVisible()) {
-//                        allVisible = false;
-//                        break;
-//                    }
-//                }
-//
-//                argAnalysesCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-
-    private void participationCheckBoxBinding() {
-
-        participationCheckBox.selectedProperty().addListener(obs -> {
-            if ((participationCheckBox.isSelected())) {
-                participationColumns.forEach(c -> c.setVisible(true));
-            } else {
-                participationColumns.forEach(c -> c.setVisible(false));
-            }
-        });
-    }
-
-//    private void participationColumnBinding() {
-//
-//        participationColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-//                participationCheckBox.setDisable(participationColumns.size() <= 0);
-//
-//                boolean allVisible = true;
-//
-//                for (AssessmentColumn<Student, ?> c : participationColumns) {
-//
-//                    if (!c.isVisible()) {
-//                        allVisible = false;
-//                        break;
-//                    }
-//                }
-//                participationCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-
-    private void quizzesCheckBoxBinding() {
-
-        quizzesCheckBox.selectedProperty().addListener(obs -> {
-            if ((quizzesCheckBox.isSelected())) {
-                quizColumns.forEach(c -> c.setVisible(true));
-                quizzesCheckBox.setSelected(true);
-            } else {
-                quizColumns.forEach(c -> c.setVisible(false));
-            }
-        });
-    }
-
-//    private void quizColumnBinding() {
-//
-//        quizColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-//                quizzesCheckBox.setDisable(quizColumns.size() <= 0);
-//
-//                boolean allVisible = true;
-//
-//                for (AssessmentColumn<Student, ?> c : quizColumns) {
-//
-//                    if (!c.isVisible()) {
-//                        allVisible = false;
-//                        break;
-//                    }
-//                }
-//                quizzesCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-
-    private void presentationsCheckBoxBinding() {
-
-        presentationsCheckBox.selectedProperty().addListener(obs -> {
-            if ((presentationsCheckBox.isSelected())) {
-                presentationColumns.forEach(c -> c.setVisible(true));
-            } else {
-                presentationColumns.forEach(c -> c.setVisible(false));
-            }
-        });
-    }
-
-//    private void presentationColumnBinding() {
-//
-//        presentationColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-//                presentationsCheckBox.setDisable(presentationColumns.size() <= 0);
-//
-//                boolean allVisible = true;
-//
-//                for (AssessmentColumn<Student, ?> c : presentationColumns) {
-//
-//                    if (!c.isVisible()) {
-//                        allVisible = false;
-//                        break;
-//                    }
-//                }
-//                presentationsCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-
-    private void otherCheckBoxBinding() {
-
-        otherCheckBox.selectedProperty().addListener(obs -> {
-            if ((otherCheckBox.isSelected())) {
-                otherColumns.forEach(c -> c.setVisible(true));
-            } else {
-                otherColumns.forEach(c -> c.setVisible(false));
-            }
-        });
-    }
-
-//    private void otherColumnBinding() {
-//
-//        otherColumns.addListener(new ListChangeListener<AssessmentColumn<Student, ?>>() {
-//            @Override
-//            public void onChanged(Change<? extends AssessmentColumn<Student, ?>> change) {
-//
-//                otherCheckBox.setDisable(otherColumns.size() <= 0);
-//
-//                boolean allVisible = true;
-//
-//                for (AssessmentColumn<Student, ?> c : otherColumns) {
-//
-//                    if (!c.isVisible()) {
-//                        allVisible = false;
-//                        break;
-//                    }
-//                }
-//                otherCheckBox.setSelected(allVisible);
-//            }
-//        });
-//    }
-//
-//    private void totalColumnBinding(AssessmentColumn<Student, ?> totalColumn) {
-//        ObservableList<CheckBox> checkBoxes = FXCollections.observableArrayList();
-//        checkBoxes.add(essaysCheckBox);
-//        checkBoxes.add(essayPlansCheckBox);
-//        checkBoxes.add(examsCheckBox);
-//        checkBoxes.add(participationCheckBox);
-//        checkBoxes.add(presentationsCheckBox);
-//        checkBoxes.add(quizzesCheckBox);
-//        checkBoxes.add(argAnalysesCheckBox);
-//        checkBoxes.add(otherCheckBox);
-//
-//    }
 
     private void setupFilterBoxes() {
         setupClassListBox();
         setupGradeListBox();
-
-//        classListBoxBinding();
-//        gradeListBoxBinding();
     }
 
     private void setupClassListBox() {
@@ -1146,76 +691,11 @@ public class MainController {
         classListBox.getSelectionModel().selectFirst();
     }
 
-
     private void setupGradeListBox() {
         List<Grade> grades = Arrays.asList(Grade.values());
         gradeListBox.getItems().addAll(grades);
         gradeListBox.getSelectionModel().selectFirst();
     }
-
-//    private void classListBoxBinding() {
-//        classListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
-//            filterByGroupSelection();
-//            filterByGradeSelection();
-//        });
-//    }
-//
-//    private void gradeListBoxBinding() {
-//        gradeListBox.getSelectionModel().selectedItemProperty().addListener(obs -> {
-//            filterByGroupSelection();
-//            filterByGradeSelection();
-//        });
-//    }
-//
-//    private void filterByGroupSelection() {
-//        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
-//
-//        if (selectedGroup != null) {
-//            table.getItems().clear();
-//            table.getItems().addAll(selectedGroup.getStudents());
-//            table.getItems().add(blankStudent);
-//        }
-//    }
-//
-//    private void filterByGradeSelection() {
-//        Grade selectedGrade = gradeListBox.getSelectionModel().getSelectedItem();
-//        StudentGroup selectedGroup = classListBox.getSelectionModel().getSelectedItem();
-//
-//        if (selectedGrade != null) {
-//            switch (selectedGrade) {
-//                case ANY:
-//                    break;
-//                case HD:
-////                    ObservableList<Student> nonHDStudents = selectedGroup.getStudents().filtered(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-////                    table.getItems().forEach(s -> {
-////                        System.out.println(selectedGroup + " contains student " + s.getSurname());
-////                        System.out.println(selectedGroup + " contains HD student " + s.getSurname() + ": " + selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-////                    });
-//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getHDStudents().contains(s));
-////                    removeIf(s -> {
-////                        if (s.getTotalGrade() == null) {
-////                            return true;
-////                        } else {
-////                            return !(s.getTotalGrade() <= 100 && s.getTotalGrade() >= 85);
-////                        }
-////                    });
-//                    break;
-//                case D:
-//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getDStudents().contains(s));
-//                    break;
-//                case CR:
-//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getCRStudents().contains(s));
-//                    break;
-//                case P:
-//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getPStudents().contains(s));
-//                    break;
-//                case F:
-//                    table.getItems().removeIf(s -> !selectedGroup.getTotalStatistics().getFStudents().contains(s));
-//                    break;
-//            }
-//            table.sort();
-//        }
-//    }
 
     public void setupStatisticsLabels() {
         StudentGroup selectedGroup = statisticsClassComboBox.getSelectionModel().getSelectedItem();
@@ -1310,9 +790,6 @@ public class MainController {
         };
 
         this.columnComboBox.getSelectionModel().selectedItemProperty().addListener(columnsComboBoxListener);
-//            setupStatisticsLabels();
-//            updateBarChart();
-
     }
 
 
@@ -1326,18 +803,11 @@ public class MainController {
                     commandManager.execute(new StatisticsFilterCommand(MainController.this, statisticsClassComboBox, columnComboBox, oldValue, column), true);
                 }
             }
-
         };
 
         statisticsClassComboBox.getSelectionModel().
-
-                selectedItemProperty().
-
-                addListener(statisticsClassComboBoxListener);
-
-//            setupStatisticsLabels();
-//            updateBarChart();
-//        });
+        selectedItemProperty().
+        addListener(statisticsClassComboBoxListener);
     }
 
     private void setupStatisticsClassBox() {
@@ -1434,16 +904,12 @@ public class MainController {
         String oldSurname = editedCell.getOldValue();
 
         if (selectedStudent == blankStudent) {
-//            courseManager.newStudent(blankStudent);
-//            newBlankStudent();
             selectedStudent.setSurname(newSurname);
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
 
         } else {
             commandManager.execute(new ChangeSurnameCommand(selectedStudent, oldSurname, newSurname), true);
         }
-
-
     }
 
     @FXML
@@ -1453,8 +919,6 @@ public class MainController {
         String oldGivenNames = editedCell.getOldValue();
 
         if (selectedStudent == blankStudent) {
-//            courseManager.newStudent(blankStudent);
-//            newBlankStudent();
             selectedStudent.setGivenNames(newGivenNames);
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
 
@@ -1470,8 +934,6 @@ public class MainController {
         String oldPreferredName = editedCell.getOldValue();
 
         if (selectedStudent == blankStudent) {
-//            courseManager.newStudent(blankStudent);
-//            newBlankStudent();
             selectedStudent.setPreferredName(newPreferredName);
             commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
 
@@ -1485,7 +947,7 @@ public class MainController {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
         ClassGroup newClassGroup = editedCell.getNewValue();
         ClassGroup oldClassGroup = editedCell.getOldValue();
-//        selectedStudent.setClassGroup(classGroup);
+
         commandManager.execute(new ChangeClassGroupCommand(selectedStudent, oldClassGroup, newClassGroup), true);
     }
 
@@ -1494,7 +956,7 @@ public class MainController {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
         Gender newGender = editedCell.getNewValue();
         Gender oldGender = editedCell.getOldValue();
-//        selectedStudent.setGender(gender);
+
         commandManager.execute(new ChangeGenderCommand(selectedStudent, oldGender, newGender), true);
     }
 
@@ -1541,15 +1003,7 @@ public class MainController {
 
     private void removeAssessmentColumns() {
         table.getColumns().removeIf(column -> column instanceof AssessmentColumn);
-//
-//        essayColumns.clear();
-//        essayPlanColumns.clear();
-//        examColumns.clear();
-//        quizColumns.clear();
-//        argAnalysisColumns.clear();
-//        participationColumns.clear();
-//        presentationColumns.clear();
-//        otherColumns.clear();
+
         columnComboBox.getItems().clear();
     }
 
@@ -1591,40 +1045,23 @@ public class MainController {
         popup.setContentText("Any unsaved student data in the current gradebook will be lost.");
 
         if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.YES) {
-//        Window window = loadMenuItem.getParentPopup().getScene().getWindow();
-//            if (statisticsPane != null) {
-//                closeStatisticsPane();
-//            }
-
             Stage stage = (Stage) table.getParent().getScene().getWindow();
-
             File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
 
             commandManager.execute(new LoadGradebookCommand(this, statisticsPane, fileManager, file, stage));
-//            fileManager = new FileManager();
-//
-//            if (file != null) {
-//                fileManager.load(file, this);
-//                saveMenuItem.setDisable(false);
-
             //TODO: reset filter comboboxes?
-            //TODO: reset statsPane (especially charts which aren't refreshed) //done?
-//                setupStatisticsLabels();
-
         }
     }
 
 
     @FXML
     public void saveGradebookItemPressed() {
-
         if (fileManager.getValue() == null || fileManager == null) {
             System.out.println("No file to save!");
 
         } else {
             commandManager.execute(new SaveGradebookCommand(this, fileManager.getValue()) {
             });
-//            fileManager.getValue().save(this);
         }
     }
 
@@ -1634,10 +1071,6 @@ public class MainController {
         File file = FileChooserWindow.displaySaveWindow(stage, "Save As...");
 
         commandManager.execute(new SaveGradebookAsCommand(this, fileManager, file, stage));
-//        fileManager.set(new FileManager());
-//        fileManager.getValue().saveAs(file, this);
-//
-//        stage.setTitle("Gradebook - " + file.getName());
     }
 
     public void clearFileManager() {
@@ -1652,10 +1085,6 @@ public class MainController {
         AssessmentCreationController assessmentSetupController = loader.getController();
         assessmentSetupController.setMainController(this);
         assessmentSetupController.setCommandManager(commandManager);
-
-//        assessmentCreationController = loader.getController();    //TODO: try
-//        assessmentCreationController.setMainController(this);
-//        assessmentCreationController.setCommandManager(commandManager);
 
         assessmentCreationWindow = new Scene(root);
 
@@ -1672,43 +1101,6 @@ public class MainController {
         stage.setTitle("Modify Assessments");
         stage.showAndWait();
     }
-
-//    public void setupAllAssessments(ObservableList<Assessment> assessments) {
-//        Map<Boolean, List<Assessment>> split = assessments.stream().collect(Collectors.partitioningBy(a -> a instanceof StdAssessment));
-//        List<StdAssessment> stdAssessments = split.get(true).stream().map(a -> (StdAssessment) a).collect(Collectors.toList());
-//        List<AssessmentSet> assessmentSets = split.get(false).stream().map(a -> (AssessmentSet) a).collect(Collectors.toList());
-//
-//        for (StdAssessment std : stdAssessments) {
-//            courseManager.assignAssessment(std);
-//            blankStudent.addStdAssessmentData(std);
-//            createStdAssessmentColumn(std);
-//        }
-//
-//        for (AssessmentSet set : assessmentSets) {
-//            courseManager.assignAssessment(set);
-//            blankStudent.addAssessmentSetData(set);
-//            createAssessmentSetColumns(set);
-//        }
-//
-//        createTotalColumn();
-//        addAssessmentsButton.setDisable(true);
-//        modifyAssessmentsButton.setDisable(false);
-//
-//        setStatusText("Assessments successfully created...", 4);
-//
-//    }
-
-//    public void setupStdAssessment(StdAssessment stdAssessment) {
-//        courseManager.assignAssessment(stdAssessment);
-//        blankStudent.addStdAssessmentData(stdAssessment);
-//        createStdAssessmentColumn(stdAssessment);
-//    }
-//
-//    public void setupAssessmentSet(AssessmentSet assessmentSet) {
-//        courseManager.assignAssessment(assessmentSet);
-//        blankStudent.addAssessmentSetData(assessmentSet);
-//        createAssessmentSetColumns(assessmentSet);
-//    }
 
     public void removeAssessment(Assessment assessment) {
         courseManager.unassignAssessment(assessment);
@@ -1809,26 +1201,6 @@ public class MainController {
 
         return subAssessmentColumns;
     }
-
-//    public void setupStdAssessments(ObservableList<StdAssessment> stdAssessments) {
-//        for (StdAssessment std : stdAssessments) {
-//            courseManager.assignAssessment(std);
-//            blankStudent.addStdAssessmentData(std);
-//            createStdAssessmentColumn(std);
-//
-//            addAssessmentsButton.setDisable(true);
-//        }
-//    }
-//
-//    public void setupAssessmentSets(ObservableList<AssessmentSet> assessmentSets) {
-//        for (AssessmentSet set : assessmentSets) {
-//            courseManager.assignAssessment(set);
-//            blankStudent.addAssessmentSetData(set);
-//            createAssessmentSetColumns(set);
-//        }
-//
-//        addAssessmentsButton.setDisable(true);
-//    }
 
     public void createStdAssessmentColumn(StdAssessment std) {
         AssessmentColumn<Student, Integer> column = new AssessmentColumn<>(std.getName(), std);
@@ -2186,7 +1558,6 @@ public class MainController {
         Alert popup = new Alert(Alert.AlertType.WARNING, "Remove " + classGroup + " from the gradebook?", ButtonType.OK, cancel);
         popup.setTitle("Remove Class");
         popup.setHeaderText("WARNING:\nRemoving a class will also remove any students in the class.");
-//        popup.setContentText("Remove " + classGroup + " from the gradebook?");
         popup.getDialogPane().getStylesheets().add(getClass().getResource("dialog-pane.css").toExternalForm());
 
         if (popup.showAndWait().isPresent() && popup.getResult().equals(ButtonType.OK)) {
@@ -2203,9 +1574,6 @@ public class MainController {
 
         } else {
             Stage stage = (Stage) statisticsButton.getParent().getScene().getWindow();
-//
-//            stage.setWidth(stage.getWidth() + 370);
-//            stage.sizeToScene();
 
             if (statisticsPane == null) {
                 statisticsPane = new StatisticsPane();
@@ -2220,13 +1588,7 @@ public class MainController {
                 statisticsPane.fillPieChart(courseManager);
 
             } else {
-//                statisticsPane = new StatisticsPane();
-//
-//                setupCloseButton(statisticsPane.getCloseButton());
-//
                 mainPane.getChildren().add(statisticsPane);
-//                statisticsPane.fillBarChart(courseManager, totalColumn, statisticsClassComboBox, columnComboBox);
-//                statisticsPane.fillPieChart(courseManager);
             }
         }
     }
@@ -2269,53 +1631,22 @@ public class MainController {
     @FXML
     public void importButtonPressed() {
         Window window = importButton.getScene().getWindow();
-
         commandManager.execute(new ImportStudentsCommand(this, window), true);
-
-//        Window window = importButton.getScene().getWindow();
-//        List<File> files = FileChooserWindow.displayImportWindow(window, "Choose a file to import from", true);
-//
-//        for (File file : files) {
-//            ObservableList<Student> students = StudentImporter.importStudents(file);
-//            courseManager.newStudents(students);
-//
-////            table.getItems().remove(blankStudent);
-//            table.getItems().addAll(students);
-////            table.getItems().add(blankStudent);
-//            table.sort();
-//        }
     }
 
     @FXML
     public void copyButtonPressed() {
         commandManager.execute(new CopyCommand(this), false);
-
-//        clipBoardStudents.clear();
-//        ObservableList<Student> toCopy = table.getSelectionModel().getSelectedItems();
-//        clipBoardStudents.addAll(StudentCloner.run(toCopy));
     }
 
     @FXML
     public void cutButtonPressed() {
         commandManager.execute(new CutCommand(this), true);
-
-//        clipBoardStudents.clear();
-//        ObservableList<Student> toCut = table.getSelectionModel().getSelectedItems();
-//        clipBoardStudents.addAll(toCut);
-//
-//        for (Student s : toCut) {
-//            courseManager.removeStudent(s);
-//        }
-//        table.getItems().removeAll(toCut);
     }
 
     @FXML
     public void pasteButtonPressed() {
         commandManager.execute(new PasteCommand(this), true);
-
-//        int index = table.getSelectionModel().getSelectedIndices().get(0);
-//        courseManager.reAddAllStudentsAt(index, clipBoardStudents);
-//        table.getItems().addAll(index, clipBoardStudents);
     }
 
     @FXML
@@ -2324,11 +1655,6 @@ public class MainController {
         selected.remove(blankStudent);
 
         commandManager.execute(new DeleteCommand(this, selected), true);
-//
-//        for (Student s : selected) {
-//            courseManager.removeStudent(s);
-//        }
-//        table.getItems().removeAll(selected);
     }
 
     @FXML
@@ -2339,10 +1665,6 @@ public class MainController {
             selected.remove(blankStudent);
 
             commandManager.execute(new DeleteCommand(this, selected), true);
-//            for (Student s : selected) {
-//                courseManager.removeStudent(s);
-//            }
-//            table.getItems().removeAll(selected);
         }
     }
 
@@ -2359,24 +1681,16 @@ public class MainController {
     @FXML
     public void finaliseButtonPressed() {
         commandManager.execute(new FinaliseAllAssessmentsCommand(courseManager.getAllStudents()), true);
-//        for (Student s : courseManager.getAllStudents()) {
-//            s.finaliseGrades();
-//        }
     }
 
     @FXML
     public void selectAllButtonPressed() {
         commandManager.execute(new SelectAllCommand(table), false);
-//        table.requestFocus();
-//        table.getSelectionModel().selectAll();
-//        table.getSelectionModel().clearSelection(table.getItems().size() - 1);
     }
 
     @FXML
     public void selectNoneButtonPressed() {
         commandManager.execute(new SelectNoneCommand(table), false);
-
-//        table.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -2496,135 +1810,60 @@ public class MainController {
 
     @FXML
     public void filterStatisticsAction() {
-
+        //TODO: remove or implement
     }
 
 
     //Test Methods//
-    public void addDummyData() {
-        ClassGroup w15A = new ClassGroup("W15A");
-        ClassGroup t17B = new ClassGroup("T17B");
-//        courseManager.addClass(w15A);
-//        courseManager.addClass(t17B);
-
-        ClassGroup r11C = new ClassGroup("R11C");
-
-        Student fred = new Student("Fredson", "Fred", "Freddie", w15A, Gender.M, 1035, "DH205", "fred@mail.com");
-        Student mary = new Student("McKillop", "Mary", "Mar", t17B, Gender.F, 2022, "LH304", "mary@mail.com");
-        Student jane = new Student("Dawson", "Jane", "J", null, Gender.F, 1090, "DH107", "jane@mail.com");
-
-        courseManager.newStudent(fred);
-        courseManager.newStudent(mary);
-        courseManager.newStudent(jane);
-
-        table.getItems().add(fred);
-        table.getItems().add(mary);
-        table.getItems().add(jane);
-
-//        StdAssessment essay = new StdAssessment("Essay", AssessmentType.ESSAY, 0.4);
-//        StdAssessment exam = new StdAssessment("Exam", AssessmentType.EXAM, 0.4);
-//        AssessmentSet quiz = new AssessmentSet("Quiz", AssessmentType.QUIZ, 0.2, 5, 4);
-////        assignedAssessments.addAssessment(essay);
-////        assignedAssessments.addAssessment(exam);
-////        assignedAssessments.addAssessmentSet(quiz);
+//    public void addDummyData() {
+//        ClassGroup w15A = new ClassGroup("W15A");
+//        ClassGroup t17B = new ClassGroup("T17B");
 //
-////        fred.addStdAssessmentData(essay);
-////        fred.addStdAssessmentData(exam);
-//        fred.addAssessmentSetData(quiz);
+//        ClassGroup r11C = new ClassGroup("R11C");
 //
-////        mary.addStdAssessmentData(essay);
-////        mary.addStdAssessmentData(exam);
-//        mary.addAssessmentSetData(quiz);
+//        Student fred = new Student("Fredson", "Fred", "Freddie", w15A, Gender.M, 1035, "DH205", "fred@mail.com");
+//        Student mary = new Student("McKillop", "Mary", "Mar", t17B, Gender.F, 2022, "LH304", "mary@mail.com");
+//        Student jane = new Student("Dawson", "Jane", "J", null, Gender.F, 1090, "DH107", "jane@mail.com");
 //
-////        jane.addStdAssessmentData(essay);
-////        jane.addStdAssessmentData(exam);
-//        jane.addAssessmentSetData(quiz);
+//        courseManager.newStudent(fred);
+//        courseManager.newStudent(mary);
+//        courseManager.newStudent(jane);
 //
-////        blankStudent.addStdAssessmentData(essay);
-////        blankStudent.addStdAssessmentData(exam);
-//        blankStudent.addAssessmentSetData(quiz);
+//        table.getItems().add(fred);
+//        table.getItems().add(mary);
+//        table.getItems().add(jane);
+//    }
 //
-////        AssessmentColumn<Student, Integer> essayColumn = new AssessmentColumn<>(essay.getName(), essay);
-////        essayColumn.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(essay));
-////        essayColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-////        table.getColumns().add(essayColumn);
-////
-////        AssessmentColumn<Student, Integer> examColumn = new AssessmentColumn<>(exam.getName(), exam);
-////        examColumn.setCellValueFactory(c -> c.getValue().stdAssessmentGradeProperty(exam));
-////        examColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-////        table.getColumns().add(examColumn);
 //
-//        for (StdAssessment q: quiz.getStdAssessments()) {
-//            AssessmentColumn<Student, Integer> quizColumn = new AssessmentColumn<>(q.getName(), q);
-//            quizColumn.setCellValueFactory(c -> c.getValue().assessmentSetGradeProperty(quiz, q));
-//            quizColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-//            table.getColumns().add(quizColumn);
-//        }
+//    @FXML
+//    public void printSelectedStudents() {
+//        table.getSelectionModel().getSelectedItems().forEach(System.out::println);
+//    }
 //
-//        AssessmentColumn<Student, Double> quizTotalColumn = new AssessmentColumn<>(quiz.getName() + " Total", quiz);
-//        quizTotalColumn.setCellValueFactory(c -> c.getValue().assessmentSetTotalGradeProperty(quiz));
-//        table.getColumns().add(quizTotalColumn);
+//    @FXML
+//    public void printStudents() {
+//        System.out.println("Enrolled Students");
+//        courseManager.getAllStudents().forEach(System.out::println);
+//        System.out.println();
 //
-//        AssessmentColumn<Student, Double> totalColumn = new AssessmentColumn<>("Total Mark");
-//        totalColumn.setCellValueFactory(c -> c.getValue().totalGradeProperty());
-//        table.getColumns().add(totalColumn);
-
-    }
-
-
-    @FXML
-    public void printSelectedStudents() {
-        table.getSelectionModel().getSelectedItems().forEach(System.out::println);
-    }
-
-    @FXML
-    public void printStudents() {
-        System.out.println("Enrolled Students");
-        courseManager.getAllStudents().forEach(System.out::println);
-        System.out.println();
-
-        System.out.println("Table Students");
-        ObservableList<Student> students = table.getItems();
-        students.forEach(System.out::println);
-    }
-
-    @FXML
-    public void printAssessmentStatistics() {
-
-        System.out.println("Ave = " + courseManager.getCourseCohort().totalGradeAverageProperty().getValue());
-        System.out.println("N = " + courseManager.getCourseCohort().numberAttemptedProperty().getValue());
-
-//        for (StudentGroup c : classListBox.getItems()) {
-//            System.out.println(c.getName());
-//            c.getAssessments().forEach(a -> {
-//                System.out.println(a.getName() + ":");
-//                System.out.println("number of HDs = " + c.getStatistics(a).numberOfHDs());
-//                System.out.println("number of Ds = " + c.getStatistics(a).numberOfDs());
-//                System.out.println("number of CRs = " + c.getStatistics(a).numberOfCRs());
-//                System.out.println("number of Ps = " + c.getStatistics(a).numberOfPs());
-//                System.out.println("number of Fs = " + c.getStatistics(a).numberOfFs());
-//                System.out.println("Number of compeleted assessments = " + c.getNumberAttempted(a));
-//                System.out.println("Number of students = " + c.getNumberOfStudents());
-//                System.out.println();
-//            });
+//        System.out.println("Table Students");
+//        ObservableList<Student> students = table.getItems();
+//        students.forEach(System.out::println);
+//    }
 //
-//            System.out.println("Total Grade:");
-//            System.out.println("number of HDs = " + c.getTotalStatistics().numberOfHDs());
-//            System.out.println("number of Ds = " + c.getTotalStatistics().numberOfDs());
-//            System.out.println("number of CRs = " + c.getTotalStatistics().numberOfCRs());
-//            System.out.println("number of Ps = " + c.getTotalStatistics().numberOfPs());
-//            System.out.println("number of Fs = " + c.getTotalStatistics().numberOfFs());
-//            System.out.println();
-//        }
-    }
-
-    @FXML
-    public void viewHistory() {
-        System.out.println("Undo Stack");
-        System.out.println(commandManager.getUndoStack());
-        System.out.println("Redo Stack");
-        System.out.println(commandManager.getRedoStack());
-    }
+//    @FXML
+//    public void printAssessmentStatistics() {
+//        System.out.println("Ave = " + courseManager.getCourseCohort().totalGradeAverageProperty().getValue());
+//        System.out.println("N = " + courseManager.getCourseCohort().numberAttemptedProperty().getValue());
+//    }
+//
+//    @FXML
+//    public void viewHistory() {
+//        System.out.println("Undo Stack");
+//        System.out.println(commandManager.getUndoStack());
+//        System.out.println("Redo Stack");
+//        System.out.println(commandManager.getRedoStack());
+//    }
 }
 
 

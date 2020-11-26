@@ -10,10 +10,10 @@ import net.mjduncan.gradebook.tools.CourseManager;
 
 public class AddAssessmentSubCommand implements StandardCommand {
 
-    private MainController mainController;
-    private Assessment assessment;
-    private CourseManager courseManager;
-    private Student blankStudent;
+    private final MainController mainController;
+    private final Assessment assessment;
+    private final CourseManager courseManager;
+    private final Student blankStudent;
 
     public AddAssessmentSubCommand(MainController mainController, Assessment assessment) {
         this.mainController = mainController;
@@ -47,7 +47,7 @@ public class AddAssessmentSubCommand implements StandardCommand {
         if (assessment instanceof StdAssessment) {
             StdAssessment std = (StdAssessment) assessment;
 
-            courseManager.unassignAssessment(std); //TODO: check
+            courseManager.unassignAssessment(std);
             blankStudent.removeAssessmentData(std);
             mainController.removeStdAssessmentColumn(std);
         }
@@ -55,7 +55,7 @@ public class AddAssessmentSubCommand implements StandardCommand {
         if (assessment instanceof AssessmentSet) {
             AssessmentSet set = (AssessmentSet) assessment;
 
-            courseManager.unassignAssessment(set); //TODO: check
+            courseManager.unassignAssessment(set);
             blankStudent.removeAssessmentData(set);
             mainController.removeAssessmentSetColumns(set);
         }

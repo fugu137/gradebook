@@ -4,7 +4,7 @@ import net.mjduncan.gradebook.model.StdAssessmentData;
 
 public class FinaliseStdAssessmentDataSubCommand implements StandardCommand {
 
-    private StdAssessmentData data;
+    private final StdAssessmentData data;
     private boolean wasChanged = false;
 
     FinaliseStdAssessmentDataSubCommand(StdAssessmentData data) {

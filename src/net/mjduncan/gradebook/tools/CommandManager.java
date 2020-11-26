@@ -11,10 +11,10 @@ import java.util.Deque;
 
 public class CommandManager {
 
-    Deque<StandardCommand> undoStack;
-    Deque<StandardCommand> redoStack;
-    BooleanProperty undoStackEmpty;
-    BooleanProperty redoStackEmpty;
+    private final Deque<StandardCommand> undoStack;
+    private final Deque<StandardCommand> redoStack;
+    private final BooleanProperty undoStackEmpty;
+    private final BooleanProperty redoStackEmpty;
 
     public CommandManager() {
         undoStack = new ArrayDeque<>();

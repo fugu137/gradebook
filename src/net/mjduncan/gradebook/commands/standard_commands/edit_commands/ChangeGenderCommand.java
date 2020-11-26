@@ -6,9 +6,9 @@ import net.mjduncan.gradebook.model.Student;
 
 public class ChangeGenderCommand implements StandardCommand {
 
-    private Student student;
-    private Gender oldGender;
-    private Gender newGender;
+    private final Student student;
+    private final Gender oldGender;
+    private final Gender newGender;
 
     public ChangeGenderCommand(Student student, Gender oldGender, Gender newGender) {
         this.student = student;

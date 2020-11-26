@@ -6,7 +6,7 @@ import net.mjduncan.gradebook.model.AssessmentCreationBar;
 
 public class AddBarAssessmentSubCommand implements StandardCommand {
 
-    private AssessmentCreationBar bar;
+    private final AssessmentCreationBar bar;
     private Assessment assessment;
 
     AddBarAssessmentSubCommand(AssessmentCreationBar bar) {

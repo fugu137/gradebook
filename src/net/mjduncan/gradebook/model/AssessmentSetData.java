@@ -12,9 +12,9 @@ import java.util.List;
 
 public class AssessmentSetData implements AssessmentData {
 
-    private AssessmentSet assessmentSet;
-    private ObservableList<StdAssessmentData> stdAssessmentDataList;
-    private ObjectProperty<Double> assessmentSetTotalGrade;
+    private final AssessmentSet assessmentSet;
+    private final ObservableList<StdAssessmentData> stdAssessmentDataList;
+    private final ObjectProperty<Double> assessmentSetTotalGrade;
 
     public AssessmentSetData(AssessmentSet assessmentSet) {
         this.assessmentSet = assessmentSet;
@@ -64,10 +64,6 @@ public class AssessmentSetData implements AssessmentData {
 
         return gradeList;
     }
-
-//    public AssessmentSet getAssessmentSet() {
-//        return assessmentSet;
-//    }
 
     public ObjectProperty<Integer> assessmentGradeProperty(StdAssessment stdAssessment) {
         ObjectProperty<Integer> grade = null;
@@ -132,28 +128,6 @@ public class AssessmentSetData implements AssessmentData {
         }
         updateAssessmentSetTotalGrade();
     }
-
-//    public void addSubAssessments(int oldQuantity, int newQuantity) {
-//        int number = newQuantity - oldQuantity;
-//
-//        for (int i = 0; i < number; i++) {
-//            String name = assessmentSet.getName() + " " + (oldQuantity + 1 + i);
-//            AssessmentType type = assessmentSet.getType();
-//
-//            StdAssessment std = new StdAssessment(name, type, null);
-//
-//            stdAssessmentDataList.add(new StdAssessmentData(std));
-//        }
-//    }
-//
-//    public void removeSubAssessmentGrades(int oldQuantity, int newQuantity) {
-//        List<StdAssessmentData> toRemove = new ArrayList<>();
-//
-//        for (int i = oldQuantity - 1; i > newQuantity - 1; i--) {
-//            toRemove.add(stdAssessmentDataList.get(i));
-//        }
-////        stdAssessmentDataList.removeAll(toRemove);
-//    }
 
     @Override
     public ObjectProperty<Double> gradeProperty() {

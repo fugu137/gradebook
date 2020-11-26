@@ -10,12 +10,12 @@ import net.mjduncan.gradebook.model.StudentGroup;
 
 public class FilterByClassAndGradeCommand implements StandardCommand {
 
-    private MainController mainController;
-    private ComboBox<StudentGroup> classListBox;
-    private ComboBox<Grade> gradeListBox;
+    private final MainController mainController;
+    private final ComboBox<StudentGroup> classListBox;
+    private final ComboBox<Grade> gradeListBox;
 
-    private StudentGroup selectedGroupCopy;
-    private Grade selectedGradeCopy;
+    private final StudentGroup selectedGroupCopy;
+    private final Grade selectedGradeCopy;
 
     private StandardCommand groupFilterCommand;
     private StandardCommand gradeFilterCommand;

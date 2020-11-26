@@ -9,10 +9,10 @@ import net.mjduncan.gradebook.tools.CourseManager;
 
 public class RemoveAssessmentsSubCommand implements StandardCommand {
 
-    private MainController mainController;
-    private CourseManager courseManager;
-    private Student blankStudent;
-    private ObservableList<Assessment> assessmentsToRemove;
+    private final MainController mainController;
+    private final CourseManager courseManager;
+    private final Student blankStudent;
+    private final ObservableList<Assessment> assessmentsToRemove;
 
     RemoveAssessmentsSubCommand(MainController mainController, ObservableList<Assessment> assessmentsToRemove) {
         this.mainController = mainController;

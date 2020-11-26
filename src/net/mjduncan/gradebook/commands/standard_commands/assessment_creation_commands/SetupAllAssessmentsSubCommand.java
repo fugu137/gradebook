@@ -9,11 +9,11 @@ import net.mjduncan.gradebook.model.Assessment;
 
 public class SetupAllAssessmentsSubCommand implements StandardCommand {
 
-    private MainController mainController;
-    private ObservableList<Assessment> assessments;
-    private Button addAssessmentsButton;
-    private Button modifyAssessmentsButton;
-    private boolean addAssessmentsButtonWasOn;
+    private final MainController mainController;
+    private final ObservableList<Assessment> assessments;
+    private final Button addAssessmentsButton;
+    private final Button modifyAssessmentsButton;
+    private final boolean addAssessmentsButtonWasOn;
 
     private ObservableList<StandardCommand> commands;
 

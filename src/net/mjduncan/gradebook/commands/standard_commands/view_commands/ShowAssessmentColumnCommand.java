@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class ShowAssessmentColumnCommand implements StandardCommand {
 
-    ObservableList<AssessmentColumn<Student, ?>> checkBoxColumns;
-    Map<AssessmentColumn<Student, ?>, Boolean> visibilityMap;
+    private final ObservableList<AssessmentColumn<Student, ?>> checkBoxColumns;
+    private final Map<AssessmentColumn<Student, ?>, Boolean> visibilityMap;
 
     public ShowAssessmentColumnCommand(ObservableList<AssessmentColumn<Student, ?>> checkBoxColumns) {
         this.checkBoxColumns = checkBoxColumns;

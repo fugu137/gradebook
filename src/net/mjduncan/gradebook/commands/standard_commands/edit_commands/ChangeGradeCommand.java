@@ -7,11 +7,11 @@ import net.mjduncan.gradebook.model.Student;
 
 public class ChangeGradeCommand implements StandardCommand {
 
-    private AssessmentSet assessmentSet;
-    private StdAssessment stdAssessment;
-    private Student student;
-    private Integer oldGrade;
-    private Integer newGrade;
+    private final AssessmentSet assessmentSet;
+    private final StdAssessment stdAssessment;
+    private final Student student;
+    private final Integer oldGrade;
+    private final Integer newGrade;
 
     public ChangeGradeCommand(StdAssessment stdAssessment, Student student, Integer oldGrade, Integer newGrade) {
         this(null, stdAssessment, student, oldGrade, newGrade);
@@ -28,11 +28,9 @@ public class ChangeGradeCommand implements StandardCommand {
     @Override
     public void execute() {
         if (assessmentSet == null) {
-//            student.stdAssessmentGradeProperty(stdAssessment).set(newGrade);
             student.setStdAssessmentGrade(stdAssessment, newGrade);
 
         } else {
-//            student.assessmentSetGradeProperty(assessmentSet, stdAssessment).set(newGrade);
             student.setSubAssessmentGrade(assessmentSet, stdAssessment, newGrade);
         }
     }

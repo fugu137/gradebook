@@ -8,8 +8,8 @@ import net.mjduncan.gradebook.model.Student;
 
 public class SelectNoneCommand implements StandardCommand {
 
-    private TableView<Student> table;
-    private ObservableList<Student> selectedStudentsCopy;
+    private final TableView<Student> table;
+    private final ObservableList<Student> selectedStudentsCopy;
 
     public SelectNoneCommand(TableView<Student> table) {
         this.table = table;

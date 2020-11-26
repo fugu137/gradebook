@@ -159,7 +159,7 @@ public class AssessmentCreationController implements Initializable {
     //Control//
     private MainController mainController;
     private CommandManager commandManager;
-    private ObservableList<AssessmentCreationBar> assessmentCreationBars = FXCollections.observableArrayList();
+    private final ObservableList<AssessmentCreationBar> assessmentCreationBars = FXCollections.observableArrayList();
 
     NumberStringConverter converter = new NumberStringConverter();
 
@@ -361,46 +361,12 @@ public class AssessmentCreationController implements Initializable {
             alert.showAndWait();
 
         } else {
-//            System.out.println("Creating assessments...");
             commandManager.execute(new SubmitAssessmentsCommand(mainController, this, assessmentCreationBars), true);
 
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.close();
-
-
-//            for (AssessmentCreationBar bar: assessmentCreationBars) {
-//                bar.disableQuantityAndBestOfFields();
-//            }
         }
     }
-
-
-//    private void submitAssessments() {
-//        ObservableList<Assessment> assessments = FXCollections.observableArrayList();
-//
-//        for (AssessmentCreationBar bar : assessmentCreationBars) {
-//            if (bar.isActive()) {
-//
-//                if (bar.getAssessment() == null) {
-//                    bar.createAssessment();
-//                    assessments.add(bar.getAssessment());
-//                    bar.getFormComboBox().setDisable(true);
-//
-//                } else {
-//                    if (bar.modifyAssessment()) {
-//                        int quantity = bar.getQuantity();
-//                        mainController.changeAssessmentSetQuantity((AssessmentSet) bar.getAssessment(), quantity);
-//                    }
-//                }
-//            }
-//        }
-//        assessmentsToRemove.forEach(a -> mainController.removeAssessment(a));
-//        mainController.setupAllAssessments(assessments);
-//
-////        for (AssessmentCreationBar bar: assessmentCreationBars) {
-////            bar.disableQuantityAndBestOfFields();
-////        }
-//    }
 
     public void submitAssessmentsWithoutClick() {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList();
@@ -433,13 +399,6 @@ public class AssessmentCreationController implements Initializable {
         if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {//TODO: remove at this stage, not later?
             Assessment assessment = bar.clear();
             assessmentsToRemove.add(assessment);
-
         }
-
-
-
-//        if (assessment != null) {
-//            mainController.removeAssessment(assessment);
-//        }
     }
 }

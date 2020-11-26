@@ -12,12 +12,12 @@ import net.mjduncan.gradebook.tools.NumberRounder;
 
 public class AssessmentSet implements Assessment {
 
-    private StringProperty name;
+    private final StringProperty name;
     private ObservableList<StdAssessment> stdAssessments;
     private AssessmentType type;
-    private DoubleProperty weighting;
-    private IntegerProperty quantity;
-    private IntegerProperty bestOf;
+    private final DoubleProperty weighting;
+    private final IntegerProperty quantity;
+    private final IntegerProperty bestOf;
 
     public AssessmentSet(String name, AssessmentType type, Double weighting, Integer quantity, Integer bestOf) {
         this.name = new SimpleStringProperty(name);

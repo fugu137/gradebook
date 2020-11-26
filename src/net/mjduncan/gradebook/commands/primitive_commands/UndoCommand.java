@@ -4,7 +4,7 @@ import net.mjduncan.gradebook.tools.CommandManager;
 
 public class UndoCommand implements PrimitiveCommand {
 
-    private CommandManager commandManager;
+    private final CommandManager commandManager;
 
     public UndoCommand(CommandManager commandManager) {
         this.commandManager = commandManager;

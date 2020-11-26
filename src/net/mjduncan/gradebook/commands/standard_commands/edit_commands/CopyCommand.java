@@ -10,8 +10,8 @@ import net.mjduncan.gradebook.tools.StudentCloner;
 
 public class CopyCommand implements StandardCommand {
 
-    private MainController mainController;
-    private TableView<Student> table;
+    private final MainController mainController;
+    private final TableView<Student> table;
     private ObservableList<Student> clipBoardCopy;
 
     public CopyCommand(MainController mainController) {

@@ -11,11 +11,11 @@ import net.mjduncan.gradebook.tools.CourseManager;
 
 public class AddSubAssessmentsSubCommand implements StandardCommand {
 
-    private MainController mainController;
-    private CourseManager courseManager;
-    private AssessmentSet assessmentSet;
-    private int newQuantity;
-    private ObservableList<StdAssessment> subAssessments;
+    private final MainController mainController;
+    private final CourseManager courseManager;
+    private final AssessmentSet assessmentSet;
+    private final int newQuantity;
+    private final ObservableList<StdAssessment> subAssessments;
 
     AddSubAssessmentsSubCommand(MainController mainController, AssessmentSet assessmentSet, int newQuantity) {
         this.mainController = mainController;
@@ -48,10 +48,7 @@ public class AddSubAssessmentsSubCommand implements StandardCommand {
         courseManager.unassignSubAssessments(assessmentSet, subAssessments);
         mainController.getBlankStudent().removeSubAssessmentData(assessmentSet, subAssessments);
 
-        subAssessments.forEach(s -> {
-            mainController.removeStdAssessmentColumn(s);
-        });
-
+        subAssessments.forEach(mainController::removeStdAssessmentColumn);
     }
 
     @Override

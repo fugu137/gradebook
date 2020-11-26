@@ -15,11 +15,11 @@ import java.util.List;
 
 public class ImportStudentsCommand implements StandardCommand {
 
-    private CourseManager courseManager;
-    private TableView<Student> table;
-    private Student blankStudent;
-    private Window window;
-    private ObservableList<Student> tableStudentsCopy;
+    private final CourseManager courseManager;
+    private final TableView<Student> table;
+    private final Student blankStudent;
+    private final Window window;
+    private final ObservableList<Student> tableStudentsCopy;
     private ObservableList<Student> tableStudentsForRedo;
 
     public ImportStudentsCommand(MainController mainController, Window window) {

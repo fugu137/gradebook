@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AssessmentStatistics extends Statistics {
 
-    private Assessment assessment;
+    private final Assessment assessment;
 
     public AssessmentStatistics(ObservableList<Student> classStudents, Assessment assessment) {
         super(classStudents);
@@ -58,9 +58,9 @@ public class AssessmentStatistics extends Statistics {
 
     @Override
     public void fillBarChart(BarChart<String, Number> barChart, StudentGroup group) {
-        super.barChart = barChart;
-        super.barChart.setTitle(assessment.columnName());
-        addChartData(super.barChart, group);
+        super.setBarChart(barChart);
+        super.getBarChart().setTitle(assessment.columnName());
+        addChartData(super.getBarChart(), group);
     }
 
 

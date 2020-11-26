@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class AnonymiseOnCommand implements StandardCommand {
 
-    private ObservableList<TableColumn<Student, ?>> infoColumns;
-    private Map<TableColumn<Student, ?>, Boolean> visibilityMap;
+    private final ObservableList<TableColumn<Student, ?>> infoColumns;
+    private final Map<TableColumn<Student, ?>, Boolean> visibilityMap;
 
     public AnonymiseOnCommand(ObservableList<TableColumn<Student, ?>> infoColumns) {
         this.infoColumns = infoColumns;

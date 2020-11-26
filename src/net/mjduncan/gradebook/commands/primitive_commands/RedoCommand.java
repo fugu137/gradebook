@@ -4,7 +4,7 @@ import net.mjduncan.gradebook.tools.CommandManager;
 
 public class RedoCommand implements PrimitiveCommand {
 
-    private CommandManager commandManager;
+    private final CommandManager commandManager;
 
     public RedoCommand(CommandManager commandManager) {
         this.commandManager = commandManager;

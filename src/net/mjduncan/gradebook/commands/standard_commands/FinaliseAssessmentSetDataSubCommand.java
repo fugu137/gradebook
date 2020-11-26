@@ -8,8 +8,8 @@ import java.util.List;
 
 public class FinaliseAssessmentSetDataSubCommand implements StandardCommand {
 
-    private AssessmentSetData data;
-    private List<StandardCommand> subAssessmentFinaliseCommands;
+    private final AssessmentSetData data;
+    private final List<StandardCommand> subAssessmentFinaliseCommands;
 
     FinaliseAssessmentSetDataSubCommand(AssessmentSetData data) {
         this.data = data;
