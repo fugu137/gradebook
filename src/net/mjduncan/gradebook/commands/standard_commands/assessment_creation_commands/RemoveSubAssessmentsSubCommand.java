@@ -45,7 +45,6 @@ public class RemoveSubAssessmentsSubCommand implements StandardCommand {
             List<SubAssessmentColumn<Student, ?>> columnsToRemove = FXCollections.observableArrayList();
 
             for (int i = subAssessmentColumns.size() - numberToRemove; i <= subAssessmentColumns.size() - 1; i++) {
-
                 SubAssessmentColumn<Student, ?> columnToRemove = subAssessmentColumns.get(i);
                 columnsToRemove.add(columnToRemove);
 

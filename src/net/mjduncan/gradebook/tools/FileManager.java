@@ -146,8 +146,6 @@ public class FileManager {
 //                        assessments = getAssessments(stdAssessments, assessmentSets);
 //                    }
                     if (lineNumber == 1 && !(stdAssessments[0].isBlank() && assessmentSets[0].isBlank())) {
-                        System.out.println("Adding assessments...");
-
                         addAssessments(mainController, stdAssessmentMap, assessmentSetMap, stdAssessments, assessmentSets);
                     }
 

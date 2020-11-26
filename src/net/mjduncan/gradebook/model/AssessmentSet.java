@@ -33,7 +33,7 @@ public class AssessmentSet implements Assessment {
         this.stdAssessments = FXCollections.observableArrayList();
 
         for (int i = 0; i < quantity.getValue(); i++) {
-            stdAssessments.add(new StdAssessment(name.getValue() + " " + (i + 1), type, null));
+            stdAssessments.add(StdAssessment.newSubAssessment(name.getValue() + " " + (i + 1), type));
         }
     }
 

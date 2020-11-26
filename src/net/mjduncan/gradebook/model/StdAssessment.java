@@ -17,16 +17,21 @@ public class StdAssessment implements Assessment {
     private AssessmentType type;
     private DoubleProperty weighting;
 
+    private StdAssessment(String name, AssessmentType type) {
+        this.name = new SimpleStringProperty(name);
+        this.type = type;
+        this.weighting = null;
+    }
+
     public StdAssessment(String name, AssessmentType type, Double weighting) {
         this.name = new SimpleStringProperty(name);
         this.type = type;
-
-        if (weighting != null) {
+//
+//        if (weighting != null) {
             this.weighting = new SimpleDoubleProperty(weighting);
-        } else {
-            this.weighting = null;
-        }
-
+//        } else {
+//            this.weighting = null;
+//        }
     }
 
     @Override
@@ -88,6 +93,10 @@ public class StdAssessment implements Assessment {
         } else {
             return null;
         }
+    }
+
+    public static StdAssessment newSubAssessment(String name, AssessmentType type) {
+        return new StdAssessment(name, type);
     }
 
 }

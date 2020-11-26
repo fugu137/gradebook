@@ -42,6 +42,7 @@ public class SetupAllAssessmentsSubCommand implements StandardCommand {
         addAssessmentsButton.setDisable(true);
         modifyAssessmentsButton.setDisable(false);
         mainController.setStatusText("Assessments successfully created...", 4);
+        mainController.setupStatisticsLabels();
     }
 
     @Override

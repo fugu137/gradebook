@@ -157,11 +157,6 @@ public class Student {
         this.email.set(email);
     }
 
-    public Grades getGrades() {
-        return grades;
-    }
-
-
 
     //Main Methods//
     public void addStdAssessmentData(StdAssessment stdAssessment) {

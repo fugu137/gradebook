@@ -34,7 +34,7 @@ public class AddSubAssessmentsSubCommand implements StandardCommand {
             String name = assessmentSet.getName() + " " + (assessmentSet.getQuantity() + 1);
             System.out.println("Name of quiz: " + name);
             AssessmentType type = assessmentSet.getType();
-            StdAssessment subAssessment = new StdAssessment(name, type, null);
+            StdAssessment subAssessment = StdAssessment.newSubAssessment(name, type);
 
             courseManager.assignNewSubAssessment(assessmentSet, subAssessment);
             mainController.getBlankStudent().addSubAssessmentData(assessmentSet, subAssessment);

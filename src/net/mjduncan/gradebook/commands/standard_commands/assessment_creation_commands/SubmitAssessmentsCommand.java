@@ -42,7 +42,7 @@ public class SubmitAssessmentsCommand implements StandardCommand {
             if (bar.isActive()) {
 
                 if (bar.getAssessment() == null) {
-                    System.out.println("Adding assessment!");
+//                    System.out.println("Adding assessment!");
                     AddBarAssessmentSubCommand command = new AddBarAssessmentSubCommand(bar);
                     command.execute();
                     commands.add(command);
@@ -50,7 +50,7 @@ public class SubmitAssessmentsCommand implements StandardCommand {
                     assessments.add(bar.getAssessment());
 
                 } else {
-                    System.out.println("Modifying assessment!");
+//                    System.out.println("Modifying assessment!");
                     ModifyAssessmentSubCommand command = new ModifyAssessmentSubCommand(mainController, bar);
                     command.execute();
                     commands.add(command);

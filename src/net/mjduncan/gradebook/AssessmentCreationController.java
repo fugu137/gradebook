@@ -361,7 +361,7 @@ public class AssessmentCreationController implements Initializable {
             alert.showAndWait();
 
         } else {
-            System.out.println("Creating assessments...");
+//            System.out.println("Creating assessments...");
             commandManager.execute(new SubmitAssessmentsCommand(mainController, this, assessmentCreationBars), true);
 
             Stage stage = (Stage) submitButton.getScene().getWindow();

@@ -17,7 +17,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -63,12 +62,13 @@ import net.mjduncan.gradebook.tools.FileManager;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
 import java.util.stream.Collectors;
 
-public class MainController implements Initializable {
+public class MainController {
 
     //Main Layout//
     @FXML
@@ -300,8 +300,7 @@ public class MainController implements Initializable {
         return assessmentCreationController;
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
 //        displayWelcomeWindow();
 
         loadTabPaneSettings();
@@ -1532,7 +1531,7 @@ public class MainController implements Initializable {
         removeAssessmentColumns();
         courseManager.clear();
         assessmentCreationController = null;
-
+        addAssessmentsButton.setDisable(false);
     }
 
     private void clearTable() {
@@ -1731,7 +1730,7 @@ public class MainController implements Initializable {
             for (int i = 0; i < number; i++) {
                 String name = assessmentSet.getName() + " " + (assessmentSet.getQuantity() + 1);
                 AssessmentType type = assessmentSet.getType();
-                StdAssessment subAssessment = new StdAssessment(name, type, null);
+                StdAssessment subAssessment = StdAssessment.newSubAssessment(name, type);
 
                 courseManager.assignNewSubAssessment(assessmentSet, subAssessment);
                 createSubAssessmentColumn(assessmentSet, subAssessment);

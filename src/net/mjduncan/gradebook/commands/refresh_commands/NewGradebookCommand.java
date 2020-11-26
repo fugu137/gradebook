@@ -13,8 +13,9 @@ public class NewGradebookCommand implements RefreshCommand {
     @Override
     public void execute() {
         mainController.reset();
-        mainController.addBlankStudent();
-        mainController.setupStatisticsLabels();
+//        mainController.addBlankStudent();
+//        mainController.setupStatisticsLabels();
         mainController.clearFileManager();
+        mainController.initialize();
     }
 }

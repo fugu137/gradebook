@@ -593,7 +593,7 @@
                                        <children>
                                           <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
                                              <children>
-                                                <Label text="Number">
+                                                <Label text="Students">
                                                    <font>
                                                       <Font size="12.5" />
                                                    </font>

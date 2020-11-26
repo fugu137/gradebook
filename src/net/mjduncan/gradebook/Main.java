@@ -12,7 +12,7 @@ import java.awt.*;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("new-gradebook.fxml"));
         primaryStage.setTitle("Gradebook");
         primaryStage.getIcons().add(new Image("\\resources\\icons\\favicon5.png"));
@@ -26,6 +26,7 @@ public class Main extends Application {
 
     }
 
+    //TODO: remove "if x instanceof y..." calls where possible (replacing by shared interface/superclass methods)
 
     public static void main(String[] args) {
         launch(args);

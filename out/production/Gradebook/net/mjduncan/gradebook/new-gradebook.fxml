@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="900.0" prefWidth="1440.0" stylesheets="@explorer-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mjduncan.gradebook.MainController">
+   <children>
+      <TabPane fx:id="tabPane" maxHeight="117.0" minHeight="117.0" prefHeight="117.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab id="left-tab" disable="true">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+               <graphic>
+                  <MenuButton contentDisplay="TEXT_ONLY" mnemonicParsing="false" styleClass="left-tab-button" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#newGradebookItemPressed" text="New..." />
+                      <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" onAction="#loadGradebookItemPressed" text="Load..." />
+                      <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveGradebookItemPressed" text="Save" />
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveGradebookAsItemPressed" text="Save As..." />
+                    </items>
+                  </MenuButton>
+               </graphic>
+          </Tab>
+          <Tab id="second-from-left-tab" text="Home">
+               <content>
+                  <HBox prefHeight="100.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox alignment="TOP_CENTER">
+                                       <children>
+                                          <SplitMenuButton fx:id="importButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#importButtonPressed" styleClass="toolbar-split-button" text="Import">
+                                            <items>
+                                              <MenuItem mnemonicParsing="false" text="Import..." />
+                                            </items>
+                                             <graphic>
+                                                <ImageView pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../resources/icons/337772-2.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <padding>
+                                                <Insets bottom="1.0" left="1.0" />
+                                             </padding>
+                                             <tooltip>
+                                                <Tooltip text="Import students from class roll" />
+                                             </tooltip>
+                                          </SplitMenuButton>
+                                       </children>
+                                       <padding>
+                                          <Insets left="12.0" top="1.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <Separator opacity="0.8" orientation="VERTICAL">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="copyButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#copyButtonPressed" styleClass="toolbar-button" text="Copy">
+                                       <graphic>
+                                          <ImageView pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../resources/icons/256239-4.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="cutButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" layoutX="68.0" layoutY="11.0" mnemonicParsing="false" onAction="#cutButtonPressed" styleClass="toolbar-button" text="Cut">
+                                       <graphic>
+                                          <ImageView pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../resources/icons/654077-4.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="pasteButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="2.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#pasteButtonPressed" styleClass="toolbar-button" text="Paste">
+                                       <graphic>
+                                          <ImageView pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../resources/icons/148004-4.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <HBox alignment="TOP_CENTER">
+                                       <children>
+                                          <Button fx:id="undoButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#undoButtonPressed" styleClass="toolbar-button" text="Undo">
+                                             <graphic>
+                                                <ImageView pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../resources/icons/939132-6.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="redoButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#redoButtonPressed" prefWidth="44.0" styleClass="toolbar-button" text="Redo">
+                                             <graphic>
+                                                <ImageView pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../resources/icons/540796-6.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets left="3.0" top="2.0" />
+                                       </padding>
+                                    </HBox>
+                                    <VBox layoutX="176.0" layoutY="11.0" spacing="2.0">
+                                       <children>
+                                          <Button fx:id="selectAllButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#selectAllButtonPressed" prefWidth="92.0" styleClass="toolbar-icon-button" text="Select All">
+                                             <graphic>
+                                                <ImageView pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../resources/icons/421429-7.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="selectNoneButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#selectNoneButtonPressed" styleClass="toolbar-icon-button" text="Select None">
+                                             <graphic>
+                                                <ImageView pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../resources/icons/740155-7.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="deleteButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#deleteButtonPressed" prefWidth="92.0" styleClass="toolbar-icon-button" text="Delete">
+                                             <graphic>
+                                                <ImageView pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../resources/icons/337519-7.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets left="6.0" right="1.0" top="2.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets top="1.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                 <children>
+                                    <Label text="Edit">
+                                       <HBox.margin>
+                                          <Insets bottom="-0.5" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </VBox>
+                        <Separator opacity="0.8" orientation="VERTICAL">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="4.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox alignment="BOTTOM_CENTER">
+                                 <padding>
+                                    <Insets bottom="0.5" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets top="6.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <VBox layoutX="10.0" layoutY="10.0" spacing="1.0">
+                                       <padding>
+                                          <Insets top="1.0" />
+                                       </padding>
+                                       <children>
+                                          <HBox>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <Button fx:id="addAssessmentsButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentCreationWindow" styleClass="toolbar-button" text="Add" wrapText="true">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../../resources/icons/204966-3.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets right="6.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Button fx:id="modifyAssessmentsButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#displayAssessmentEditWindow" styleClass="toolbar-button" text="Modify">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../../resources/icons/879429-4.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                      <Button fx:id="finaliseButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#finaliseButtonPressed" styleClass="toolbar-button" text="Finalise" wrapText="true">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../../resources/icons/991256-4.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                         <tooltip>
+                                                            <Tooltip text="Assign a mark of 0 for all incomplete assessments" wrapText="true" />
+                                                         </tooltip>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                 <children>
+                                    <Label alignment="CENTER" text="Assessments" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets bottom="2.0" />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </VBox>
+                        <Separator opacity="0.8" orientation="VERTICAL">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets bottom="1.0" top="2.0" />
+                     </padding>
+                  </HBox>
+               </content>
+          </Tab>
+            <Tab text="View">
+              <content>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <HBox VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <VBox spacing="5.0">
+                                                   <children>
+                                                      <ToggleButton fx:id="studentViewToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" onAction="#studentInfoButtonPressed" styleClass="toolbar-toggle-button" text="Student Info View" textAlignment="CENTER">
+                                                         <VBox.margin>
+                                                            <Insets />
+                                                         </VBox.margin>
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../../resources/icons/588406-7.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </ToggleButton>
+                                                      <ToggleButton fx:id="anonymiseToggleButton" alignment="CENTER_LEFT" graphicTextGap="5.0" mnemonicParsing="false" onAction="#anonymiseButtonPressed" styleClass="toolbar-toggle-button" text="Anonymize">
+                                                         <graphic>
+                                                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../../../resources/icons/676665-7.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </ToggleButton>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets right="14.0" top="4.5" />
+                                                   </padding>
+                                                </VBox>
+                                                <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                                   </padding>
+                                                </Separator>
+                                                <VBox alignment="TOP_CENTER" spacing="5.0">
+                                                   <padding>
+                                                      <Insets bottom="2.0" left="4.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                   <children>
+                                                      <HBox spacing="5.0">
+                                                         <children>
+                                                            <Label prefWidth="35.0" text="Class:" />
+                                                            <ComboBox fx:id="classListBox" onAction="#filterTableAction" prefWidth="60.0" promptText="Class" styleClass="toolbar-combo-box" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox spacing="5.0">
+                                                         <children>
+                                                            <Label text="Grade:" />
+                                                            <ComboBox fx:id="gradeListBox" onAction="#filterTableAction" prefWidth="60.0" promptText="Grade" styleClass="toolbar-combo-box" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                             <children>
+                                                <Label text="Filter">
+                                                   <padding>
+                                                      <Insets bottom="0.5" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets bottom="2.0" />
+                                             </opaqueInsets>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets left="16.0" right="5.0" top="1.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <Separator opacity="0.8" orientation="VERTICAL">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <HBox VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <VBox spacing="4.0">
+                                       <children>
+                                          <CheckBox fx:id="essaysCheckBox" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Essays" />
+                                          <CheckBox fx:id="essayPlansCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Essay Plans" />
+                                          <CheckBox fx:id="examsCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Exams" />
+                                       </children>
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets top="3.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox layoutX="10.0" layoutY="10.0" spacing="4.0">
+                                       <children>
+                                          <CheckBox fx:id="quizzesCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Quizzes" />
+                                          <CheckBox fx:id="argAnalysesCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Arg. Analyses" />
+                                          <CheckBox fx:id="participationCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Participation" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets top="3.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox layoutX="105.0" layoutY="13.0" spacing="4.0">
+                                       <children>
+                                          <CheckBox fx:id="presentationsCheckBox" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Presentations" />
+                                          <CheckBox fx:id="otherCheckBox" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#assessmentCheckBoxClicked" text="Other" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets top="3.0" />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                 <children>
+                                    <Label text="Show/Hide ">
+                                       <padding>
+                                          <Insets bottom="0.5" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets bottom="2.0" />
+                                 </opaqueInsets>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" top="1.0" />
+                           </padding>
+                        </VBox>
+                        <Separator opacity="0.8" orientation="VERTICAL">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets bottom="1.0" top="2.0" />
+                     </padding>
+                  </HBox>
+              </content>
+            </Tab>
+            <Tab fx:id="statisticsTab" text="Statistics">
+              <content>
+                  <HBox>
+                     <padding>
+                        <Insets bottom="1.0" top="2.0" />
+                     </padding>
+                     <children>
+                        <VBox prefHeight="88.0" spacing="8.0">
+                           <children>
+                              <HBox spacing="6.0">
+                                 <children>
+                                    <ComboBox fx:id="statisticsClassComboBox" prefHeight="19.0" prefWidth="68.0" styleClass="toolbar-combo-box" />
+                                    <Label text="Class" />
+                                 </children>
+                              </HBox>
+                              <ComboBox fx:id="columnComboBox" prefHeight="19.0" prefWidth="101.0" styleClass="toolbar-combo-box" />
+                           </children>
+                           <padding>
+                              <Insets left="16.0" right="12.0" top="8.0" />
+                           </padding>
+                        </VBox>
+                        <Separator opacity="0.8" orientation="VERTICAL" prefHeight="200.0">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <VBox>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Median">
+                                                   <font>
+                                                      <Font size="12.5" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label fx:id="medianLabel" text="N/A" textFill="GREEN" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
+                                       <padding>
+                                          <Insets bottom="11.0" left="5.0" top="2.0" />
+                                       </padding>
+                                    </Separator>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Average">
+                                                   <font>
+                                                      <Font size="12.5" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label fx:id="averageLabel" text="N/A" textFill="#dd9700" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
+                                       <padding>
+                                          <Insets bottom="11.0" left="5.0" top="2.0" />
+                                       </padding>
+                                    </Separator>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Highest">
+                                                   <font>
+                                                      <Font size="12.5" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label fx:id="highestLabel" text="N/A" textFill="#6f6f6f" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
+                                       <padding>
+                                          <Insets bottom="11.0" left="5.0" top="2.0" />
+                                       </padding>
+                                    </Separator>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Lowest">
+                                                   <font>
+                                                      <Font size="12.5" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label fx:id="lowestLabel" text="N/A" textFill="#6f6f6f" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Separator opacity="0.65" orientation="VERTICAL" prefHeight="200.0">
+                                       <padding>
+                                          <Insets bottom="11.0" left="5.0" top="2.0" />
+                                       </padding>
+                                    </Separator>
+                                    <VBox prefHeight="88.0" prefWidth="54.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="62.0" prefWidth="65.0">
+                                             <children>
+                                                <Label text="Students">
+                                                   <font>
+                                                      <Font size="12.5" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="4.0" top="1.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="76.0">
+                                             <children>
+                                                <Label fx:id="numberLabel" text="N/A" textFill="#0b3f8c" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" prefHeight="18.0">
+                                 <children>
+                                    <Label text="Quick Stats" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator opacity="0.8" orientation="VERTICAL" prefHeight="200.0">
+                           <padding>
+                              <Insets bottom="2.0" left="7.0" right="4.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                        <HBox>
+                           <children>
+                              <Button fx:id="statisticsButton" alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#showStatisticsPane" prefHeight="78.0" prefWidth="80.0" styleClass="toolbar-button-big" text="Grade Distribution" textAlignment="CENTER" wrapText="true">
+                                 <graphic>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../resources/icons/line-graph-icon.png" />
+                                       </image>
+                                       <viewport>
+                                          <Rectangle2D width="32.0" />
+                                       </viewport>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" top="1.0" />
+                           </padding>
+                        </HBox>
+                        <Separator opacity="0.8" orientation="VERTICAL" prefHeight="200.0">
+                           <padding>
+                              <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                  </HBox>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <HBox fx:id="mainPane" spacing="8.0" styleClass="white-pane" VBox.vgrow="ALWAYS">
+         <children>
+            <TableView fx:id="table" editable="true" onKeyPressed="#deleteKeyPressed" onKeyReleased="#handleKeyboardShortcuts" prefHeight="743.0" tableMenuButtonVisible="true" HBox.hgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="surnameColumn" minWidth="-1.0" onEditCommit="#editSurnameCell" prefWidth="160.0" text="Surname" />
+                <TableColumn fx:id="givenNamesColumn" minWidth="-1.0" onEditCommit="#editGivenNamesCell" prefWidth="175.0" text="Given Names" />
+                  <TableColumn fx:id="preferredNameColumn" minWidth="-1.0" onEditCommit="#editPreferredNameCell" prefWidth="125.0" text="Preferred Name" />
+                  <TableColumn fx:id="classColumn" minWidth="-1.0" onEditCommit="#editClassCell" prefWidth="60.0" text="Class" />
+                  <TableColumn fx:id="genderColumn" minWidth="-1.0" onEditCommit="#editGenderCell" prefWidth="58.0" text="Gender" />
+                  <TableColumn fx:id="sidColumn" minWidth="-1.0" onEditCommit="#editSIDCell" prefWidth="90.0" text="SID" />
+                  <TableColumn fx:id="degreeColumn" minWidth="-1.0" onEditCommit="#editDegreeCell" prefWidth="65.0" text="Degree" />
+                  <TableColumn fx:id="emailColumn" minWidth="-1.0" onEditCommit="#editEmailCell" prefWidth="185.0" text="Email Address" />
+              </columns>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#printSelectedStudents" text="Print Selected Student Info" />
+                      <MenuItem mnemonicParsing="false" onAction="#printStudents" text="Print Student List" />
+                        <MenuItem mnemonicParsing="false" onAction="#printAssessmentStatistics" text="Print Assessment Statistics" />
+                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </TableView>
+         </children>
+         <padding>
+            <Insets left="8.0" right="8.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="28.0" prefWidth="1280.0" styleClass="white-pane">
+         <children>
+            <HBox spacing="30.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="numberOfStudentsLabel" text="Number of students:" />
+                  <Label fx:id="numberSelectedLabel" text="Selected students: " />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="statusLabel" text="Status Text" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" top="2.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>
