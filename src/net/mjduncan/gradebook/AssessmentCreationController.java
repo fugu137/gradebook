@@ -196,7 +196,6 @@ public class AssessmentCreationController implements Initializable {
         addAssessmentCreationBars();
         bindTotalWeightingField();
         formatWeightingFields();
-
     }
 
     //Initialize Methods//
@@ -382,7 +381,6 @@ public class AssessmentCreationController implements Initializable {
 
         commandManager.execute(new SetupAllAssessmentsSubCommand(mainController, assessments, addAssessmentsButton, modifyAssessmentsButton), true);
     }
-
 
     @FXML
     public void clearButtonPressed(ActionEvent event) {

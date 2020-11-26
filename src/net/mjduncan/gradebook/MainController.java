@@ -758,7 +758,24 @@ public class MainController {
                                 .then("N/A")
                                 .otherwise(selectedGroup.numberAttemptedProperty(assessment).asString())
                 );
+
             }
+
+        } else {
+            medianLabel.textProperty().unbind();
+            medianLabel.setText("N/A");
+
+            averageLabel.textProperty().unbind();
+            averageLabel.setText("N/A");
+
+            highestLabel.textProperty().unbind();
+            highestLabel.setText("N/A");
+
+            lowestLabel.textProperty().unbind();
+            lowestLabel.setText("N/A");
+
+            numberLabel.textProperty().unbind();
+            numberLabel.setText("N/A");
         }
 
         medianLabel.textProperty().addListener(obs -> {
@@ -1049,10 +1066,8 @@ public class MainController {
             File file = FileChooserWindow.displayLoadWindow(stage, "Load Gradebook");
 
             commandManager.execute(new LoadGradebookCommand(this, statisticsPane, fileManager, file, stage));
-            //TODO: reset filter comboboxes?
         }
     }
-
 
     @FXML
     public void saveGradebookItemPressed() {
@@ -1598,6 +1613,10 @@ public class MainController {
         statisticsPane = null;
     }
 
+    public void disableModifyAssessmentsButton() {
+        modifyAssessmentsButton.setDisable(true);
+    }
+
     private void setupCloseButton(Button closeButton) {
         closeButton.setOnAction(e -> {
             closeStatisticsPane();
@@ -1621,6 +1640,7 @@ public class MainController {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(duration), e -> ft.play()));
         timeline.play();
     }
+
 
 
     ////User Actions////

@@ -139,8 +139,12 @@ public class FileManager {
                     String courseName = courseAndClass[0];
                     courseManager.setCourseName(courseName);
 
-                    if (lineNumber == 1 && !(stdAssessments[0].isBlank() && assessmentSets[0].isBlank())) {
-                        addAssessments(mainController, stdAssessmentMap, assessmentSetMap, stdAssessments, assessmentSets);
+                    if (lineNumber == 1) {
+                        if (!(stdAssessments[0].isBlank() && assessmentSets[0].isBlank())) {
+                            addAssessments(mainController, stdAssessmentMap, assessmentSetMap, stdAssessments, assessmentSets);
+                        } else {
+                            mainController.disableModifyAssessmentsButton();
+                        }
                     }
 
                     Student student = makeStudent(classMap, courseAndClass, studentInfo);

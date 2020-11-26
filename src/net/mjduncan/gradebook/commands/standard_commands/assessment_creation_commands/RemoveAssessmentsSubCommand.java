@@ -28,6 +28,10 @@ public class RemoveAssessmentsSubCommand implements StandardCommand {
             blankStudent.removeAssessmentData(assessment);
             mainController.removeAssessmentColumn(assessment);
         });
+
+        if (courseManager.getAssessments().size() < 1) {
+            mainController.removeTotalColumn();
+        }
     }
 
     @Override

@@ -46,11 +46,10 @@ public abstract class StudentImporter {
 
                     studentList.add(new Student(surname, givenNames, preferredName, classGroup, gender, sid, degree, email));
                 }
-
             }
 
         } catch (Exception e) {
-            System.out.println("Error " + e.getMessage());
+            e.printStackTrace();
         }
         return studentList;
     }
