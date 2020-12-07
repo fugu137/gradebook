@@ -78,9 +78,6 @@ public class AssessmentSet implements Assessment {
         return quantity.getValue();
     }
 
-//    public void setQuantity(int quantity) {
-//        this.quantity.set(quantity);
-//    }
     public void addSubAssessment(StdAssessment subAssessment) {
         stdAssessments.add(subAssessment);
         this.quantity.set(getQuantity() + 1);
@@ -90,44 +87,6 @@ public class AssessmentSet implements Assessment {
         stdAssessments.remove(subAssessment);
         this.quantity.set(getQuantity() - 1);
     }
-
-//    public void setQuantity(Integer quantity) {
-//        Integer oldQuantity = this.quantity.getValue();
-//
-//        if (quantity < oldQuantity) {
-//            for (int i = 0; i < oldQuantity - quantity; i++) {
-//                System.out.println(stdAssessments.size() - 1);
-//                stdAssessments.remove(stdAssessments.size() - 1);
-//            }
-//
-//        } else {
-//            for (int i = oldQuantity + 1; i <= quantity; i++) {
-//                stdAssessments.add(new StdAssessment(name.getValue() + " " + (i + 1), type, null));
-//            }
-//        }
-
-
-//        int difference = quantity - oldQuantity;
-//
-//        this.quantity.set(quantity);
-//
-//        if (quantity > oldQuantity) {
-//            for (int i = oldQuantity + 1; i <= quantity; i++) {
-//                stdAssessments.add(new StdAssessment(name.getValue() + " " + (i + 1), type, null));
-//            }
-//        }
-//
-//        if (quantity < oldQuantity) {
-//            for (int i = oldQuantity; i > quantity; i--) {
-//                stdAssessments.remove(i);
-//            }
-//        }
-//    }
-
-//    public void addSubAssessment(StdAssessment assessment) {
-//        stdAssessments.add(assessment);
-//        quantity.set(quantity.getValue() + 1);
-//    }
 
     public Integer getBestOf() {
         return bestOf.getValue();

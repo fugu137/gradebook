@@ -1213,7 +1213,6 @@ public class MainController {
                 .filter(c -> c.getParent() == assessmentSet)
                 .sorted()
                 .collect(Collectors.toCollection(ArrayList::new));
-
         return subAssessmentColumns;
     }
 
@@ -1827,63 +1826,6 @@ public class MainController {
     public void filterTableAction() {
         commandManager.execute(new FilterByClassAndGradeCommand(this, classListBox, gradeListBox), true);
     }
-
-    @FXML
-    public void filterStatisticsAction() {
-        //TODO: remove or implement
-    }
-
-
-    //Test Methods//
-//    public void addDummyData() {
-//        ClassGroup w15A = new ClassGroup("W15A");
-//        ClassGroup t17B = new ClassGroup("T17B");
-//
-//        ClassGroup r11C = new ClassGroup("R11C");
-//
-//        Student fred = new Student("Fredson", "Fred", "Freddie", w15A, Gender.M, 1035, "DH205", "fred@mail.com");
-//        Student mary = new Student("McKillop", "Mary", "Mar", t17B, Gender.F, 2022, "LH304", "mary@mail.com");
-//        Student jane = new Student("Dawson", "Jane", "J", null, Gender.F, 1090, "DH107", "jane@mail.com");
-//
-//        courseManager.newStudent(fred);
-//        courseManager.newStudent(mary);
-//        courseManager.newStudent(jane);
-//
-//        table.getItems().add(fred);
-//        table.getItems().add(mary);
-//        table.getItems().add(jane);
-//    }
-//
-//
-//    @FXML
-//    public void printSelectedStudents() {
-//        table.getSelectionModel().getSelectedItems().forEach(System.out::println);
-//    }
-//
-//    @FXML
-//    public void printStudents() {
-//        System.out.println("Enrolled Students");
-//        courseManager.getAllStudents().forEach(System.out::println);
-//        System.out.println();
-//
-//        System.out.println("Table Students");
-//        ObservableList<Student> students = table.getItems();
-//        students.forEach(System.out::println);
-//    }
-//
-//    @FXML
-//    public void printAssessmentStatistics() {
-//        System.out.println("Ave = " + courseManager.getCourseCohort().totalGradeAverageProperty().getValue());
-//        System.out.println("N = " + courseManager.getCourseCohort().numberAttemptedProperty().getValue());
-//    }
-//
-//    @FXML
-//    public void viewHistory() {
-//        System.out.println("Undo Stack");
-//        System.out.println(commandManager.getUndoStack());
-//        System.out.println("Redo Stack");
-//        System.out.println(commandManager.getRedoStack());
-//    }
 }
 
 

@@ -103,7 +103,7 @@ public class CourseCohort implements StudentGroup {
         assessmentStatistics.put(assessment, new AssessmentStatistics(students, assessment));
     }
 
-    public void removeAssessment(Assessment assessment) { //TODO: check if needed (wasn't implemented)
+    public void removeAssessment(Assessment assessment) {
         assessments.remove(assessment);
         assessmentStatistics.remove(assessment);
     }

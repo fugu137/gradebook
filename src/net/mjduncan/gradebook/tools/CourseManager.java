@@ -69,9 +69,6 @@ public class CourseManager {
             assessments = studentClass.getAssessments();
         }
 
-//        assessments.stream().filter(a -> a instanceof StdAssessment).map(a -> (StdAssessment) a).forEach(student::addStdAssessmentData);
-//        assessments.stream().filter(a -> a instanceof AssessmentSet).map(a -> (AssessmentSet) a).forEach(student::addAssessmentSetData);
-
         for (Assessment a : assessments) {
 
             if (a instanceof StdAssessment) {

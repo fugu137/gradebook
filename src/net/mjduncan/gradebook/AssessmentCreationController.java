@@ -394,7 +394,7 @@ public class AssessmentCreationController implements Initializable {
         popup.setHeaderText("Are you sure you want to remove this assessment?");
         popup.setContentText("Clicking 'OK' will remove the assessment from the assessment modification window. When the 'Submit' button is pressed, the assessment will be deleted from the gradebook, and any grades for the assessment will be lost.");
 
-        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {//TODO: remove at this stage, not later?
+        if (popup.showAndWait().isPresent() && popup.getResult() == ButtonType.OK) {
             Assessment assessment = bar.clear();
             assessmentsToRemove.add(assessment);
         }

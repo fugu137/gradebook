@@ -26,8 +26,6 @@ public class Main extends Application {
 
     }
 
-    //TODO: remove "if x instanceof y..." calls where possible (replacing by shared interface/superclass methods)
-
     public static void main(String[] args) {
         launch(args);
     }

@@ -93,18 +93,6 @@ public class ClassGroup implements StudentGroup {
         }
     }
 
-//    public void removeSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
-//        for (Student s: students) {
-//            s.removeSubAssessmentSetData(set, oldQuantity, newQuantity);
-//        }
-//    }
-//
-//    public void addSubAssessments(AssessmentSet set, int oldQuantity, int newQuantity) {
-//        for (Student s: students) {
-//            s.addSubAssessments(set, oldQuantity, newQuantity);
-//        }
-//    }
-
     public ObservableList<Assessment> getAssessments() {
         return assessments;
     }
@@ -140,20 +128,10 @@ public class ClassGroup implements StudentGroup {
     public void updateAssessmentStatistics(Assessment assessment, Student student, ObjectProperty<?> gradeProperty) {
         AssessmentStatistics stats = assessmentStatistics.get(assessment);
         stats.update(student, gradeProperty);
-
-//        System.out.println("barchart: " + stats.getBarChart());
-//        if (stats.getBarChart() != null) {
-//            stats.updateBarChartValues();
-//        }
     }
 
     public void updateTotalGradeStatistics(Student student, ObjectProperty<Double> gradeProperty) {
         totalGradeStatistics.update(student, gradeProperty);
-
-//        System.out.println("barchart: " + totalGradeStatistics.getBarChart());
-//        if (totalGradeStatistics.getBarChart() != null) {
-//            totalGradeStatistics.updateBarChartValues();
-//        }
     }
 
     public ObjectProperty<Double> totalGradeMedianProperty() {
