@@ -85,7 +85,6 @@ public class StatisticsPane extends VBox {
         StudentGroup selectedGroup = classComboBox.getSelectionModel().getSelectedItem();
         AssessmentColumn<Student, ?> selectedColumn = columnComboBox.getSelectionModel().getSelectedItem();
 
-        System.out.println("Filling bar chart...");
         if (selectedGroup != null && selectedColumn != null) {
 
             if (selectedGroup == courseManager.getCourseCohort()) {
