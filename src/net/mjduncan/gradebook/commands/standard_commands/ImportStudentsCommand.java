@@ -59,6 +59,10 @@ public class ImportStudentsCommand implements StandardCommand {
 
         table.getItems().addAll(tableStudentsCopy);
         table.getItems().add(blankStudent);
+//        courseManager.getClasses().forEach(c -> {
+//            System.out.println("Class: " + c.getName());
+//            c.getStudents().forEach(System.out::println);
+//        });
     }
 
     @Override

@@ -158,6 +158,10 @@ public class Student {
 
 
     //Main Methods//
+    public void clearGrades() {
+        this.grades.clear();
+    }
+
     public void addStdAssessmentData(StdAssessment stdAssessment) {
         ClassGroup studentClass = classGroup.getValue();
 

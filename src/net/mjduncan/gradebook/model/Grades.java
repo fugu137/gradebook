@@ -20,6 +20,17 @@ public class Grades {
         this.totalGrade = new SimpleObjectProperty<>(null);
     }
 
+    public void clear() {
+        for (AssessmentData d : grades.values()) {
+            if (d instanceof StdAssessmentData) {
+                ((StdAssessmentData) d).setGrade(null);
+            }
+            if (d instanceof AssessmentSetData) {
+                ((AssessmentSetData) d).clearSubAssessmentGrades();
+            }
+        }
+    }
+
     public void updateTotalGrade() {
         Double total = null;
         Double totalWeighting = null;

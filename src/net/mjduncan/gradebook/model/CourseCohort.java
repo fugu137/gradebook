@@ -52,6 +52,7 @@ public class CourseCohort implements StudentGroup {
 
     public void removeStudent(Student student) {
         students.remove(student);
+        student.clearGrades();
     }
 
     public ObservableList<Student> getStudents() {

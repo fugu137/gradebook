@@ -35,7 +35,8 @@ public class CourseManager {
         courseCohort.clear();
         unassigned.clear();
         studentGroups.removeIf(s -> !(s == courseCohort) && !(s == unassigned));
-        classes.removeIf(s -> !(s == unassigned));
+        classes.forEach(ClassGroup::clear);
+        classes.removeIf(s -> !(s == unassigned)); //TODO: check if .clear() better
         assessments.clear();
     }
 
@@ -44,7 +45,6 @@ public class CourseManager {
     }
 
     public void newStudent(Student student) {
-
         ClassGroup studentClass = student.getClassGroup();
         ObservableList<Assessment> assessments;
 

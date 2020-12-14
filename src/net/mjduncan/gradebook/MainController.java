@@ -1824,7 +1824,7 @@ public class MainController {
 
     @FXML
     public void filterTableAction() {
-        commandManager.execute(new FilterByClassAndGradeCommand(this, classListBox, gradeListBox), true);
+        commandManager.execute(new FilterByClassAndGradeCommand(this, classListBox, gradeListBox), false);
     }
 }
 

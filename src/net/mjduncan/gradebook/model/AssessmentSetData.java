@@ -108,6 +108,10 @@ public class AssessmentSetData implements AssessmentData {
         }
     }
 
+    public void clearSubAssessmentGrades() {
+        stdAssessmentDataList.forEach(d -> d.setGrade(null));
+    }
+
     public Integer[] getSubAssessmentGrades() {
         int size = stdAssessmentDataList.size();
         Integer[] grades = new Integer[size];
