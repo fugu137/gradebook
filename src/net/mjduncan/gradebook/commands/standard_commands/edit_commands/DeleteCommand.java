@@ -7,6 +7,7 @@ import net.mjduncan.gradebook.MainController;
 import net.mjduncan.gradebook.commands.standard_commands.StandardCommand;
 import net.mjduncan.gradebook.model.Student;
 import net.mjduncan.gradebook.tools.CourseManager;
+import net.mjduncan.gradebook.tools.StudentCloner;
 
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class DeleteCommand implements StandardCommand {
         this.tableItemsCopy = FXCollections.observableArrayList();
         this.selected = FXCollections.observableArrayList(selected);
 
-        tableItemsCopy.addAll(table.getItems());
+        ObservableList<Student> studentClones = StudentCloner.run(table.getItems());
+        tableItemsCopy.addAll(studentClones);
     }
 
     @Override

@@ -1795,7 +1795,7 @@ public class MainController {
             commandManager.execute(new StudentInfoViewOnCommand(infoColumns), true);
 
         } else {
-            commandManager.execute(new StudentInfoViewOffCommand(emailColumn, sidColumn, degreeColumn), true);
+            commandManager.execute(new StudentInfoViewOffCommand(emailColumn, sidColumn, genderColumn, degreeColumn), true);
         }
     }
 
