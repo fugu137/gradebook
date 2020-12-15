@@ -15,7 +15,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("new-gradebook.fxml"));
         primaryStage.setTitle("Gradebook");
-        primaryStage.getIcons().add(new Image("\\resources\\icons\\favicon5.png"));
+        primaryStage.getIcons().add(new Image("\\resources\\icons\\favicon6.png"));
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
