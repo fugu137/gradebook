@@ -163,10 +163,15 @@ public class Student {
     }
 
     public void addStdAssessmentData(StdAssessment stdAssessment) {
-        ClassGroup studentClass = classGroup.getValue();
-
         StdAssessmentData data = new StdAssessmentData(stdAssessment);
+
         grades.add(stdAssessment, data);
+
+        addStdAssessmentListeners(stdAssessment, data);
+    }
+
+    public void addStdAssessmentListeners(StdAssessment stdAssessment, StdAssessmentData data) {
+        ClassGroup studentClass = classGroup.getValue();
 
         data.gradeProperty().addListener(obs -> {
             grades.updateTotalGrade();
@@ -185,10 +190,14 @@ public class Student {
     }
 
     public void addAssessmentSetData(AssessmentSet assessmentSet) {
-        ClassGroup studentClass = classGroup.getValue();
-
         AssessmentSetData data = new AssessmentSetData(assessmentSet);
         grades.add(assessmentSet, data);
+
+        addAssessmentSetListeners(assessmentSet, data);
+    }
+
+    public void addAssessmentSetListeners(AssessmentSet assessmentSet, AssessmentSetData data) {
+        ClassGroup studentClass = classGroup.getValue();
 
         data.gradeProperty().addListener(obs -> {
             grades.updateTotalGrade();
@@ -302,6 +311,10 @@ public class Student {
         stdAssessmentGradeProperty(stdAssessment).set(grade);
     }
 
+    public void setAssessmentSetGrade(AssessmentSet assessmentSet, Double grade) {
+        assessmentSetTotalGradeProperty(assessmentSet).set(grade);
+    }
+
     public void setSubAssessmentGrade(AssessmentSet assessmentSet, StdAssessment subAssessment, Integer grade) {
         assessmentSetGradeProperty(assessmentSet, subAssessment).set(grade);
     }
@@ -309,6 +322,19 @@ public class Student {
     public void finaliseGrades() {
         grades.setIncompleteGradesToZero();
     }
+//
+//    public void refreshGrades() {
+//        for (Assessment a: grades.assessmentList() ) {
+//            if (a instanceof StdAssessment) {
+//                Integer grade = getAssessmentData(a).getGrade().intValue();
+//                setStdAssessmentGrade((StdAssessment) a, 10);
+//            }
+//            if (a instanceof  AssessmentSet) {
+//                Double grade = getAssessmentData(a).getGrade().doubleValue();
+//                setAssessmentSetGrade((AssessmentSet) a, 10.0);
+//            }
+//        }
+//    }
 
 
     //Overridden Methods//

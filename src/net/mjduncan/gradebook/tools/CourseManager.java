@@ -70,13 +70,41 @@ public class CourseManager {
         }
 
         for (Assessment a : assessments) {
+            if (student.getAssessmentData(a) == null) {
+                if (a instanceof StdAssessment) {
+                    student.addStdAssessmentData((StdAssessment) a);
 
-            if (a instanceof StdAssessment) {
-                student.addStdAssessmentData((StdAssessment) a);
-            } else if (a instanceof AssessmentSet) {
-                student.addAssessmentSetData((AssessmentSet) a);
+                } else if (a instanceof AssessmentSet) {
+                    student.addAssessmentSetData((AssessmentSet) a);
+
+                } else {
+                    System.out.println("Assessment type not found...");
+                }
+
             } else {
-                System.out.println("Assessment type not found...");
+                if (a instanceof StdAssessment) {
+                    StdAssessmentData data = (StdAssessmentData) student.getAssessmentData(a);
+                    StdAssessment std = (StdAssessment) a;
+
+                    student.addStdAssessmentListeners(std, data);
+
+                    Integer grade = data.getGrade();
+                    student.setStdAssessmentGrade(std,null);
+                    student.setStdAssessmentGrade(std, grade);
+
+                } else if (a instanceof AssessmentSet) {
+                    AssessmentSetData data = (AssessmentSetData) student.getAssessmentData(a);
+                    AssessmentSet set = (AssessmentSet) a;
+
+                    student.addAssessmentSetListeners(set, data);
+
+                    Double grade = data.getGrade();
+                    student.setAssessmentSetGrade(set,null);
+                    student.setAssessmentSetGrade(set, grade);
+
+                } else {
+                    System.out.println("Assessment type not found...");
+                }
             }
         }
 
@@ -132,7 +160,7 @@ public class CourseManager {
             classes.add(classGroup);
             studentGroups.add(classGroup);
 
-            for (Assessment a: assessments) {
+            for (Assessment a : assessments) {
                 classGroup.addAssessment(a);
             }
         }

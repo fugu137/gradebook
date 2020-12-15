@@ -26,7 +26,8 @@ public class PasteCommand implements StandardCommand {
 
     @Override
     public void execute() {
-        courseManager.reAddAllStudentsAt(index, clipBoardCopy);
+//        courseManager.reAddAllStudentsAt(index, clipBoardCopy);
+        courseManager.newStudents(clipBoardCopy);
         table.getItems().addAll(index, clipBoardCopy);
     }
 
