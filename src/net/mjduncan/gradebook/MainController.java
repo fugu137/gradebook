@@ -399,7 +399,7 @@ public class MainController {
                 if (string.isBlank()) {
                     return null;
 
-                } else if (string.trim().matches("(\\S+)@(\\S+)(.com)(.\\S\\S)?")) {
+                } else if (string.trim().matches("(\\S+)@(\\S+)(.com)(.\\S\\S)?") || string.trim().matches("(\\S+)@(\\S+)(.edu)(.\\S\\S)?")) {
                     return string.trim();
 
                 } else {
