@@ -13,34 +13,43 @@ import java.util.List;
 
 public class DeleteCommand implements StandardCommand {
 
+    private final MainController mainController;
     private final CourseManager courseManager;
     private final TableView<Student> table;
-    private final ObservableList<Student> tableItemsCopy;
-    private final ObservableList<Student> selected;
+    private final ObservableList<Student> selectedCopy;
+    private ObservableList<Student> selected;
 
     public DeleteCommand(MainController mainController, List<Student> selected) {
+        this.mainController = mainController;
         this.courseManager = mainController.getCourseManager();
         this.table = mainController.getTable();
-        this.tableItemsCopy = FXCollections.observableArrayList();
+        this.selectedCopy = FXCollections.observableArrayList();
         this.selected = FXCollections.observableArrayList(selected);
-
-        ObservableList<Student> studentClones = StudentCloner.run(table.getItems());
-        tableItemsCopy.addAll(studentClones);
     }
 
     @Override
     public void execute() {
+        ObservableList<Student> studentClones = StudentCloner.run(this.selected);
+        selectedCopy.clear();
+        selectedCopy.addAll(studentClones);
+
         for (Student s : selected) {
             courseManager.removeStudent(s);
         }
         table.getItems().removeAll(selected);
+
+        if (table.getItems().size() < 1) {
+            mainController.addBlankStudent();
+        }
     }
 
     @Override
     public void undo() {
-        courseManager.newStudents(selected);
+        courseManager.newStudents(selectedCopy);
         table.getItems().clear();
-        table.getItems().addAll(tableItemsCopy);
+        table.getItems().addAll(courseManager.getAllStudents());
+        selected.clear();
+        selected.addAll(selectedCopy);
     }
 
     @Override
