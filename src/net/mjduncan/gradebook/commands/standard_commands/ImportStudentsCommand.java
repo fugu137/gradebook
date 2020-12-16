@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ImportStudentsCommand implements StandardCommand {
 
+    private final MainController mainController;
     private final CourseManager courseManager;
     private final TableView<Student> table;
     private final Student blankStudent;
@@ -23,6 +24,7 @@ public class ImportStudentsCommand implements StandardCommand {
     private ObservableList<Student> tableStudentsForRedo;
 
     public ImportStudentsCommand(MainController mainController, Window window) {
+        this.mainController = mainController;
         this.courseManager = mainController.getCourseManager();
         this.table = mainController.getTable();
         this.blankStudent = mainController.getBlankStudent();
@@ -39,7 +41,7 @@ public class ImportStudentsCommand implements StandardCommand {
 
         for (File file : files) {
             ObservableList<Student> students = StudentImporter.importStudents(file);
-            courseManager.newStudents(students);
+            students.forEach(s -> new AddNewStudentCommand(mainController, s, false).execute());
 
             table.getItems().addAll(students);
             table.sort();
@@ -59,16 +61,12 @@ public class ImportStudentsCommand implements StandardCommand {
 
         table.getItems().addAll(tableStudentsCopy);
         table.getItems().add(blankStudent);
-//        courseManager.getClasses().forEach(c -> {
-//            System.out.println("Class: " + c.getName());
-//            c.getStudents().forEach(System.out::println);
-//        });
     }
 
     @Override
     public void redo() {
         courseManager.clear();
-        courseManager.newStudents(tableStudentsForRedo);
+        tableStudentsForRedo.forEach(s -> new AddNewStudentCommand(mainController, s, false).execute());
 
         table.getItems().clear();
         table.getItems().addAll(tableStudentsForRedo);

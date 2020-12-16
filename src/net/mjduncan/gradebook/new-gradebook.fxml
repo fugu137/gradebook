@@ -222,6 +222,9 @@
                                                                </image>
                                                             </ImageView>
                                                          </graphic>
+                                                         <tooltip>
+                                                            <Tooltip text="Add assessments" />
+                                                         </tooltip>
                                                       </Button>
                                                    </children>
                                                    <padding>
@@ -238,6 +241,9 @@
                                                                </image>
                                                             </ImageView>
                                                          </graphic>
+                                                         <tooltip>
+                                                            <Tooltip text="Modify assessments" />
+                                                         </tooltip>
                                                       </Button>
                                                       <Button fx:id="finaliseButton" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="2.0" mnemonicParsing="false" onAction="#finaliseButtonPressed" styleClass="toolbar-button" text="Finalise" wrapText="true">
                                                          <graphic>

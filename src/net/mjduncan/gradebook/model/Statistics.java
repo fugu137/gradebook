@@ -74,19 +74,19 @@ public class Statistics {
         if (gradeProperty.getValue() != null) {
             double grade = Double.parseDouble(String.valueOf(gradeProperty.getValue()));
 
-            if (grade < 50) {
+            if (NumberRounder.round(grade, 0) < 50) {
                 fStudents.add(student);
 
-            } else if (grade < 65) {
+            } else if (NumberRounder.round(grade, 0) < 65) {
                 pStudents.add(student);
 
-            } else if (grade < 75) {
+            } else if (NumberRounder.round(grade, 0) < 75) {
                 crStudents.add(student);
 
-            } else if (grade < 85) {
+            } else if (NumberRounder.round(grade, 0) < 85) {
                 dStudents.add(student);
 
-            } else if (grade <= 100) {
+            } else if (NumberRounder.round(grade, 0) <= 100) {
                 hdStudents.add(student);
 
             } else {

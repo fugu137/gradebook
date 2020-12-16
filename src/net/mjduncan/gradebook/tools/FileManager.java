@@ -2,6 +2,7 @@ package net.mjduncan.gradebook.tools;
 
 import javafx.collections.ObservableList;
 import net.mjduncan.gradebook.MainController;
+import net.mjduncan.gradebook.commands.standard_commands.AddNewStudentCommand;
 import net.mjduncan.gradebook.enums.AssessmentType;
 import net.mjduncan.gradebook.enums.Gender;
 import net.mjduncan.gradebook.model.*;
@@ -148,9 +149,11 @@ public class FileManager {
                     }
 
                     Student student = makeStudent(classMap, courseAndClass, studentInfo);
-                    courseManager.newStudent(student);
+//                    courseManager.newStudent(student);
+                    new AddNewStudentCommand(mainController, student, false).execute();
 
                     addGrades(stdAssessmentMap, assessmentSetMap, student, stdAssessments, assessmentSets);
+
                     lineNumber++;
                 }
             }

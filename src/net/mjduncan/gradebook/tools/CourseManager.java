@@ -69,6 +69,11 @@ public class CourseManager {
             assessments = studentClass.getAssessments();
         }
 
+        addAssessmentData(assessments, student);
+        addClassListener(student);
+    }
+
+    private void addAssessmentData(ObservableList<Assessment> assessments, Student student) {
         for (Assessment a : assessments) {
             if (student.getAssessmentData(a) == null) {
                 if (a instanceof StdAssessment) {
@@ -107,8 +112,6 @@ public class CourseManager {
                 }
             }
         }
-
-        addClassListener(student);
     }
 
     private void addClassListener(Student student) {

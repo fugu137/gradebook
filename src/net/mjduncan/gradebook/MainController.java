@@ -249,6 +249,14 @@ public class MainController {
         return blankStudent;
     }
 
+    public ComboBox<StudentGroup> getClassListBox() {
+        return classListBox;
+    }
+
+    public ComboBox<Grade> getGradeListBox() {
+        return gradeListBox;
+    }
+
     public AssessmentCreationController getAssessmentCreationController() throws IOException {
 
         if (this.assessmentCreationController == null) {
@@ -922,7 +930,7 @@ public class MainController {
 
         if (selectedStudent == blankStudent) {
             selectedStudent.setSurname(newSurname);
-            commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
+            commandManager.execute(new AddNewStudentCommand(this, blankStudent, true), true);
 
         } else {
             commandManager.execute(new ChangeSurnameCommand(selectedStudent, oldSurname, newSurname), true);
@@ -937,7 +945,7 @@ public class MainController {
 
         if (selectedStudent == blankStudent) {
             selectedStudent.setGivenNames(newGivenNames);
-            commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
+            commandManager.execute(new AddNewStudentCommand(this, blankStudent, true), true);
 
         } else {
             commandManager.execute(new ChangeGivenNamesCommand(selectedStudent, oldGivenNames, newGivenNames), true);
@@ -952,7 +960,7 @@ public class MainController {
 
         if (selectedStudent == blankStudent) {
             selectedStudent.setPreferredName(newPreferredName);
-            commandManager.execute(new AddNewStudentCommand(this, blankStudent), true);
+            commandManager.execute(new AddNewStudentCommand(this, blankStudent, true), true);
 
         } else {
             commandManager.execute(new ChangePreferredNameCommand(selectedStudent, oldPreferredName, newPreferredName), true);
