@@ -498,8 +498,6 @@ public class CourseManager {
         pieChart.getData().addAll(pieChartData);
         pieChart.setTitle("Total Grade (All Classes)");
 
-        //TODO: fix repetitive code below
-
         stats.getHDStudents().addListener(new ListChangeListener<Student>() {
             @Override
             public void onChanged(Change<? extends Student> change) {
