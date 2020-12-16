@@ -505,21 +505,7 @@ public class CourseManager {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasAdded() || change.wasRemoved()) {
-
-                        hdData.setName("HD (" + stats.getPercentageOfHDs() + "%)");
-                        hdData.setPieValue(stats.numberOfHDs());
-
-                        dData.setName("D (" + stats.getPercentageOfDs() + "%)");
-                        dData.setPieValue(stats.numberOfDs());
-
-                        crData.setName("CR (" + stats.getPercentageOfCRs() + "%)");
-                        crData.setPieValue(stats.numberOfCRs());
-
-                        pData.setName("P (" + stats.getPercentageOfPs() + "%)");
-                        pData.setPieValue(stats.numberOfPs());
-
-                        fData.setName("F (" + stats.getPercentageOfFs() + "%)");
-                        fData.setPieValue(stats.numberOfFs());
+                        updatePieChart(stats, hdData, dData, crData, pData, fData);
                     }
                 }
             }
@@ -530,20 +516,7 @@ public class CourseManager {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasAdded() || change.wasRemoved()) {
-                        hdData.setName("HD (" + stats.getPercentageOfHDs() + "%)");
-                        hdData.setPieValue(stats.numberOfHDs());
-
-                        dData.setName("D (" + stats.getPercentageOfDs() + "%)");
-                        dData.setPieValue(stats.numberOfDs());
-
-                        crData.setName("CR (" + stats.getPercentageOfCRs() + "%)");
-                        crData.setPieValue(stats.numberOfCRs());
-
-                        pData.setName("P (" + stats.getPercentageOfPs() + "%)");
-                        pData.setPieValue(stats.numberOfPs());
-
-                        fData.setName("F (" + stats.getPercentageOfFs() + "%)");
-                        fData.setPieValue(stats.numberOfFs());
+                        updatePieChart(stats, hdData, dData, crData, pData, fData);
                     }
                 }
             }
@@ -554,20 +527,7 @@ public class CourseManager {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasAdded() || change.wasRemoved()) {
-                        hdData.setName("HD (" + stats.getPercentageOfHDs() + "%)");
-                        hdData.setPieValue(stats.numberOfHDs());
-
-                        dData.setName("D (" + stats.getPercentageOfDs() + "%)");
-                        dData.setPieValue(stats.numberOfDs());
-
-                        crData.setName("CR (" + stats.getPercentageOfCRs() + "%)");
-                        crData.setPieValue(stats.numberOfCRs());
-
-                        pData.setName("P (" + stats.getPercentageOfPs() + "%)");
-                        pData.setPieValue(stats.numberOfPs());
-
-                        fData.setName("F (" + stats.getPercentageOfFs() + "%)");
-                        fData.setPieValue(stats.numberOfFs());
+                        updatePieChart(stats, hdData, dData, crData, pData, fData);
                     }
                 }
             }
@@ -578,14 +538,7 @@ public class CourseManager {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasAdded() || change.wasRemoved()) {
-                        hdData.setName("HD (" + stats.getPercentageOfHDs() + "%)");
-                        hdData.setPieValue(stats.numberOfHDs());
-
-                        pData.setName("P (" + stats.getPercentageOfPs() + "%)");
-                        pData.setPieValue(stats.numberOfPs());
-
-                        fData.setName("F (" + stats.getPercentageOfFs() + "%)");
-                        fData.setPieValue(stats.numberOfFs());
+                        updatePieChart(stats, hdData, dData, crData, pData, fData);
                     }
                 }
             }
@@ -596,18 +549,28 @@ public class CourseManager {
             public void onChanged(Change<? extends Student> change) {
                 while (change.next()) {
                     if (change.wasAdded() || change.wasRemoved()) {
-                        hdData.setName("HD (" + stats.getPercentageOfHDs() + "%)");
-                        hdData.setPieValue(stats.numberOfHDs());
-
-                        pData.setName("P (" + stats.getPercentageOfPs() + "%)");
-                        pData.setPieValue(stats.numberOfPs());
-
-                        fData.setName("F (" + stats.getPercentageOfFs() + "%)");
-                        fData.setPieValue(stats.numberOfFs());
+                        updatePieChart(stats, hdData, dData, crData, pData, fData);
                     }
                 }
             }
         });
+    }
+
+    private void updatePieChart(Statistics stats, PieChart.Data hdData, PieChart.Data dData, PieChart.Data crData, PieChart.Data pData, PieChart.Data fData) {
+        hdData.setName("HD (" + stats.getPercentageOfHDs() + "%)");
+        hdData.setPieValue(stats.numberOfHDs());
+
+        dData.setName("D (" + stats.getPercentageOfDs() + "%)");
+        dData.setPieValue(stats.numberOfDs());
+
+        crData.setName("CR (" + stats.getPercentageOfCRs() + "%)");
+        crData.setPieValue(stats.numberOfCRs());
+
+        pData.setName("P (" + stats.getPercentageOfPs() + "%)");
+        pData.setPieValue(stats.numberOfPs());
+
+        fData.setName("F (" + stats.getPercentageOfFs() + "%)");
+        fData.setPieValue(stats.numberOfFs());
     }
 
     public void removeClass(ClassGroup classGroup) {
