@@ -4,11 +4,15 @@ Gradebook was made using JavaFX, both for me to use in my teaching, and as a pro
 
 ### Import student details from class rolls or enter them manually:
 ![Demo1.gif](demo1.gif)
+<sub>Right-click, then click 'View Image' to see the gif at full-size</sub>
 ### Add single assessments (with weighted grades) or sets of assessments (graded by the best *n* of *m* assessments):
 ![Demo2.gif](demo2.gif)
+<sub>Right-click, then click 'View Image' to see the gif at full-size</sub>
 ### Load, save, cut, copy, paste, delete, undo, redo, filter, sort:
 ![Demo3.gif](demo3.gif)
+<sub>Right-click, then click 'View Image' to see the gif at full-size</sub>
 ### View grade statistics (updated in real-time):
 ![Demo4.gif](demo4.gif)
+<sub>Right-click, then click 'View Image' to see the gif at full-size</sub>
 
 *This gradebook application is a personal project and not intended for commercial use. I have used Microsoft Windows 10 icons and styling as a learning tool to practice JavaFX CSS and FXML/Scenebuilder. I do not own the rights to the icons, so if you would like to use the software for yourself, please replace them with your own first.*
