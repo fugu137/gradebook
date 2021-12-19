@@ -594,7 +594,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -613,7 +613,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -632,7 +632,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -651,7 +651,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -670,7 +670,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -689,7 +689,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -708,7 +708,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -727,7 +727,7 @@
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../resources/icons/337519-7.png" />
+                              <Image url="file:/D:/Documents/NetBeansProjects/Gradebook/src/resources/icons/337519-7.png" />
                            </image>
                         </ImageView>
                      </graphic>

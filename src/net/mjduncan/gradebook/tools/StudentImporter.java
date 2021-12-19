@@ -8,6 +8,7 @@ import net.mjduncan.gradebook.model.Student;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,7 +17,7 @@ public abstract class StudentImporter {
     private static Scanner reader;
 
 
-    public static ObservableList<Student> importStudents(File file)  {
+    public static ObservableList<Student> importStudents(File file) {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
 
         ClassGroup classGroup = null;
@@ -36,7 +37,7 @@ public abstract class StudentImporter {
                     String surname = details.get(2);
                     String givenNames = capitalizeEveryWord(details.get(3));
                     String preferredName = capitalizeEveryWord(details.get(4));
-                    Gender gender = Gender.valueOf(details.get(5));
+                    Gender gender = parseGender(details.get(5));
                     String degree = details.get(6);
                     String email = details.get(7);
 
@@ -59,11 +60,11 @@ public abstract class StudentImporter {
 
         String[] bigParts = line.trim().split(",\"|\",");
 
-        for (String bigString: bigParts) {
+        for (String bigString : bigParts) {
             bigString = bigString.trim();
             String[] smallParts = bigString.split(",");
 
-            for (String smallString: smallParts) {
+            for (String smallString : smallParts) {
                 smallString = smallString.trim();
                 details.add(smallString);
             }
@@ -80,7 +81,7 @@ public abstract class StudentImporter {
         String[] words = string.split(" ");
         List<String> formattedWords = new ArrayList<>();
 
-        for (String s: words) {
+        for (String s : words) {
             String lowerCaseWord = s.toLowerCase().trim();
             String formattedWord = capitalizeWord(lowerCaseWord);
 
@@ -90,15 +91,25 @@ public abstract class StudentImporter {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (String s: formattedWords) {
+        for (String s : formattedWords) {
             sb.append(s).append(" ");
         }
         return sb.toString().trim();
     }
 
     private static String capitalizeWord(String word) {
+        if (word.length() == 0) {
+            return word;
+        }
         return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 
+    private static Gender parseGender(String gender) {
+        try {
+            return Gender.valueOf(gender);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
 
